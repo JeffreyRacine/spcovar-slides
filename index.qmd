@@ -1,0 +1,825 @@
+---
+title: |
+  | Semiparametric Covariance Estimation
+  | for Sparse Functional Data
+author:
+  - Valentin Patilea$^\dagger$
+  - Jeffrey S. Racine$^\ddagger$
+institute:
+  - Univ Rennes, Ensai, CREST--UMR 9194$^\dagger$
+  - McMaster University$^\ddagger$
+date: 06/24/2026
+bibliography: ../references.bib
+link-citations: true
+knitr:
+  opts_chunk:
+    autodep: true
+    cache: true
+    collapse: true
+    echo: false
+    fig.align: "center"
+    message: false
+    warning: false
+format:
+  revealjs:
+    background-transition: fade
+    center: true
+    chalkboard: true
+    css: custom.css
+    embed-resources: false
+    footer: "Sparse covariance FDA | V. Patilea and J. S. Racine"
+    html-math-method: mathjax
+    include-in-header:
+      - text: |
+          <script>
+          window.MathJax = { tex: { tags: 'ams' } };
+          </script>
+    incremental: false
+    link-external-newwindow: true
+    multiplex: true
+    preview-links: auto
+    self-contained-math: false
+    show-notes: false
+    slide-number: true
+    theme: default
+    touch: true
+    transition: slide
+editor: source
+---
+
+# Slide Pro-Tips
+
+- `F`: fullscreen
+- `S`: speaker view
+- `E`: export to PDF
+- `B`: pause to black screen
+- `O`: overview
+- `Z`: zoom
+- `Alt` + click: zoom to region
+
+::: {.notes}
+Retained from the Braga revealjs talk. This is mainly a practical opening slide
+for the presenter, and can be hidden late in preparation if preferred.
+:::
+
+# Abstract
+
+We propose a semiparametric covariance estimator for sparsely observed
+functional data.
+
+The estimator decomposes the covariance surface into nonparametric marginal
+scale functions and a structured correlation surface. The correlation component
+is fit over a menu of interpretable positive-definite families and then averaged
+using data-driven weights.
+
+The resulting estimator is computationally attractive, retains flexibility where
+the data are most informative, and provides a direct bridge between fully
+parametric and fully nonparametric sparse FDA covariance estimation.
+
+# Outline of Talk
+
+1. Sparse FDA covariance: what makes the problem hard
+2. A semiparametric decomposition
+3. Nonparametric mean and variance estimation
+4. Correlation families and model averaging
+5. Finite-sample evidence
+6. CD4 application
+7. Summary and next steps
+
+::: {.notes}
+As in the 2024 talk, do not march through proofs line by line. The audience
+should understand the estimator, why it is useful, and what the evidence says.
+Proofs will be added to the manuscript separately.
+:::
+
+# Why Sparse FDA Covariance Is Hard
+
+## Classical Versus Functional Data
+
+Classical sample element:
+
+$$
+Y_i \in \mathbb R^d .
+$$
+
+Functional sample element:
+
+$$
+X_i = \{X_i(t): t \in \mathcal T\}.
+$$
+
+Sparse FDA observes only a small, noisy subset:
+
+$$
+Y_{ij} = X_i(T_{ij}) + \varepsilon_{ij},
+        \qquad j=1,\ldots,m_i .
+$$
+
+::: {.notes}
+This recreates the pedagogical opening used in Braga: begin with the sample
+element before discussing estimators.
+:::
+
+## Sparse Curves
+
+In dense FDA, each curve carries substantial within-subject information.
+
+In sparse FDA, covariance information is distributed across many subjects:
+
+$$
+\operatorname{cov}\{X_i(s),X_i(t)\}
+$$
+
+is learned from irregularly placed within-subject pairs.
+
+Replication matters.
+
+## Measurement Error
+
+The covariance of observations is not the latent covariance:
+
+$$
+\operatorname{cov}(Y_{ij},Y_{ik})
+= C(T_{ij},T_{ik}) + \sigma_\varepsilon^2 1\{j=k\}.
+$$
+
+The diagonal mixes latent variance and noise variance.
+
+The off-diagonal is informative but can be sparse and unevenly distributed.
+
+## Why Direct Surface Smoothing Can Struggle
+
+Fully nonparametric covariance estimation targets a two-dimensional surface:
+
+$$
+C(s,t), \qquad (s,t)\in\mathcal T^2 .
+$$
+
+That is flexible, but sparse designs can leave large regions weakly informed.
+
+The estimator must manage:
+
+- irregular design points,
+- measurement error,
+- positive-definiteness pressure,
+- boundary behavior,
+- computation.
+
+# Proposed Semiparametric Decomposition
+
+## The Object
+
+Let
+
+$$
+\mu(t)=E\{X(t)\},
+\qquad
+\sigma^2(t)=\operatorname{var}\{X(t)\},
+$$
+
+and
+
+$$
+\rho(s,t)=\operatorname{corr}\{X(s),X(t)\}.
+$$
+
+Then
+
+$$
+C(s,t)=\sigma(s)\sigma(t)\rho(s,t).
+$$
+
+## The Main Idea
+
+Estimate the location and marginal scale nonparametrically.
+
+Estimate correlation semiparametrically:
+
+$$
+\widehat C(s,t)
+= \widehat\sigma(s)\widehat\sigma(t)\widehat\rho(s,t).
+$$
+
+The scale functions absorb one-dimensional nonstationarity.
+
+The correlation surface is constrained only through interpretable,
+positive-definite correlation families.
+
+## Why This Is Useful
+
+This decomposition turns a difficult surface estimation problem into:
+
+  1. two one-dimensional nonparametric regressions;
+  2. one correlation-family fitting problem;
+  3. a model-averaging problem over candidate correlation families.
+
+The computational burden is closer to parametric fitting than to unrestricted
+two-dimensional smoothing.
+
+## A Statistical Compromise
+
+Fully parametric covariance:
+
+$$
+C_\theta(s,t)
+$$
+
+can be too rigid.
+
+Fully nonparametric covariance:
+
+$$
+\widehat C_{\mathrm{np}}(s,t)
+$$
+
+can be too variable under sparse designs.
+
+The proposed estimator lives between these two extremes.
+
+## Relation To Sparse FDA
+
+The sparse FDA setting follows the measurement-error and random-design
+framework used in the PACE literature [@Yao2005Sparse].
+
+Our contribution is not curve recovery itself.
+
+The focus is covariance estimation when one wants:
+
+- interpretable correlation structure,
+- flexible marginal variance,
+- low computational cost,
+- a route for model averaging.
+
+# Nonparametric Mean and Variance
+
+## Mean Estimation
+
+The mean is estimated from pooled observations:
+
+$$
+\widehat\mu(t)
+=\sum_{k=0}^{K}\widehat b_k \phi_k(t),
+$$
+
+where the basis is selected and truncated from the pooled sample.
+
+The series step is one-dimensional and computationally inexpensive.
+
+## Variance Estimation
+
+After estimating the mean, latent marginal variance is estimated from squared
+centered responses:
+
+$$
+V_{ij}
+=\{Y_{ij}-\widehat\mu(T_{ij})\}^2.
+$$
+
+The target is
+
+$$
+E(V_{ij}\mid T_{ij}=t)
+\approx \sigma^2(t)+\sigma_\varepsilon^2 .
+$$
+
+Subtracting a noise-variance estimate gives the latent variance estimate.
+
+## Noise Variance
+
+The noise variance is estimated using very local within-subject contrasts.
+
+The operational rule is deliberately simple:
+
+$$
+k_n \asymp \log(n_{\mathrm{pooled}}).
+$$
+
+This exploits near-neighbor pairs while keeping the estimator computationally
+light.
+
+## Efromovich Cosine Series
+
+Efromovich's cosine-series approach is attractive because the cosine basis is
+orthonormal on $[0,1]$ and supports thresholding rules [@efromovich1999].
+
+For $k\geq 0$,
+
+$$
+\phi_k(t)=
+\begin{cases}
+1, & k=0,\\
+\sqrt{2}\cos(k\pi t), & k\geq 1 .
+\end{cases}
+$$
+
+This basis is stable, fast, and surprisingly competitive in finite samples.
+
+## The Boundary Issue
+
+The cosine basis imposes
+
+$$
+\phi_k'(0)=\phi_k'(1)=0 .
+$$
+
+Any finite cosine expansion therefore has zero derivative at both endpoints.
+
+That can be helpful when it is true.
+
+It is restrictive when the mean or variance has genuine endpoint slope.
+
+## Efromovich's Remedy
+
+Efromovich discusses polynomial correction as a way to handle boundary
+incompatibility [@efromovich1999, ch. 2].
+
+The basic idea is:
+
+1. represent low-order endpoint behavior with polynomial terms;
+2. let the cosine tail estimate the remaining smooth component.
+
+This preserves the spirit of the cosine estimator while relaxing the endpoint
+constraint.
+
+## Orthonormality Matters
+
+Adding polynomial columns directly breaks the simple orthonormal structure that
+motivates thresholded series estimation.
+
+The remedy used here is to orthonormalize the finite set of boundary columns and
+cosine columns.
+
+Numerically, this is done with a QR/Gram-Schmidt construction
+[@bjorck2015].
+
+## Boundary-Corrected Basis
+
+For a quadratic correction, start from
+
+$$
+\{1,\; t,\; t^2,\; \sqrt{2}\cos(\pi t),\ldots,
+  \sqrt{2}\cos(L\pi t)\}.
+$$
+
+Then construct an orthonormal basis spanning the same finite space.
+
+Linear correction allows a common endpoint slope.
+
+Quadratic correction allows independent endpoint slopes.
+
+## Why This Is Honest
+
+The uncorrected cosine estimator is not naive.
+
+It is a strong estimator when endpoint slopes are truly zero and is closely
+related to modified Fourier ideas for nonperiodic functions.
+
+Boundary correction is chosen because it avoids forcing zero derivatives at the
+endpoints.
+
+The price can be variance.
+
+## Bias-Variance Tradeoff
+
+In finite samples, boundary correction can increase integrated RMSE even while
+removing a visible endpoint distortion.
+
+This is not a contradiction.
+
+It is the familiar statistical tradeoff:
+
+$$
+\operatorname{MSE}(t)
+= \operatorname{Bias}^2(t)+\operatorname{Var}(t).
+$$
+
+::: {.notes}
+This wording mirrors the current manuscript stance: default boundary correction
+is a defensible choice because it does not build in the zero-derivative prior.
+:::
+
+# Correlation Families
+
+## Why Correlation Families?
+
+Once $\sigma(t)$ is estimated, the remaining object is a correlation surface.
+
+Correlation families encode shape:
+
+- smoothness,
+- local roughness,
+- bridge-like behavior,
+- varying scale,
+- long-range decay.
+
+They also help maintain positive-definite structure.
+
+## Candidate Family Menu
+
+The current candidate set includes:
+
+| Family | Role |
+|---|---|
+| Matern | stationary smoothness and range |
+| mfBm-shaped | nonstationary local roughness |
+| Brownian bridge | tied-down covariance behavior |
+| Rational quadratic | scale mixtures |
+| Gibbs | spatially varying length-scale |
+| Generalized Cauchy | long-range dependence |
+| Generalized Wendland | compact support |
+
+## Correlation Family Provenance
+
+Examples include:
+
+- Matern [@Matern1986]
+- fractional Brownian motion [@MandelbrotVanNess1968]
+- multifractional Brownian motion [@PeltierLevyVehel1995]
+- Brownian bridge [@Doob1949]
+- Gaussian-process families [@RasmussenWilliams2006; @Gibbs1997]
+- generalized Cauchy [@LimTeo2009GeneralizedCauchy]
+- generalized Wendland [@Wendland2005; @Bevilacqua2019GeneralizedWendland]
+
+## Off-Diagonal Fitting
+
+For subject $i$, form centered products
+
+$$
+Z_{ijk}
+=\{Y_{ij}-\widehat\mu(T_{ij})\}
+  \{Y_{ik}-\widehat\mu(T_{ik})\},
+\qquad j\neq k.
+$$
+
+The off-diagonal avoids direct contamination by measurement error.
+
+Candidate correlations are fit to standardized products.
+
+## Model Averaging
+
+Instead of selecting one correlation family, compute weights
+
+$$
+\widehat\alpha
+=\arg\min_{\alpha\in\Delta}
+\left\|
+\widehat R-\sum_{\ell=1}^L \alpha_\ell R_\ell
+\right\|^2,
+$$
+
+where $\Delta$ is the simplex.
+
+This follows the spirit of focused/model-averaging ideas
+[@CLAESKENS_HJORT:2011].
+
+## Why Average?
+
+Hard selection is brittle when families are close.
+
+Model averaging allows:
+
+- dominant weight on a good family,
+- insurance when two families explain different regions,
+- interpretable diagnostics via $\widehat\alpha$.
+
+The averaging weights are part of the inferential output.
+
+# Parametric and Nonparametric Benchmarks
+
+## Fully Parametric Benchmark
+
+The fully parametric benchmark estimates:
+
+$$
+\mu_\eta(t),\qquad
+\sigma^2_\gamma(t),\qquad
+\rho_\theta(s,t).
+$$
+
+This is stable and fast when the structure is right.
+
+It can be misleading when location, scale, or correlation is misspecified.
+
+## Fully Nonparametric Benchmark
+
+The nonparametric covariance benchmark estimates the surface directly:
+
+$$
+C(s,t).
+$$
+
+This is flexible, but the tensor problem is data-hungry under sparse sampling.
+
+It is a useful competitor and a useful diagnostic.
+
+## Combined-Test Diagnostic
+
+The manuscript also compares convex combinations such as
+
+$$
+\lambda\widehat C_{\mathrm{param}}
++(1-\lambda)\widehat C_{\mathrm{sp}}.
+$$
+
+If the optimum places weight near one estimator, that is informative.
+
+If it mixes, that is also informative.
+
+# Finite-Sample Evidence
+
+## Simulation Design
+
+The revised simulation design emphasizes:
+
+- beta-mixture observation times;
+- sparse within-subject sampling;
+- non-Neumann mean and variance functions;
+- seven correlation DGPs in the peer comparison;
+- 1000 replications for final tables.
+
+This is intentionally harder than a uniform-design, zero-endpoint-slope setting.
+
+## Table 1-4 Style Evidence
+
+The first block compares the proposed estimator with parametric and
+nonparametric competitors across core correlation DGPs.
+
+The key object is covariance RMSE:
+
+$$
+\operatorname{RMSE}
+= \sqrt{1000\,\operatorname{MSE}}.
+$$
+
+Relative RMSE is reported against the relevant baseline.
+
+## What The Evidence Is Designed To Show
+
+The semiparametric estimator should be strong when:
+
+1. marginal location and scale are not parametric;
+2. the correlation surface resembles one or more candidate families;
+3. direct tensor smoothing has too little information.
+
+The benchmark is not designed to make one estimator win everywhere.
+
+## Peer Comparison
+
+The peer comparison places the proposed estimator against available R
+implementations for sparse functional covariance estimation.
+
+The point is practical:
+
+- what happens with the same data-generating designs?
+- which methods return complete estimates?
+- how do RMSE and rankings change across DGPs?
+
+## Averaging Weights
+
+The $\widehat\alpha$ weights are diagnostic, not just computational detail.
+
+They indicate which correlation families explain the simulated or empirical
+surface.
+
+The manuscript tables report both:
+
+- weights across DGPs;
+- weights when the generating family is removed.
+
+## Reading The Simulation Tables
+
+The table sequence mirrors the manuscript:
+
+1. overall RMSE and relative RMSE;
+2. DGP-specific RMSE;
+3. model-averaging weights;
+4. leave-family-out weights;
+5. peer comparison and rankings.
+
+::: {.notes}
+When the final results are frozen, this section can import selected manuscript
+tables or static table images. For now the slides give the narrative structure.
+:::
+
+# CD4 Application
+
+## Data Motivation
+
+The CD4 example is a canonical sparse longitudinal FDA setting.
+
+The observed trajectories are irregular and noisy.
+
+A covariance estimator must separate:
+
+- population mean trajectory,
+- marginal variance over time,
+- within-subject correlation,
+- measurement noise.
+
+## Parametric Benchmark In The Application
+
+A simple parametric benchmark is feasible and interpretable.
+
+But it imposes strong structure:
+
+- linear mean;
+- constant latent variance;
+- Gaussian-shaped stationary covariance ridge;
+- no sharp separation of latent variation and measurement error.
+
+## Location and Scale
+
+![](figures/cd4-location.png){fig-align="center" width="90%"}
+
+## Covariance Surfaces
+
+![](figures/cd4-covariance.png){fig-align="center" width="90%"}
+
+## CD4 Interpretation
+
+The application illustrates why boundary behavior matters in practice.
+
+Uncorrected cosine stages can visibly deform endpoint behavior by imposing zero
+derivatives.
+
+Boundary-corrected stages avoid that prior restriction and support sensitivity
+analysis across plausible choices.
+
+## Sensitivity Is A Feature
+
+No boundary rule is uniformly best.
+
+The practical recommendation is to examine sensitivity across:
+
+- uncorrected cosine,
+- linear boundary correction,
+- quadratic boundary correction,
+- empirical QR alternatives.
+
+The default should be defensible, not magical.
+
+# Summary
+
+## Main Points
+
+The proposed estimator:
+
+- decomposes covariance into scale and correlation;
+- estimates location and scale nonparametrically;
+- fits interpretable correlation families;
+- uses model averaging rather than hard family selection;
+- remains computationally attractive for sparse FDA;
+- avoids imposing zero endpoint derivatives by default.
+
+## What Is Coming Next
+
+The current manuscript is intentionally ahead of the completed proof section.
+
+The theory will formalize:
+
+- consistency of the staged estimator;
+- behavior of the nonparametric mean and variance stages;
+- correlation-family fitting;
+- model-averaging behavior;
+- comparison with parametric and nonparametric benchmarks.
+
+## Closing Thought
+
+Sparse covariance estimation is a setting where structure helps.
+
+The goal is not to choose between parametric and nonparametric estimation.
+
+The goal is to put structure where it is useful, keep flexibility where it is
+needed, and make the resulting estimator practical.
+
+# Backup Slides
+
+## Backup: Observation Model
+
+For independent subjects $i=1,\ldots,n$,
+
+$$
+Y_{ij}=X_i(T_{ij})+\varepsilon_{ij},
+\qquad j=1,\ldots,m_i.
+$$
+
+Assume
+
+$$
+E(\varepsilon_{ij})=0,\qquad
+\operatorname{var}(\varepsilon_{ij})=\sigma_\varepsilon^2,
+$$
+
+with measurement error independent of the latent process and design.
+
+## Backup: Standardized Products
+
+Define
+
+$$
+\widehat U_{ijk}
+=
+\frac{
+\{Y_{ij}-\widehat\mu(T_{ij})\}
+\{Y_{ik}-\widehat\mu(T_{ik})\}
+}{
+\widehat\sigma(T_{ij})\widehat\sigma(T_{ik})
+},
+\qquad j\neq k.
+$$
+
+Then fit candidate correlations to $\widehat U_{ijk}$.
+
+## Backup: Correlation Fit
+
+For family $\ell$ with parameter $\theta_\ell$:
+
+$$
+\widehat\theta_\ell
+=
+\arg\min_{\theta_\ell}
+\sum_{i}\sum_{j\neq k}
+w_{ijk}
+\left\{
+\widehat U_{ijk}
+-\rho_\ell(T_{ij},T_{ik};\theta_\ell)
+\right\}^2 .
+$$
+
+Weights can encode design, trimming, or numerical safeguards.
+
+## Backup: Simplex Averaging
+
+Let $\widehat R_\ell$ denote the fitted correlation matrix or grid surface for
+candidate family $\ell$.
+
+The averaged correlation is
+
+$$
+\widehat R_\alpha
+=\sum_{\ell=1}^{L}\widehat\alpha_\ell\widehat R_\ell,
+\qquad
+\widehat\alpha\in\Delta_L.
+$$
+
+## Backup: Boundary-Corrected Linear Span
+
+Linear correction starts from
+
+$$
+\{1,\;t,\;\sqrt{2}\cos(\pi t),\ldots,\sqrt{2}\cos(L\pi t)\}.
+$$
+
+Because $t'(0)=t'(1)=1$, this permits a common endpoint derivative.
+
+## Backup: Boundary-Corrected Quadratic Span
+
+Quadratic correction starts from
+
+$$
+\{1,\;t,\;t^2,\;\sqrt{2}\cos(\pi t),\ldots,\sqrt{2}\cos(L\pi t)\}.
+$$
+
+Since $t'(0)=1$, $t'(1)=1$, $2t|_{t=0}=0$, and $2t|_{t=1}=2$,
+the two endpoint derivatives can differ.
+
+## Backup: QR Construction
+
+Let $B$ be the evaluated design matrix for the finite span.
+
+Compute
+
+$$
+B = QR,
+$$
+
+where the columns of $Q$ are orthonormal in the empirical inner product.
+
+The fitted values are obtained by projecting onto selected columns of $Q$.
+
+## Backup: Why Smooth Thresholding Still Fits
+
+The fixed orthonormal finite-span construction preserves the series-estimation
+logic used by the cosine estimator.
+
+For the Gram-Schmidt boundary basis, the same smoothed thresholding ideas can be
+used because the basis remains orthonormal after construction.
+
+Empirical QR variants require cross-validation because the orthonormalization is
+sample-design dependent.
+
+## Backup: No One Boundary Rule Wins Everywhere
+
+Endpoint correction is a bias-correction problem.
+
+If the true function has zero endpoint slopes, uncorrected cosine can be ideal.
+
+If the true function has nonzero endpoint slopes, uncorrected cosine can be
+structurally biased at the boundary.
+
+The applied answer is sensitivity analysis plus a defensible default.
+
+# References {.scrollable}
+
+::: {#refs}
+:::
