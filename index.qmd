@@ -471,24 +471,6 @@ is a defensible choice because it does not build in the zero-derivative prior.
 
 :::
 
-## Candidate Family Menu
-
-::: nonincremental
-
-The current candidate set includes:
-
-| Family | Role |
-|---|---|
-| Matern | stationary smoothness and range |
-| mfBm-shaped | nonstationary local roughness |
-| Brownian bridge | tied-down covariance behavior |
-| Rational quadratic | scale mixtures |
-| Gibbs | spatially varying length-scale |
-| Generalized Cauchy | long-range dependence |
-| Generalized Wendland | compact support |
-
-:::
-
 ::: {.content-hidden when-profile="short"}
 ## Correlation Family Provenance
 
@@ -501,6 +483,26 @@ The current candidate set includes:
     - Gaussian-process families [@RasmussenWilliams2006; @Gibbs1997]
     - generalized Cauchy [@LimTeo2009GeneralizedCauchy]
     - generalized Wendland [@Wendland2005; @Bevilacqua2019GeneralizedWendland]
+
+:::
+
+## Parametric Correlation Families {.smaller}
+
+::: nonincremental
+
+The library is deliberately heterogeneous; averaging is over shapes, not just
+over parameter values.
+
+| Family | Source | Main feature |
+|---|---|---|
+| Matérn | @Matern1986 | stationary range and smoothness benchmark |
+| fBm | @MandelbrotVanNess1968 | self-similar roughness |
+| mfBm | @PeltierLevyVehel1995 | time-varying roughness |
+| Brownian bridge | @Doob1949 | endpoint-constrained nonstationarity |
+| Rational quadratic | @RasmussenWilliams2006 | scale mixtures of local ranges |
+| Gibbs | @Gibbs1997; @RasmussenWilliams2006 | time-varying local length scale |
+| Generalized Cauchy | @LimTeo2009GeneralizedCauchy | separates local behavior and tail decay |
+| Generalized Wendland | @Wendland2005; @Bevilacqua2019GeneralizedWendland | compact support with smoothness control |
 
 :::
 
@@ -996,6 +998,39 @@ bc_alpha_tables <- build_peer_alpha_tables("../Work_bcgs2_peer_beta_mc")
 
 :::
 
+## Peer Estimators In The Simulation {.smaller}
+
+::: nonincremental
+
+The peer comparison uses available R implementations where possible; the table
+labels refer to the implemented estimators.
+
+| Label | Source / implementation | Core strategy | Main contrast with SP |
+|---|---|---|---|
+| SP | proposed `spcovar` | boundary-corrected margins, parametric correlation library, convex averaging | low-dimensional bivariate structure |
+| SP-OMIT | proposed sensitivity fit | SP with the true DGP family removed | robustness check, not an external peer |
+| NP | proposed `npcovar` | tensor cosine covariance with data-driven tuning | flexible surface, less structure |
+| PACE | `fdapace::FPCA()` [@Yao2005Sparse; @fdapacePackage2024] | sparse FPCA via smoothed covariance and conditional scores | dimension reduction rather than correlation averaging |
+| FACE | `face::face.sparse()` [@Xiao2018SparseFACE; @facePackage2025] | fast penalized-spline covariance smoothing | direct covariance smoothing |
+| RKHS | `rkhscovfun::rkhscov.cv()` [@WongZhang2019; @rkhscovfunPackage2018] | positive semidefinite RKHS covariance regularization | flexible PSD nonparametric covariance |
+| mcfda-F | `mcfda` Fourier route [@linwang2022; @mcfdaPackage] | Fourier mean and covariance estimation | Fourier covariance route |
+| mcfda-SP | `mcfda` SP route [@linwang2022; @mcfdaPackage] | semiparametric covariance route in `mcfda` | external SP-like implementation |
+
+:::
+
+::: {.notes}
+Exact campaign calls:
+
+- `SP`: `spcovar(..., mean_basis = "cosine_bc_gs2", var_basis = "cosine_bc_gs2", mean_lag_method = "smoothed", var_lag_method = "smoothed")`.
+- `SP-OMIT`: same call with `fit_families = campaign_drop_own_family(dgp_key)`.
+- `NP`: `npcovar(..., nomad = TRUE, covariance_basis = "cosine_bc_gs2", standardize = TRUE)`.
+- `PACE`: `fdapace::FPCA(..., dataType = "Sparse", error = TRUE, methodXi = "CE", maxK = 5, methodSelectK = "FVE", FVEthreshold = 0.99)`.
+- `FACE`: `face::face.sparse(..., calculate.scores = FALSE, search.length = 8)`.
+- `RKHS`: `rkhscovfun::rkhscov.cv(..., nfold = 3, pos = TRUE, control.cv = list(nlam = 6, gams = 1))`.
+- `mcfda-F`: `mcfda::meanfunc(..., method = "FOURIER", tuning = "cv")` followed by `mcfda::covfunc(..., method = "FOURIER", tuning = "lle")`.
+- `mcfda-SP`: `mcfda::covfunc(..., method = "SP", weig = NULL)`.
+:::
+
 ## Peer Comparison Ratios: Bias Corrected {.table-slide}
 
 ::: nonincremental
@@ -1286,8 +1321,15 @@ for (i in seq_len(nrow(cd4))) {
   Ly[[i]] <- as.numeric(cd4[i, ok])
 }
 
-fit_cd4_sp <- spcovar(Lt, Ly)
-fit_cd4_np <- npcovar(Lt, Ly)
+fit_cd4_sp <- spcovar(Lt, Ly ,
+                      mean_basis = "cosine_bc_gs2",
+                      var_basis = "cosine_bc_gs2")
+fit_cd4_np <- npcovar(Lt, Ly,
+                      nomad = TRUE,
+                      standardize = TRUE,
+                      mean_basis = "cosine_bc_gs2",
+                      var_basis = "cosine_bc_gs2",
+                      covariance_basis = "cosine_bc_gs2")
 ```
 
 ## Default Semiparametric Fit
@@ -1448,7 +1490,12 @@ for (i in seq_len(nrow(cd4))) {
 
 ## Estimate the mean, standard deviation, and covariance surface using spcovar.
 
-fit_cd4_sp <- spcovar(Lt, Ly)
+fit_cd4_sp <- spcovar(
+  Lt = Lt,
+  Ly = Ly,
+  mean_basis = "cosine_bc_gs2",
+  var_basis = "cosine_bc_gs2"
+)
 
 ## Plot the mean, standard deviation, and covariance surface estimates.
 
@@ -1461,7 +1508,15 @@ plot(fit_cd4_sp, view = "rgl")
 ## Estimate the mean, standard deviation, and fully nonparametric covariance
 ## surface using npcovar.
 
-fit_cd4_np <- npcovar(Lt, Ly)
+fit_cd4_np <- npcovar(
+  Lt = Lt,
+  Ly = Ly,
+  nomad = TRUE,
+  standardize = TRUE,
+  mean_basis = "cosine_bc_gs2",
+  var_basis = "cosine_bc_gs2",
+  covariance_basis = "cosine_bc_gs2"
+)
 
 ## Plot the mean, standard deviation, and covariance surface estimates.
 

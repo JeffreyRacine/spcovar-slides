@@ -12,7 +12,7 @@
   <meta name="author" content="Valentin Patilea^\dagger">
   <meta name="author" content="Jeffrey S. Racine^\ddagger">
   <meta name="dcterms.date" content="2026-06-24">
-  <title>quarto-input9ad0afc32d2d10e5</title>
+  <title>quarto-input6f8981296bdd0e27</title>
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, minimal-ui">
@@ -609,48 +609,6 @@ k_{nn} \asymp \log n,
 <li class="fragment"><p>They also help maintain positive-definite structure.</p></li>
 </ul>
 </section>
-<section id="candidate-family-menu" class="slide level2 center">
-<h2>Candidate Family Menu</h2>
-<p>The current candidate set includes:</p>
-<table class="caption-top">
-<thead>
-<tr class="header">
-<th>Family</th>
-<th>Role</th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td>Matern</td>
-<td>stationary smoothness and range</td>
-</tr>
-<tr class="even">
-<td>mfBm-shaped</td>
-<td>nonstationary local roughness</td>
-</tr>
-<tr class="odd">
-<td>Brownian bridge</td>
-<td>tied-down covariance behavior</td>
-</tr>
-<tr class="even">
-<td>Rational quadratic</td>
-<td>scale mixtures</td>
-</tr>
-<tr class="odd">
-<td>Gibbs</td>
-<td>spatially varying length-scale</td>
-</tr>
-<tr class="even">
-<td>Generalized Cauchy</td>
-<td>long-range dependence</td>
-</tr>
-<tr class="odd">
-<td>Generalized Wendland</td>
-<td>compact support</td>
-</tr>
-</tbody>
-</table>
-</section>
 <section id="correlation-family-provenance" class="slide level2 center">
 <h2>Correlation Family Provenance</h2>
 <ul>
@@ -665,6 +623,66 @@ k_{nn} \asymp \log n,
 <li class="fragment">generalized Wendland <span class="citation" data-cites="Wendland2005 Bevilacqua2019GeneralizedWendland">(<a href="#/references" role="doc-biblioref" onclick="">Wendland 2005</a>; <a href="#/references" role="doc-biblioref" onclick="">Bevilacqua et al. 2019</a>)</span></li>
 </ul></li>
 </ul>
+</section>
+<section id="parametric-correlation-families" class="slide level2 smaller center">
+<h2>Parametric Correlation Families</h2>
+<p>The library is deliberately heterogeneous; averaging is over shapes, not just over parameter values.</p>
+<table class="caption-top">
+<colgroup>
+<col style="width: 33%">
+<col style="width: 33%">
+<col style="width: 33%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>Family</th>
+<th>Source</th>
+<th>Main feature</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Matérn</td>
+<td><span class="citation" data-cites="Matern1986">Matérn (<a href="#/references" role="doc-biblioref" onclick="">1986</a>)</span></td>
+<td>stationary range and smoothness benchmark</td>
+</tr>
+<tr class="even">
+<td>fBm</td>
+<td><span class="citation" data-cites="MandelbrotVanNess1968">Mandelbrot and Van Ness (<a href="#/references" role="doc-biblioref" onclick="">1968</a>)</span></td>
+<td>self-similar roughness</td>
+</tr>
+<tr class="odd">
+<td>mfBm</td>
+<td><span class="citation" data-cites="PeltierLevyVehel1995">Peltier and Lévy Véhel (<a href="#/references" role="doc-biblioref" onclick="">1995</a>)</span></td>
+<td>time-varying roughness</td>
+</tr>
+<tr class="even">
+<td>Brownian bridge</td>
+<td><span class="citation" data-cites="Doob1949">Doob (<a href="#/references" role="doc-biblioref" onclick="">1949</a>)</span></td>
+<td>endpoint-constrained nonstationarity</td>
+</tr>
+<tr class="odd">
+<td>Rational quadratic</td>
+<td><span class="citation" data-cites="RasmussenWilliams2006">Rasmussen and Williams (<a href="#/references" role="doc-biblioref" onclick="">2006</a>)</span></td>
+<td>scale mixtures of local ranges</td>
+</tr>
+<tr class="even">
+<td>Gibbs</td>
+<td><span class="citation" data-cites="Gibbs1997">Gibbs (<a href="#/references" role="doc-biblioref" onclick="">1997</a>)</span>; <span class="citation" data-cites="RasmussenWilliams2006">Rasmussen and Williams (<a href="#/references" role="doc-biblioref" onclick="">2006</a>)</span></td>
+<td>time-varying local length scale</td>
+</tr>
+<tr class="odd">
+<td>Generalized Cauchy</td>
+<td><span class="citation" data-cites="LimTeo2009GeneralizedCauchy">Lim and Teo (<a href="#/references" role="doc-biblioref" onclick="">2009</a>)</span></td>
+<td>separates local behavior and tail decay</td>
+</tr>
+<tr class="even">
+<td>Generalized Wendland</td>
+<td><span class="citation" data-cites="Wendland2005">Wendland (<a href="#/references" role="doc-biblioref" onclick="">2005</a>)</span>; <span class="citation" data-cites="Bevilacqua2019GeneralizedWendland">Bevilacqua et al. (<a href="#/references" role="doc-biblioref" onclick="">2019</a>)</span></td>
+<td>compact support with smoothness control</td>
+</tr>
+</tbody>
+</table>
 </section>
 <section id="off-diagonal-fitting" class="slide level2 center">
 <h2>Off-Diagonal Fitting</h2>
@@ -788,6 +806,99 @@ C(s,t).
 <li class="fragment">how do MSE ratios and rankings change across DGPs?</li>
 </ul></li>
 </ul>
+</section>
+<section id="peer-estimators-in-the-simulation" class="slide level2 smaller center">
+<h2>Peer Estimators In The Simulation</h2>
+<p>The peer comparison uses available R implementations where possible; the table labels refer to the implemented estimators.</p>
+<table class="caption-top">
+<colgroup>
+<col style="width: 25%">
+<col style="width: 25%">
+<col style="width: 25%">
+<col style="width: 25%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>Label</th>
+<th>Source / implementation</th>
+<th>Core strategy</th>
+<th>Main contrast with SP</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>SP</td>
+<td>proposed <code>spcovar</code></td>
+<td>boundary-corrected margins, parametric correlation library, convex averaging</td>
+<td>low-dimensional bivariate structure</td>
+</tr>
+<tr class="even">
+<td>SP-OMIT</td>
+<td>proposed sensitivity fit</td>
+<td>SP with the true DGP family removed</td>
+<td>robustness check, not an external peer</td>
+</tr>
+<tr class="odd">
+<td>NP</td>
+<td>proposed <code>npcovar</code></td>
+<td>tensor cosine covariance with data-driven tuning</td>
+<td>flexible surface, less structure</td>
+</tr>
+<tr class="even">
+<td>PACE</td>
+<td><code>fdapace::FPCA()</code> <span class="citation" data-cites="Yao2005Sparse fdapacePackage2024">(<a href="#/references" role="doc-biblioref" onclick="">Yao et al. 2005</a>; <a href="#/references" role="doc-biblioref" onclick="">Zhou et al. 2024</a>)</span></td>
+<td>sparse FPCA via smoothed covariance and conditional scores</td>
+<td>dimension reduction rather than correlation averaging</td>
+</tr>
+<tr class="odd">
+<td>FACE</td>
+<td><code>face::face.sparse()</code> <span class="citation" data-cites="Xiao2018SparseFACE facePackage2025">(<a href="#/references" role="doc-biblioref" onclick="">Xiao et al. 2018</a>; <a href="#/references" role="doc-biblioref" onclick="">Li et al. 2025</a>)</span></td>
+<td>fast penalized-spline covariance smoothing</td>
+<td>direct covariance smoothing</td>
+</tr>
+<tr class="even">
+<td>RKHS</td>
+<td><code>rkhscovfun::rkhscov.cv()</code> <span class="citation" data-cites="WongZhang2019 rkhscovfunPackage2018">(<a href="#/references" role="doc-biblioref" onclick="">Wong and Zhang 2019</a>; <a href="#/references" role="doc-biblioref" onclick="">Wong and Zhang 2018</a>)</span></td>
+<td>positive semidefinite RKHS covariance regularization</td>
+<td>flexible PSD nonparametric covariance</td>
+</tr>
+<tr class="odd">
+<td>mcfda-F</td>
+<td><code>mcfda</code> Fourier route <span class="citation" data-cites="linwang2022 mcfdaPackage">(<a href="#/references" role="doc-biblioref" onclick="">Lin and Wang 2022</a>; <a href="#/references" role="doc-biblioref" onclick="">Lin, n.d.</a>)</span></td>
+<td>Fourier mean and covariance estimation</td>
+<td>Fourier covariance route</td>
+</tr>
+<tr class="even">
+<td>mcfda-SP</td>
+<td><code>mcfda</code> SP route <span class="citation" data-cites="linwang2022 mcfdaPackage">(<a href="#/references" role="doc-biblioref" onclick="">Lin and Wang 2022</a>; <a href="#/references" role="doc-biblioref" onclick="">Lin, n.d.</a>)</span></td>
+<td>semiparametric covariance route in <code>mcfda</code></td>
+<td>external SP-like implementation</td>
+</tr>
+</tbody>
+</table>
+<aside class="notes">
+<p>Exact campaign calls:</p>
+<ul>
+<li><code>SP</code>: <code>spcovar(..., mean_basis = "cosine_bc_gs2", var_basis = "cosine_bc_gs2", mean_lag_method = "smoothed", var_lag_method = "smoothed")</code>.</li>
+<li><code>SP-OMIT</code>: same call with <code>fit_families = campaign_drop_own_family(dgp_key)</code>.</li>
+<li><code>NP</code>: <code>npcovar(..., nomad = TRUE, covariance_basis = "cosine_bc_gs2", standardize = TRUE)</code>.</li>
+<li><code>PACE</code>: <code>fdapace::FPCA(..., dataType = "Sparse", error = TRUE, methodXi = "CE", maxK = 5, methodSelectK = "FVE", FVEthreshold = 0.99)</code>.</li>
+<li><code>FACE</code>: <code>face::face.sparse(..., calculate.scores = FALSE, search.length = 8)</code>.</li>
+<li><code>RKHS</code>: <code>rkhscovfun::rkhscov.cv(..., nfold = 3, pos = TRUE, control.cv = list(nlam = 6, gams = 1))</code>.</li>
+<li><code>mcfda-F</code>: <code>mcfda::meanfunc(..., method = "FOURIER", tuning = "cv")</code> followed by <code>mcfda::covfunc(..., method = "FOURIER", tuning = "lle")</code>.</li>
+<li><code>mcfda-SP</code>: <code>mcfda::covfunc(..., method = "SP", weig = NULL)</code>.</li>
+</ul>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
 </section>
 <section id="peer-comparison-ratios-bias-corrected" class="slide level2 table-slide center">
 <h2>Peer Comparison Ratios: Bias Corrected</h2>
@@ -2634,29 +2745,42 @@ Figure&nbsp;6
 <span id="cb1-49"><a href=""></a></span>
 <span id="cb1-50"><a href=""></a><span class="do">## Estimate the mean, standard deviation, and covariance surface using spcovar.</span></span>
 <span id="cb1-51"><a href=""></a></span>
-<span id="cb1-52"><a href=""></a>fit_cd4_sp <span class="ot">&lt;-</span> <span class="fu">spcovar</span>(Lt, Ly)</span>
-<span id="cb1-53"><a href=""></a></span>
-<span id="cb1-54"><a href=""></a><span class="do">## Plot the mean, standard deviation, and covariance surface estimates.</span></span>
-<span id="cb1-55"><a href=""></a></span>
-<span id="cb1-56"><a href=""></a><span class="fu">plot</span>(fit_cd4_sp)</span>
-<span id="cb1-57"><a href=""></a></span>
-<span id="cb1-58"><a href=""></a><span class="do">## Plot the covariance surface estimate in an interactive rgl widget.</span></span>
-<span id="cb1-59"><a href=""></a></span>
-<span id="cb1-60"><a href=""></a><span class="fu">plot</span>(fit_cd4_sp, <span class="at">view =</span> <span class="st">"rgl"</span>)</span>
-<span id="cb1-61"><a href=""></a></span>
-<span id="cb1-62"><a href=""></a><span class="do">## Estimate the mean, standard deviation, and fully nonparametric covariance</span></span>
-<span id="cb1-63"><a href=""></a><span class="do">## surface using npcovar.</span></span>
+<span id="cb1-52"><a href=""></a>fit_cd4_sp <span class="ot">&lt;-</span> <span class="fu">spcovar</span>(</span>
+<span id="cb1-53"><a href=""></a>  <span class="at">Lt =</span> Lt,</span>
+<span id="cb1-54"><a href=""></a>  <span class="at">Ly =</span> Ly,</span>
+<span id="cb1-55"><a href=""></a>  <span class="at">mean_basis =</span> <span class="st">"cosine_bc_gs2"</span>,</span>
+<span id="cb1-56"><a href=""></a>  <span class="at">var_basis =</span> <span class="st">"cosine_bc_gs2"</span></span>
+<span id="cb1-57"><a href=""></a>)</span>
+<span id="cb1-58"><a href=""></a></span>
+<span id="cb1-59"><a href=""></a><span class="do">## Plot the mean, standard deviation, and covariance surface estimates.</span></span>
+<span id="cb1-60"><a href=""></a></span>
+<span id="cb1-61"><a href=""></a><span class="fu">plot</span>(fit_cd4_sp)</span>
+<span id="cb1-62"><a href=""></a></span>
+<span id="cb1-63"><a href=""></a><span class="do">## Plot the covariance surface estimate in an interactive rgl widget.</span></span>
 <span id="cb1-64"><a href=""></a></span>
-<span id="cb1-65"><a href=""></a>fit_cd4_np <span class="ot">&lt;-</span> <span class="fu">npcovar</span>(Lt, Ly)</span>
+<span id="cb1-65"><a href=""></a><span class="fu">plot</span>(fit_cd4_sp, <span class="at">view =</span> <span class="st">"rgl"</span>)</span>
 <span id="cb1-66"><a href=""></a></span>
-<span id="cb1-67"><a href=""></a><span class="do">## Plot the mean, standard deviation, and covariance surface estimates.</span></span>
-<span id="cb1-68"><a href=""></a></span>
-<span id="cb1-69"><a href=""></a><span class="fu">plot</span>(fit_cd4_np)</span>
-<span id="cb1-70"><a href=""></a></span>
-<span id="cb1-71"><a href=""></a><span class="do">## Plot the fully nonparametric covariance surface estimate in an interactive</span></span>
-<span id="cb1-72"><a href=""></a><span class="do">## rgl widget.</span></span>
-<span id="cb1-73"><a href=""></a></span>
-<span id="cb1-74"><a href=""></a><span class="fu">plot</span>(fit_cd4_np, <span class="at">view =</span> <span class="st">"rgl"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<span id="cb1-67"><a href=""></a><span class="do">## Estimate the mean, standard deviation, and fully nonparametric covariance</span></span>
+<span id="cb1-68"><a href=""></a><span class="do">## surface using npcovar.</span></span>
+<span id="cb1-69"><a href=""></a></span>
+<span id="cb1-70"><a href=""></a>fit_cd4_np <span class="ot">&lt;-</span> <span class="fu">npcovar</span>(</span>
+<span id="cb1-71"><a href=""></a>  <span class="at">Lt =</span> Lt,</span>
+<span id="cb1-72"><a href=""></a>  <span class="at">Ly =</span> Ly,</span>
+<span id="cb1-73"><a href=""></a>  <span class="at">nomad =</span> <span class="cn">TRUE</span>,</span>
+<span id="cb1-74"><a href=""></a>  <span class="at">standardize =</span> <span class="cn">TRUE</span>,</span>
+<span id="cb1-75"><a href=""></a>  <span class="at">mean_basis =</span> <span class="st">"cosine_bc_gs2"</span>,</span>
+<span id="cb1-76"><a href=""></a>  <span class="at">var_basis =</span> <span class="st">"cosine_bc_gs2"</span>,</span>
+<span id="cb1-77"><a href=""></a>  <span class="at">covariance_basis =</span> <span class="st">"cosine_bc_gs2"</span></span>
+<span id="cb1-78"><a href=""></a>)</span>
+<span id="cb1-79"><a href=""></a></span>
+<span id="cb1-80"><a href=""></a><span class="do">## Plot the mean, standard deviation, and covariance surface estimates.</span></span>
+<span id="cb1-81"><a href=""></a></span>
+<span id="cb1-82"><a href=""></a><span class="fu">plot</span>(fit_cd4_np)</span>
+<span id="cb1-83"><a href=""></a></span>
+<span id="cb1-84"><a href=""></a><span class="do">## Plot the fully nonparametric covariance surface estimate in an interactive</span></span>
+<span id="cb1-85"><a href=""></a><span class="do">## rgl widget.</span></span>
+<span id="cb1-86"><a href=""></a></span>
+<span id="cb1-87"><a href=""></a><span class="fu">plot</span>(fit_cd4_np, <span class="at">view =</span> <span class="st">"rgl"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 </section>
 <section id="cd4-interpretation" class="slide level2 center">
@@ -2858,8 +2982,17 @@ Gibbs, Mark N. 1997. <span>“Bayesian Gaussian Processes for Regression and Cla
 <div id="ref-refund2026" class="csl-entry" role="listitem">
 Goldsmith, Jeff, Fabian Scheipl, Lei Huang, et al. 2026. <em>Refund: Regression with Functional Data</em>. <a href="https://doi.org/10.32614/CRAN.package.refund">https://doi.org/10.32614/CRAN.package.refund</a>.
 </div>
+<div id="ref-facePackage2025" class="csl-entry" role="listitem">
+Li, Cai, Luo Xiao, William Checkley, and Ciprian Crainiceanu. 2025. <em>Face: Fast Covariance Estimation for Sparse Functional Data</em>. <a href="https://doi.org/10.32614/CRAN.package.face">https://doi.org/10.32614/CRAN.package.face</a>.
+</div>
 <div id="ref-LimTeo2009GeneralizedCauchy" class="csl-entry" role="listitem">
 Lim, S. C., and L. P. Teo. 2009. <span>“Gaussian Fields and Gaussian Sheets with Generalized Cauchy Covariance Structure.”</span> <em>Stochastic Processes and Their Applications</em> 119 (4): 1325–56. <a href="https://doi.org/10.1016/j.spa.2008.06.011">https://doi.org/10.1016/j.spa.2008.06.011</a>.
+</div>
+<div id="ref-mcfdaPackage" class="csl-entry" role="listitem">
+Lin, Zhenhua. n.d. <em>Mcfda: Mean and Covariance Estimation for Functional Data Analysis</em>.
+</div>
+<div id="ref-linwang2022" class="csl-entry" role="listitem">
+Lin, Zhenhua, and Jane-Ling Wang. 2022. <span>“Mean and Covariance Estimation for Functional Snippets.”</span> <em>Journal of the American Statistical Association</em> 117 (537): 348–60. <a href="https://doi.org/10.1080/01621459.2020.1777138">https://doi.org/10.1080/01621459.2020.1777138</a>.
 </div>
 <div id="ref-MandelbrotVanNess1968" class="csl-entry" role="listitem">
 Mandelbrot, Benoit B., and John W. Van Ness. 1968. <span>“Fractional <span>B</span>rownian Motions, Fractional Noises and Applications.”</span> <em>SIAM Review</em> 10 (4): 422–37. <a href="https://doi.org/10.1137/1010093">https://doi.org/10.1137/1010093</a>.
@@ -2876,8 +3009,20 @@ Rasmussen, Carl Edward, and Christopher K. I. Williams. 2006. <em>Gaussian Proce
 <div id="ref-Wendland2005" class="csl-entry" role="listitem">
 Wendland, Holger. 2005. <em>Scattered Data Approximation</em>. Vol. 17. Cambridge Monographs on Applied and Computational Mathematics. Cambridge University Press. <a href="https://doi.org/10.1017/CBO9780511617539">https://doi.org/10.1017/CBO9780511617539</a>.
 </div>
+<div id="ref-WongZhang2019" class="csl-entry" role="listitem">
+Wong, Raymond K. W., and Xiao Zhang. 2019. <span>“Nonparametric Operator-Regularized Covariance Function Estimation for Functional Data.”</span> <em>Computational Statistics &amp; Data Analysis</em> 131: 131–44. <a href="https://doi.org/10.1016/j.csda.2018.05.013">https://doi.org/10.1016/j.csda.2018.05.013</a>.
+</div>
+<div id="ref-rkhscovfunPackage2018" class="csl-entry" role="listitem">
+Wong, Raymond K. W., and Xiaoke Zhang. 2018. <em>Rkhscovfun: Nonparametric Operator-Regularized Covariance Function Estimation</em>. <a href="https://github.com/raymondkww/rkhscovfun">https://github.com/raymondkww/rkhscovfun</a>.
+</div>
+<div id="ref-Xiao2018SparseFACE" class="csl-entry" role="listitem">
+Xiao, Luo, Cai Li, William Checkley, and Ciprian Crainiceanu. 2018. <span>“Fast Covariance Estimation for Sparse Functional Data.”</span> <em>Statistics and Computing</em> 28: 511–22. <a href="https://doi.org/10.1007/s11222-017-9744-8">https://doi.org/10.1007/s11222-017-9744-8</a>.
+</div>
 <div id="ref-Yao2005Sparse" class="csl-entry" role="listitem">
 Yao, Fang, Hans-Georg Müller, and Jane-Ling Wang. 2005. <span>“Functional Data Analysis for Sparse Longitudinal Data.”</span> <em>Journal of the American Statistical Association</em> 100 (470): 577–90. <a href="https://doi.org/10.1198/016214504000001745">https://doi.org/10.1198/016214504000001745</a>.
+</div>
+<div id="ref-fdapacePackage2024" class="csl-entry" role="listitem">
+Zhou, Yidong, Han Chen, Su I. Iao, et al. 2024. <em>Fdapace: Functional Data Analysis and Empirical Dynamics</em>. <a href="https://CRAN.R-project.org/package=fdapace">https://CRAN.R-project.org/package=fdapace</a>.
 </div>
 </div>
 
