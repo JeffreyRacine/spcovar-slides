@@ -52,23 +52,25 @@ editor: source
 We propose a semiparametric covariance estimator for sparsely observed
 functional data.
 
-The estimator decomposes the covariance surface into nonparametric marginal
-scale functions and a structured correlation surface. The correlation component
-is fit over a menu of interpretable positive-definite families and then averaged
-using data-driven weights.
+The estimator decomposes the covariance surface into boundary-corrected
+nonparametric marginal scale functions and a structured correlation surface.
+The correlation component is fit over a menu of interpretable positive-definite
+families and then averaged using data-driven weights.
 
 The resulting estimator is computationally attractive, retains flexibility where
 the data are most informative, and provides a direct bridge between fully
-parametric and fully nonparametric sparse FDA covariance estimation.
+parametric and fully nonparametric sparse FDA covariance estimation. The talk
+also emphasizes the data-driven implementation and a CD4 application with
+static and interactive covariance-surface views.
 
 # Outline of Talk
 
 1. Sparse FDA covariance: what makes the problem hard
 2. A semiparametric decomposition
-3. Nonparametric mean and variance estimation
-4. Correlation families and model averaging
+3. Nonparametric mean and variance estimation with boundary correction
+4. Correlation families, model averaging, and implementation details
 5. Finite-sample evidence
-6. CD4 application
+6. CD4 application and live covariance-surface demo
 7. Summary and next steps
 
 ::: {.notes}
@@ -1116,8 +1118,8 @@ render_alpha_table(bc_alpha_tables$drop$`4N`)
 :::
 
 ::: {.notes}
-When the final results are frozen, this section can import selected manuscript
-tables or static table images. For now the slides give the narrative structure.
+The tables are generated from campaign summaries so they remain synchronized
+with the manuscript evidence.
 :::
 
 # CD4 Application
@@ -1304,6 +1306,7 @@ The proposed estimator:
 - estimates location and scale nonparametrically;
 - fits interpretable correlation families;
 - uses model averaging rather than hard family selection;
+- chooses the main tuning quantities from the data;
 - remains computationally attractive for sparse FDA;
 - avoids imposing zero endpoint derivatives by default.
 

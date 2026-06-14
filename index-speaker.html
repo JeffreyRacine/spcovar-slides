@@ -12,7 +12,7 @@
   <meta name="author" content="Valentin Patilea^\dagger">
   <meta name="author" content="Jeffrey S. Racine^\ddagger">
   <meta name="dcterms.date" content="2026-06-24">
-  <title>quarto-input1b677631405e303</title>
+  <title>quarto-inputc8bf7bb9654ee848</title>
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, minimal-ui">
@@ -250,8 +250,8 @@ Jeffrey S. Racine<span class="math inline">\(^\ddagger\)</span>
 <section id="abstract" class="title-slide slide level1 center">
 <h1>Abstract</h1>
 <p>We propose a semiparametric covariance estimator for sparsely observed functional data.</p>
-<p>The estimator decomposes the covariance surface into nonparametric marginal scale functions and a structured correlation surface. The correlation component is fit over a menu of interpretable positive-definite families and then averaged using data-driven weights.</p>
-<p>The resulting estimator is computationally attractive, retains flexibility where the data are most informative, and provides a direct bridge between fully parametric and fully nonparametric sparse FDA covariance estimation.</p>
+<p>The estimator decomposes the covariance surface into boundary-corrected nonparametric marginal scale functions and a structured correlation surface. The correlation component is fit over a menu of interpretable positive-definite families and then averaged using data-driven weights.</p>
+<p>The resulting estimator is computationally attractive, retains flexibility where the data are most informative, and provides a direct bridge between fully parametric and fully nonparametric sparse FDA covariance estimation. The talk also emphasizes the data-driven implementation and a CD4 application with static and interactive covariance-surface views.</p>
 </section>
 
 <section id="outline-of-talk" class="title-slide slide level1 center">
@@ -259,10 +259,10 @@ Jeffrey S. Racine<span class="math inline">\(^\ddagger\)</span>
 <ol type="1">
 <li>Sparse FDA covariance: what makes the problem hard</li>
 <li>A semiparametric decomposition</li>
-<li>Nonparametric mean and variance estimation</li>
-<li>Correlation families and model averaging</li>
+<li>Nonparametric mean and variance estimation with boundary correction</li>
+<li>Correlation families, model averaging, and implementation details</li>
 <li>Finite-sample evidence</li>
-<li>CD4 application</li>
+<li>CD4 application and live covariance-surface demo</li>
 <li>Summary and next steps</li>
 </ol>
 <aside class="notes">
@@ -2439,7 +2439,7 @@ C(s,t).
 </div>
 </div>
 <aside class="notes">
-<p>When the final results are frozen, this section can import selected manuscript tables or static table images. For now the slides give the narrative structure.</p>
+<p>The tables are generated from campaign summaries so they remain synchronized with the manuscript evidence.</p>
 <style type="text/css">
         span.MJX_Assistive_MathML {
           position:absolute!important;
@@ -2624,6 +2624,7 @@ C(s,t).
 <li>estimates location and scale nonparametrically;</li>
 <li>fits interpretable correlation families;</li>
 <li>uses model averaging rather than hard family selection;</li>
+<li>chooses the main tuning quantities from the data;</li>
 <li>remains computationally attractive for sparse FDA;</li>
 <li>avoids imposing zero endpoint derivatives by default.</li>
 </ul>
