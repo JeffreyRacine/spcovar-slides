@@ -527,6 +527,29 @@ Model averaging allows:
 
 The averaging weights are part of the inferential output.
 
+## Implementation Details {.smaller}
+
+The default fit is data-driven rather than hand-tuned.
+
+The main tuning choices are selected from the data:
+
+- noise variance $(\sigma_\varepsilon^2)$: nearest within-subject contrasts
+  with $k_{nn}\asymp \log n$;
+- mean and variance functions $(\mu(t),\sigma^2(t))$: projection coefficients
+  are estimated in an orthonormal boundary-corrected cosine-type basis; the
+  boundary columns are retained, and a smoothed Efromovich threshold selects
+  and shrinks the cosine tail;
+- nonparametric covariance benchmark $(C(s,t))$: tensor order $J$ and roughness
+  penalty $\lambda$ are selected jointly by curve-level cross-validation or by
+  a NOMAD search over $(J,\log_{10}\lambda)$;
+- correlation families $(\rho_\theta(s,t))$: low-dimensional parameters
+  $\theta$ are fit from off-diagonal products, avoiding direct
+  measurement-error contamination;
+- model averaging $(\widehat\alpha)$: simplex weights are chosen by the same
+  off-diagonal fitting criterion.
+
+The demo call `spcovar(Lt, Ly)` uses these defaults.
+
 # Parametric and Nonparametric Benchmarks
 
 ## Fully Parametric Benchmark
@@ -1179,6 +1202,89 @@ Heat maps and contours are a popular way to visualize covariance estimates.
 The same covariance estimates can be viewed as full surfaces.
 
 ![](figures/cd4-surface-rgl.png){fig-align="center" width="98%"}
+
+## Live rgl Demo Code using the R package `spcovar`
+
+```{r}
+#| echo: true
+#| eval: false
+#| label: fig-fexbwselcddens
+
+## The R package spcovar is installed from GitHub until it is available on CRAN.
+## The remotes package is the lightweight installer route.
+
+if (!requireNamespace("spcovar", quietly = TRUE)) {
+  if (!requireNamespace("remotes", quietly = TRUE)) {
+    install.packages("remotes")
+  }
+  remotes::install_github("JeffreyRacine/spcovar")
+}
+
+required_packages <- c("refund", "rgl")
+missing_packages <- required_packages[
+  !vapply(required_packages, requireNamespace, logical(1), quietly = TRUE)
+]
+
+if (length(missing_packages)) {
+  stop(
+    "Please install the required package(s): ",
+    paste(missing_packages, collapse = ", "),
+    call. = FALSE
+  )
+}
+
+## Load the spcovar package, which contains the proposed estimator and plotting
+## methods.
+
+library(spcovar)
+
+## Load the CD4 cell count data from the refund package.
+
+data(cd4, package = "refund")
+
+## The data are in a matrix with rows corresponding to subjects and columns
+## corresponding to time points.  We will convert the time points to the unit
+## interval and create lists of time points and observations for each subject,
+## which is the format required by spcovar.
+
+times <- as.numeric(colnames(cd4))
+times01 <- (times - min(times)) / diff(range(times))
+
+Lt <- vector("list", nrow(cd4))
+Ly <- vector("list", nrow(cd4))
+
+for (i in seq_len(nrow(cd4))) {
+  ok <- is.finite(cd4[i, ])
+  Lt[[i]] <- times01[ok]
+  Ly[[i]] <- as.numeric(cd4[i, ok])
+}
+
+## Estimate the mean, standard deviation, and covariance surface using spcovar.
+
+fit_cd4_sp <- spcovar(Lt, Ly)
+
+## Plot the mean, standard deviation, and covariance surface estimates.
+
+plot(fit_cd4_sp)
+
+## Plot the covariance surface estimate in an interactive rgl widget.
+
+plot(fit_cd4_sp, view = "rgl")
+
+## Estimate the mean, standard deviation, and fully nonparametric covariance
+## surface using npcovar.
+
+fit_cd4_np <- npcovar(Lt, Ly)
+
+## Plot the mean, standard deviation, and covariance surface estimates.
+
+plot(fit_cd4_np)
+
+## Plot the fully nonparametric covariance surface estimate in an interactive
+## rgl widget.
+
+plot(fit_cd4_np, view = "rgl")
+```
 
 ## CD4 Interpretation
 
