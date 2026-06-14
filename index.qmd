@@ -63,6 +63,7 @@ parametric and fully nonparametric sparse FDA covariance estimation. The talk
 also emphasizes the data-driven implementation and a CD4 application with
 static and interactive covariance-surface views.
 
+::: {.content-hidden when-profile="short"}
 # Outline of Talk
 
 1. Sparse FDA covariance: what makes the problem hard
@@ -79,8 +80,14 @@ should understand the estimator, why it is useful, and what the evidence says.
 Proofs will be added to the manuscript separately.
 :::
 
+:::
+
+::: {.content-hidden when-profile="short"}
 # Why Sparse FDA Covariance Is Hard
 
+:::
+
+::: {.content-hidden when-profile="short"}
 ## Classical Versus Functional Data
 
 Classical sample element:
@@ -105,6 +112,8 @@ $$
 ::: {.notes}
 This recreates the pedagogical opening used in Braga: begin with the sample
 element before discussing estimators.
+:::
+
 :::
 
 ## Sparse Curves
@@ -170,7 +179,10 @@ The estimator must manage:
 - boundary behavior,
 - computation.
 
+::: {.content-hidden when-profile="short"}
 # Proposed Semiparametric Decomposition
+
+:::
 
 ## The Object
 
@@ -221,6 +233,7 @@ This decomposition turns a difficult surface estimation problem into:
 The computational burden is closer to parametric fitting than to unrestricted
 two-dimensional smoothing.
 
+::: {.content-hidden when-profile="short"}
 ## A Statistical Compromise
 
 Fully parametric covariance:
@@ -241,6 +254,9 @@ can be too variable under sparse designs.
 
 The proposed estimator lives between these two extremes.
 
+:::
+
+::: {.content-hidden when-profile="short"}
 ## Relation To Sparse FDA
 
 The sparse FDA setting follows the measurement-error and random-design
@@ -255,8 +271,14 @@ The focus is covariance estimation when one wants:
 - low computational cost,
 - a route for model averaging.
 
+:::
+
+::: {.content-hidden when-profile="short"}
 # Nonparametric Mean and Variance
 
+:::
+
+::: {.content-hidden when-profile="short"}
 ## Mean Estimation
 
 The mean is estimated from pooled observations:
@@ -274,6 +296,9 @@ basis is selected and truncated from the pooled sample.
 
 The series step is one-dimensional and computationally inexpensive.
 
+:::
+
+::: {.content-hidden when-profile="short"}
 ## Variance Estimation
 
 After estimating the mean and noise variance, the latent marginal variance is
@@ -294,6 +319,8 @@ $$
 The feasible version replaces $\mu$ and $\sigma_\varepsilon^2$ by estimates.
 
 The noise variance is estimated using very local within-subject contrasts.
+
+:::
 
 ## Noise Variance
 
@@ -327,6 +354,7 @@ $$
 This exploits near-neighbor pairs while keeping the estimator computationally
 light.
 
+::: {.content-hidden when-profile="short"}
 ## Efromovich Cosine Series
 
 Efromovich's cosine-series approach is attractive because the cosine basis is
@@ -344,6 +372,8 @@ $$
 
 This basis is stable, fast, and surprisingly competitive in finite samples.
 
+:::
+
 ## The Boundary Issue
 
 The cosine basis imposes
@@ -358,6 +388,7 @@ That can be helpful when it is true.
 
 It is restrictive when the mean or variance has genuine endpoint slope.
 
+::: {.content-hidden when-profile="short"}
 ## Efromovich's Remedy
 
 Efromovich discusses polynomial correction as a way to handle boundary
@@ -371,6 +402,9 @@ The basic idea is:
 This preserves the spirit of the cosine estimator while relaxing the endpoint
 constraint.
 
+:::
+
+::: {.content-hidden when-profile="short"}
 ## Orthonormality Matters
 
 Adding polynomial columns directly breaks the simple orthonormal structure that
@@ -381,6 +415,8 @@ cosine columns.
 
 Numerically, this is done with a QR/Gram-Schmidt construction
 [@bjorck2015].
+
+:::
 
 ## Boundary-Corrected Basis
 
@@ -409,6 +445,7 @@ endpoints.
 
 The price can be variance.
 
+::: {.content-hidden when-profile="short"}
 ## Bias-Variance Tradeoff
 
 In finite samples, boundary correction can increase integrated MSE even while
@@ -428,8 +465,14 @@ This wording mirrors the current manuscript stance: default boundary correction
 is a defensible choice because it does not build in the zero-derivative prior.
 :::
 
+:::
+
+::: {.content-hidden when-profile="short"}
 # Correlation Families
 
+:::
+
+::: {.content-hidden when-profile="short"}
 ## Why Correlation Families?
 
 Once $\sigma(t)$ is estimated, the remaining object is a correlation surface.
@@ -443,6 +486,8 @@ Correlation families encode shape:
 - long-range decay.
 
 They also help maintain positive-definite structure.
+
+:::
 
 ## Candidate Family Menu
 
@@ -458,6 +503,7 @@ The current candidate set includes:
 | Generalized Cauchy | long-range dependence |
 | Generalized Wendland | compact support |
 
+::: {.content-hidden when-profile="short"}
 ## Correlation Family Provenance
 
 Examples include:
@@ -469,6 +515,8 @@ Examples include:
 - Gaussian-process families [@RasmussenWilliams2006; @Gibbs1997]
 - generalized Cauchy [@LimTeo2009GeneralizedCauchy]
 - generalized Wendland [@Wendland2005; @Bevilacqua2019GeneralizedWendland]
+
+:::
 
 ## Off-Diagonal Fitting
 
@@ -502,6 +550,7 @@ where $\Delta$ is the simplex.
 This follows the spirit of focused/model-averaging ideas
 [@CLAESKENS_HJORT:2011].
 
+::: {.content-hidden when-profile="short"}
 ## Why Average?
 
 Hard selection is brittle when families are close.
@@ -513,6 +562,8 @@ Model averaging allows:
 - interpretable diagnostics via $\widehat\alpha$.
 
 The averaging weights are part of the inferential output.
+
+:::
 
 ## Implementation Details {.smaller}
 
@@ -537,8 +588,12 @@ The main tuning choices are selected from the data:
 
 The demo call `spcovar(Lt, Ly)` uses these defaults.
 
+::: {.content-hidden when-profile="short"}
 # Parametric and Nonparametric Benchmarks
 
+:::
+
+::: {.content-hidden when-profile="short"}
 ## Fully Parametric Benchmark
 
 The fully parametric benchmark estimates:
@@ -553,6 +608,9 @@ This is stable and fast when the structure is right.
 
 It can be misleading when location, scale, or correlation is misspecified.
 
+:::
+
+::: {.content-hidden when-profile="short"}
 ## Fully Nonparametric Benchmark
 
 The nonparametric covariance benchmark estimates the surface directly:
@@ -565,6 +623,9 @@ This is flexible, but the tensor problem is data-hungry under sparse sampling.
 
 It is a useful competitor and a useful diagnostic.
 
+:::
+
+::: {.content-hidden when-profile="short"}
 ## Combined-Test Diagnostic
 
 The manuscript also compares convex combinations such as
@@ -578,6 +639,9 @@ If the optimum places weight near one estimator, that is informative.
 
 If it mixes, that is also informative.
 
+:::
+
+::: {.content-hidden when-profile="short"}
 # Finite-Sample Evidence
 
 ```{r peer-ratio-table-setup}
@@ -923,6 +987,8 @@ nbc_peer_tables <- build_peer_ratio_tables("../Work_nbc_peer_uniform_mc")
 bc_alpha_tables <- build_peer_alpha_tables("../Work_bcgs2_peer_beta_mc")
 ```
 
+:::
+
 ## Simulation Design
 
 The revised simulation design emphasizes:
@@ -935,6 +1001,7 @@ The revised simulation design emphasizes:
 
 This is intentionally harder than a uniform-design, zero-endpoint-slope setting.
 
+::: {.content-hidden when-profile="short"}
 ## Peer Comparison
 
 The peer comparison places the proposed estimator against available R
@@ -945,6 +1012,8 @@ The point is practical:
 - what happens with the same data-generating designs?
 - which methods return complete estimates?
 - how do MSE ratios and rankings change across DGPs?
+
+:::
 
 ## Peer Comparison Ratios: Bias Corrected {.table-slide}
 
@@ -986,6 +1055,7 @@ render_peer_ratio_table(bc_peer_tables$`4N`)
 
 :::
 
+::: {.content-hidden when-profile="short"}
 ## Peer Comparison Ratios: Not Bias Corrected {.table-slide}
 
 Each entry is $\mathrm{MSE}(\text{method})/\mathrm{MSE}(\text{proposed})$;
@@ -1026,6 +1096,9 @@ render_peer_ratio_table(nbc_peer_tables$`4N`)
 
 :::
 
+:::
+
+::: {.content-hidden when-profile="short"}
 ## Averaging Weights
 
 The $\widehat{\boldsymbol{\alpha}}$ weights are diagnostic, not just computational detail.
@@ -1037,6 +1110,8 @@ The manuscript tables report both:
 
 - weights across DGPs;
 - weights when the generating family is removed.
+
+:::
 
 ## Averaging Weights: Proposed {.table-slide}
 
@@ -1078,6 +1153,7 @@ render_alpha_table(bc_alpha_tables$default$`4N`)
 
 :::
 
+::: {.content-hidden when-profile="short"}
 ## Averaging Weights: Family Omitted {.table-slide}
 
 Average $\widehat\alpha$ weights when the DGP family is removed from the
@@ -1122,7 +1198,12 @@ The tables are generated from campaign summaries so they remain synchronized
 with the manuscript evidence.
 :::
 
+:::
+
+::: {.content-hidden when-profile="short"}
 # CD4 Application
+
+:::
 
 ## CD4 Data
 
@@ -1150,6 +1231,7 @@ We also need to understand:
 - how much variation is latent signal rather than measurement noise;
 - whether endpoint behavior is distorted by the estimator.
 
+::: {.content-hidden when-profile="short"}
 ## What The Estimator Must Separate
 
 The CD4 example is a canonical sparse longitudinal FDA setting.
@@ -1163,6 +1245,9 @@ A covariance estimator must separate:
 - within-subject correlation,
 - measurement noise.
 
+:::
+
+::: {.content-hidden when-profile="short"}
 ## Parametric Benchmark In The Application
 
 A simple parametric benchmark is feasible and interpretable.
@@ -1174,15 +1259,20 @@ But it imposes strong structure:
 - Gaussian-shaped stationary covariance ridge;
 - no sharp separation of latent variation and measurement error.
 
+:::
+
 ## Location and Scale
 
 ![](figures/cd4-location.png){fig-align="center" width="90%"}
 
+::: {.content-hidden when-profile="short"}
 ## Covariance Contour Views
 
 Heat maps and contours are a popular way to visualize covariance estimates.
 
 ![](figures/cd4-covariance.png){fig-align="center" width="90%"}
+
+:::
 
 ## Covariance Surface Views
 
@@ -1190,6 +1280,7 @@ The same covariance estimates can be viewed as full surfaces.
 
 ![](figures/cd4-surface-rgl.png){fig-align="center" width="98%"}
 
+::: {.content-hidden when-profile="short"}
 ## Live rgl Demo Code using the R package `spcovar`
 
 ```{r}
@@ -1273,6 +1364,8 @@ plot(fit_cd4_np)
 plot(fit_cd4_np, view = "rgl")
 ```
 
+:::
+
 ## CD4 Interpretation
 
 The application illustrates why boundary behavior matters in practice.
@@ -1283,6 +1376,7 @@ derivatives.
 Boundary-corrected stages avoid that prior restriction and support sensitivity
 analysis across plausible choices.
 
+::: {.content-hidden when-profile="short"}
 ## Sensitivity Is A Feature
 
 No boundary rule is uniformly best.
@@ -1296,7 +1390,12 @@ The practical recommendation is to examine sensitivity across:
 
 The default should be defensible, not magical.
 
+:::
+
+::: {.content-hidden when-profile="short"}
 # Summary
+
+:::
 
 ## Main Points
 
@@ -1310,6 +1409,7 @@ The proposed estimator:
 - remains computationally attractive for sparse FDA;
 - avoids imposing zero endpoint derivatives by default.
 
+::: {.content-hidden when-profile="short"}
 ## What Is Coming Next
 
 The current manuscript is intentionally ahead of the completed proof section.
@@ -1321,6 +1421,8 @@ The theory will formalize:
 - correlation-family fitting;
 - model-averaging behavior;
 - comparison with parametric and nonparametric benchmarks.
+
+:::
 
 ## Closing Thought
 
