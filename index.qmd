@@ -189,7 +189,7 @@ The estimator must manage:
 Let
 
 $$
-\mu(t)=E\{X(t)\},
+\mu(t)=\mathbb{E}\{X(t)\},
 \qquad
 \sigma^2(t)=\operatorname{var}\{X(t)\},
 $$
@@ -313,7 +313,7 @@ The target is
 
 $$
 \sigma^2(t)
-=E\{Z_{ij}^{(v)}\mid T_{ij}=t\}.
+=\mathbb{E}\{Z_{ij}^{(v)}\mid T_{ij}=t\}.
 $$
 
 The feasible version replaces $\mu$ and $\sigma_\varepsilon^2$ by estimates.
