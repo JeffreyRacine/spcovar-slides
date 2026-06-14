@@ -27,7 +27,7 @@ format:
     chalkboard: true
     css: custom.css
     embed-resources: false
-    footer: "Sparse covariance FDA | V. Patilea and J. S. Racine"
+    footer: "Sparse covariance FDA | V. Patilea and J. S. Racine | jeffreyracine.github.io/spcovar-slides"
     html-math-method: mathjax
     include-in-header:
       - text: |
