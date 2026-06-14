@@ -274,31 +274,35 @@ The mean is estimated from pooled observations:
 
 $$
 \widehat\mu(t)
-=\sum_{k=0}^{K}\widehat b_k \phi_k(t),
+=\sum_{k=0}^{K}\widehat\theta_k \phi_k(t),
 $$
 
-where the basis is selected and truncated from the pooled sample.
+Let $n=\sum_{i=1}^N M_i$ and let
+$U_1\leq\cdots\leq U_n$ denote the ordered pooled observation times.
+
+The coefficients are estimated from the aligned pooled responses, and the
+basis is selected and truncated from the pooled sample.
 
 The series step is one-dimensional and computationally inexpensive.
 
 ## Variance Estimation
 
-After estimating the mean, latent marginal variance is estimated from squared
-centered responses:
+After estimating the mean and noise variance, the latent marginal variance is
+estimated through the variance pseudo-response
 
 $$
-V_{ij}
-=\{Y_{ij}-\widehat\mu(T_{ij})\}^2.
+Z_{ij}^{(v)}
+=\{Y_{ij}-\mu(T_{ij})\}^2-\sigma_\varepsilon^2.
 $$
 
 The target is
 
 $$
-E(V_{ij}\mid T_{ij}=t)
-\approx \sigma^2(t)+\sigma_\varepsilon^2 .
+\sigma^2(t)
+=E\{Z_{ij}^{(v)}\mid T_{ij}=t\}.
 $$
 
-Subtracting a noise-variance estimate gives the latent variance estimate.
+The feasible version replaces $\mu$ and $\sigma_\varepsilon^2$ by estimates.
 
 The noise variance is estimated using very local within-subject contrasts.
 
@@ -316,18 +320,19 @@ D_{ijk}
 \right]^2 .
 $$
 
-Average the $k_n$ within-curve pairs with the smallest time gaps
+Average the $k_{nn}$ within-curve pairs with the smallest time gaps
 $|T_{ij}-T_{ik}|$:
 
 $$
 \widehat\sigma_\varepsilon^2
-=\frac{1}{k_n}\sum_{(i,j,k)\in\mathcal N_{k_n}}D_{ijk}.
+=\frac{1}{k_{nn}}\sum_{(i,j,k)\in\mathcal N_{k_{nn}}}D_{ijk}.
 $$
 
 The operational rule is deliberately simple:
 
 $$
-k_n \asymp \log(n_{\mathrm{pooled}}).
+k_{nn} \asymp \log n,
+\qquad n=\sum_{i=1}^N M_i.
 $$
 
 This exploits near-neighbor pairs while keeping the estimator computationally
@@ -417,7 +422,7 @@ The price can be variance.
 
 ## Bias-Variance Tradeoff
 
-In finite samples, boundary correction can increase integrated RMSE even while
+In finite samples, boundary correction can increase integrated MSE even while
 removing a visible endpoint distortion.
 
 This is not a contradiction.
@@ -496,8 +501,8 @@ Candidate correlations are fit to standardized products.
 Instead of selecting one correlation family, compute weights
 
 $$
-\widehat\alpha
-=\arg\min_{\alpha\in\Delta}
+\widehat{\boldsymbol{\alpha}}
+=\arg\min_{\boldsymbol{\alpha}\in\Delta}
 \left\|
 \widehat R-\sum_{\ell=1}^L \alpha_\ell R_\ell
 \right\|^2,
@@ -927,7 +932,7 @@ The point is practical:
 
 - what happens with the same data-generating designs?
 - which methods return complete estimates?
-- how do RMSE and rankings change across DGPs?
+- how do MSE ratios and rankings change across DGPs?
 
 ## Peer Comparison Ratios: Bias Corrected
 
@@ -1011,7 +1016,7 @@ render_peer_ratio_table(nbc_peer_tables$`4N`)
 
 ## Averaging Weights
 
-The $\widehat\alpha$ weights are diagnostic, not just computational detail.
+The $\widehat{\boldsymbol{\alpha}}$ weights are diagnostic, not just computational detail.
 
 They indicate which correlation families explain the simulated or empirical
 surface.
@@ -1023,7 +1028,7 @@ The manuscript tables report both:
 
 ## Averaging Weights: Proposed
 
-Average $\widehat\alpha$ weights for the proposed estimator. The first tab
+Average $\widehat{\boldsymbol{\alpha}}$ weights for the proposed estimator. The first tab
 averages over all available DGP-regime cells; the remaining tabs fix the
 sparse-sample regime.
 
@@ -1200,11 +1205,11 @@ needed, and make the resulting estimator practical.
 
 ## Backup: Observation Model
 
-For independent subjects $i=1,\ldots,n$,
+For independent subjects $i=1,\ldots,N$,
 
 $$
 Y_{ij}=X_i(T_{ij})+\varepsilon_{ij},
-\qquad j=1,\ldots,m_i.
+\qquad j=1,\ldots,M_i.
 $$
 
 Assume
@@ -1221,7 +1226,7 @@ with measurement error independent of the latent process and design.
 Define
 
 $$
-\widehat U_{ijk}
+\widehat R_{ijk}
 =
 \frac{
 \{Y_{ij}-\widehat\mu(T_{ij})\}
@@ -1232,7 +1237,7 @@ $$
 \qquad j\neq k.
 $$
 
-Then fit candidate correlations to $\widehat U_{ijk}$.
+Then fit candidate correlations to $\widehat R_{ijk}$.
 
 ## Backup: Correlation Fit
 
@@ -1245,7 +1250,7 @@ $$
 \sum_{i}\sum_{j\neq k}
 w_{ijk}
 \left\{
-\widehat U_{ijk}
+\widehat R_{ijk}
 -\rho_\ell(T_{ij},T_{ik};\theta_\ell)
 \right\}^2 .
 $$
@@ -1260,10 +1265,10 @@ candidate family $\ell$.
 The averaged correlation is
 
 $$
-\widehat R_\alpha
+\widehat R_{\boldsymbol{\alpha}}
 =\sum_{\ell=1}^{L}\widehat\alpha_\ell\widehat R_\ell,
 \qquad
-\widehat\alpha\in\Delta_L.
+\widehat{\boldsymbol{\alpha}}\in\Delta_L.
 $$
 
 ## Backup: Boundary-Corrected Linear Span

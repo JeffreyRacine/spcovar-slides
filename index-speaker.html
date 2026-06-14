@@ -12,7 +12,7 @@
   <meta name="author" content="Valentin Patilea^\dagger">
   <meta name="author" content="Jeffrey S. Racine^\ddagger">
   <meta name="dcterms.date" content="2026-06-24">
-  <title>quarto-inputd043c613bf979541</title>
+  <title>quarto-inputdff2ef8cb7adbbdc</title>
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, minimal-ui">
@@ -408,24 +408,25 @@ C_\theta(s,t)
 <p>The mean is estimated from pooled observations:</p>
 <p><span class="math display">\[
 \widehat\mu(t)
-=\sum_{k=0}^{K}\widehat b_k \phi_k(t),
+=\sum_{k=0}^{K}\widehat\theta_k \phi_k(t),
 \]</span></p>
-<p>where the basis is selected and truncated from the pooled sample.</p>
+<p>Let <span class="math inline">\(n=\sum_{i=1}^N M_i\)</span> and let <span class="math inline">\(U_1\leq\cdots\leq U_n\)</span> denote the ordered pooled observation times.</p>
+<p>The coefficients are estimated from the aligned pooled responses, and the basis is selected and truncated from the pooled sample.</p>
 <p>The series step is one-dimensional and computationally inexpensive.</p>
 </section>
 <section id="variance-estimation" class="slide level2 center">
 <h2>Variance Estimation</h2>
-<p>After estimating the mean, latent marginal variance is estimated from squared centered responses:</p>
+<p>After estimating the mean and noise variance, the latent marginal variance is estimated through the variance pseudo-response</p>
 <p><span class="math display">\[
-V_{ij}
-=\{Y_{ij}-\widehat\mu(T_{ij})\}^2.
+Z_{ij}^{(v)}
+=\{Y_{ij}-\mu(T_{ij})\}^2-\sigma_\varepsilon^2.
 \]</span></p>
 <p>The target is</p>
 <p><span class="math display">\[
-E(V_{ij}\mid T_{ij}=t)
-\approx \sigma^2(t)+\sigma_\varepsilon^2 .
+\sigma^2(t)
+=E\{Z_{ij}^{(v)}\mid T_{ij}=t\}.
 \]</span></p>
-<p>Subtracting a noise-variance estimate gives the latent variance estimate.</p>
+<p>The feasible version replaces <span class="math inline">\(\mu\)</span> and <span class="math inline">\(\sigma_\varepsilon^2\)</span> by estimates.</p>
 <p>The noise variance is estimated using very local within-subject contrasts.</p>
 </section>
 <section id="noise-variance" class="slide level2 center">
@@ -439,14 +440,15 @@ D_{ijk}
 -\{Y_{ik}-\widehat\mu(T_{ik})\}
 \right]^2 .
 \]</span></p>
-<p>Average the <span class="math inline">\(k_n\)</span> within-curve pairs with the smallest time gaps <span class="math inline">\(|T_{ij}-T_{ik}|\)</span>:</p>
+<p>Average the <span class="math inline">\(k_{nn}\)</span> within-curve pairs with the smallest time gaps <span class="math inline">\(|T_{ij}-T_{ik}|\)</span>:</p>
 <p><span class="math display">\[
 \widehat\sigma_\varepsilon^2
-=\frac{1}{k_n}\sum_{(i,j,k)\in\mathcal N_{k_n}}D_{ijk}.
+=\frac{1}{k_{nn}}\sum_{(i,j,k)\in\mathcal N_{k_{nn}}}D_{ijk}.
 \]</span></p>
 <p>The operational rule is deliberately simple:</p>
 <p><span class="math display">\[
-k_n \asymp \log(n_{\mathrm{pooled}}).
+k_{nn} \asymp \log n,
+\qquad n=\sum_{i=1}^N M_i.
 \]</span></p>
 <p>This exploits near-neighbor pairs while keeping the estimator computationally light.</p>
 </section>
@@ -509,7 +511,7 @@ k_n \asymp \log(n_{\mathrm{pooled}}).
 </section>
 <section id="bias-variance-tradeoff" class="slide level2 center">
 <h2>Bias-Variance Tradeoff</h2>
-<p>In finite samples, boundary correction can increase integrated RMSE even while removing a visible endpoint distortion.</p>
+<p>In finite samples, boundary correction can increase integrated MSE even while removing a visible endpoint distortion.</p>
 <p>This is not a contradiction.</p>
 <p>It is the familiar statistical tradeoff:</p>
 <p><span class="math display">\[
@@ -619,8 +621,8 @@ Z_{ijk}
 <h2>Model Averaging</h2>
 <p>Instead of selecting one correlation family, compute weights</p>
 <p><span class="math display">\[
-\widehat\alpha
-=\arg\min_{\alpha\in\Delta}
+\widehat{\boldsymbol{\alpha}}
+=\arg\min_{\boldsymbol{\alpha}\in\Delta}
 \left\|
 \widehat R-\sum_{\ell=1}^L \alpha_\ell R_\ell
 \right\|^2,
@@ -698,7 +700,7 @@ C(s,t).
 <ul>
 <li>what happens with the same data-generating designs?</li>
 <li>which methods return complete estimates?</li>
-<li>how do RMSE and rankings change across DGPs?</li>
+<li>how do MSE ratios and rankings change across DGPs?</li>
 </ul>
 </section>
 <section id="peer-comparison-ratios-bias-corrected" class="slide level2 center">
@@ -1539,7 +1541,7 @@ C(s,t).
 </section>
 <section id="averaging-weights" class="slide level2 center">
 <h2>Averaging Weights</h2>
-<p>The <span class="math inline">\(\widehat\alpha\)</span> weights are diagnostic, not just computational detail.</p>
+<p>The <span class="math inline">\(\widehat{\boldsymbol{\alpha}}\)</span> weights are diagnostic, not just computational detail.</p>
 <p>They indicate which correlation families explain the simulated or empirical surface.</p>
 <p>The manuscript tables report both:</p>
 <ul>
@@ -1549,7 +1551,7 @@ C(s,t).
 </section>
 <section id="averaging-weights-proposed" class="slide level2 center">
 <h2>Averaging Weights: Proposed</h2>
-<p>Average <span class="math inline">\(\widehat\alpha\)</span> weights for the proposed estimator. The first tab averages over all available DGP-regime cells; the remaining tabs fix the sparse-sample regime.</p>
+<p>Average <span class="math inline">\(\widehat{\boldsymbol{\alpha}}\)</span> weights for the proposed estimator. The first tab averages over all available DGP-regime cells; the remaining tabs fix the sparse-sample regime.</p>
 <p>Bias-corrected beta-time campaign.</p>
 <div class="panel-tabset peer-tabs">
 <ul id="tabset-3" class="panel-tabset-tabby"><li><a data-tabby-default="" href="#tabset-3-1">Overall</a></li><li><a href="#tabset-3-2">N</a></li><li><a href="#tabset-3-3">2N</a></li><li><a href="#tabset-3-4">4N</a></li></ul>
@@ -2492,10 +2494,10 @@ C(s,t).
 </section>
 <section id="backup-observation-model" class="slide level2 center">
 <h2>Backup: Observation Model</h2>
-<p>For independent subjects <span class="math inline">\(i=1,\ldots,n\)</span>,</p>
+<p>For independent subjects <span class="math inline">\(i=1,\ldots,N\)</span>,</p>
 <p><span class="math display">\[
 Y_{ij}=X_i(T_{ij})+\varepsilon_{ij},
-\qquad j=1,\ldots,m_i.
+\qquad j=1,\ldots,M_i.
 \]</span></p>
 <p>Assume</p>
 <p><span class="math display">\[
@@ -2508,7 +2510,7 @@ E(\varepsilon_{ij})=0,\qquad
 <h2>Backup: Standardized Products</h2>
 <p>Define</p>
 <p><span class="math display">\[
-\widehat U_{ijk}
+\widehat R_{ijk}
 =
 \frac{
 \{Y_{ij}-\widehat\mu(T_{ij})\}
@@ -2518,7 +2520,7 @@ E(\varepsilon_{ij})=0,\qquad
 },
 \qquad j\neq k.
 \]</span></p>
-<p>Then fit candidate correlations to <span class="math inline">\(\widehat U_{ijk}\)</span>.</p>
+<p>Then fit candidate correlations to <span class="math inline">\(\widehat R_{ijk}\)</span>.</p>
 </section>
 <section id="backup-correlation-fit" class="slide level2 center">
 <h2>Backup: Correlation Fit</h2>
@@ -2530,7 +2532,7 @@ E(\varepsilon_{ij})=0,\qquad
 \sum_{i}\sum_{j\neq k}
 w_{ijk}
 \left\{
-\widehat U_{ijk}
+\widehat R_{ijk}
 -\rho_\ell(T_{ij},T_{ik};\theta_\ell)
 \right\}^2 .
 \]</span></p>
@@ -2541,10 +2543,10 @@ w_{ijk}
 <p>Let <span class="math inline">\(\widehat R_\ell\)</span> denote the fitted correlation matrix or grid surface for candidate family <span class="math inline">\(\ell\)</span>.</p>
 <p>The averaged correlation is</p>
 <p><span class="math display">\[
-\widehat R_\alpha
+\widehat R_{\boldsymbol{\alpha}}
 =\sum_{\ell=1}^{L}\widehat\alpha_\ell\widehat R_\ell,
 \qquad
-\widehat\alpha\in\Delta_L.
+\widehat{\boldsymbol{\alpha}}\in\Delta_L.
 \]</span></p>
 </section>
 <section id="backup-boundary-corrected-linear-span" class="slide level2 center">
