@@ -124,13 +124,15 @@ element before discussing estimators.
 
 In dense FDA, each curve carries substantial within-subject information.
 
-In sparse FDA, covariance information is distributed across many subjects:
+In sparse FDA, covariance information is distributed across many subjects.
+
+The object of interest is the latent covariance function:
 
 $$
-\operatorname{cov}\{X_i(s),X_i(t)\}
+\operatorname{cov}\{X_i(s),X_i(t)\},
 $$
 
-is learned from irregularly placed within-subject pairs.
+which is learned from irregularly placed within-subject pairs.
 
 Replication matters.
 
@@ -934,7 +936,7 @@ The point is practical:
 - which methods return complete estimates?
 - how do MSE ratios and rankings change across DGPs?
 
-## Peer Comparison Ratios: Bias Corrected
+## Peer Comparison Ratios: Bias Corrected {.table-slide}
 
 Each entry is $\mathrm{MSE}(\text{method})/\mathrm{MSE}(\text{proposed})$;
 smaller is better. The first tab is the manuscript's overall geometric index,
@@ -974,7 +976,7 @@ render_peer_ratio_table(bc_peer_tables$`4N`)
 
 :::
 
-## Peer Comparison Ratios: Not Bias Corrected
+## Peer Comparison Ratios: Not Bias Corrected {.table-slide}
 
 Each entry is $\mathrm{MSE}(\text{method})/\mathrm{MSE}(\text{proposed})$;
 smaller is better. The first tab is the overall geometric index, and the
@@ -1026,7 +1028,7 @@ The manuscript tables report both:
 - weights across DGPs;
 - weights when the generating family is removed.
 
-## Averaging Weights: Proposed
+## Averaging Weights: Proposed {.table-slide}
 
 Average $\widehat{\boldsymbol{\alpha}}$ weights for the proposed estimator. The first tab
 averages over all available DGP-regime cells; the remaining tabs fix the
@@ -1066,7 +1068,7 @@ render_alpha_table(bc_alpha_tables$default$`4N`)
 
 :::
 
-## Averaging Weights: Family Omitted
+## Averaging Weights: Family Omitted {.table-slide}
 
 Average $\widehat\alpha$ weights when the DGP family is removed from the
 candidate menu. The zero diagonal marks the omitted generating family.
@@ -1112,7 +1114,33 @@ tables or static table images. For now the slides give the narrative structure.
 
 # CD4 Application
 
-## Data Motivation
+## CD4 Data
+
+The application uses CD4 count data distributed with `refund` [@refund2026].
+
+CD4 counts are recorded relative to HIV seroconversion.
+
+Higher CD4 counts generally indicate stronger immune function.
+
+Lower CD4 counts are associated with greater immune damage.
+
+Observation times are irregular, sparse, and normalized to $[0,1]$ before
+fitting.
+
+## Why This Example Matters
+
+Seroconversion anchors follow-up to a biologically meaningful event.
+
+The scientific question is not only the average CD4 trajectory.
+
+We also need to understand:
+
+- how between-patient variability changes over time;
+- how strongly early and later immune status are associated;
+- how much variation is latent signal rather than measurement noise;
+- whether endpoint behavior is distorted by the estimator.
+
+## What The Estimator Must Separate
 
 The CD4 example is a canonical sparse longitudinal FDA setting.
 

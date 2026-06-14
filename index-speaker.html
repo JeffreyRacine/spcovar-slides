@@ -12,7 +12,7 @@
   <meta name="author" content="Valentin Patilea^\dagger">
   <meta name="author" content="Jeffrey S. Racine^\ddagger">
   <meta name="dcterms.date" content="2026-06-24">
-  <title>quarto-inputdff2ef8cb7adbbdc</title>
+  <title>quarto-input9b3d332f3be7523d</title>
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, minimal-ui">
@@ -277,11 +277,12 @@ Y_{ij} = X_i(T_{ij}) + \varepsilon_{ij},
 <section id="sparse-curves" class="slide level2 center">
 <h2>Sparse Curves</h2>
 <p>In dense FDA, each curve carries substantial within-subject information.</p>
-<p>In sparse FDA, covariance information is distributed across many subjects:</p>
+<p>In sparse FDA, covariance information is distributed across many subjects.</p>
+<p>The object of interest is the latent covariance function:</p>
 <p><span class="math display">\[
-\operatorname{cov}\{X_i(s),X_i(t)\}
+\operatorname{cov}\{X_i(s),X_i(t)\},
 \]</span></p>
-<p>is learned from irregularly placed within-subject pairs.</p>
+<p>which is learned from irregularly placed within-subject pairs.</p>
 <p>Replication matters.</p>
 </section>
 <section id="measurement-error" class="slide level2 center">
@@ -703,7 +704,7 @@ C(s,t).
 <li>how do MSE ratios and rankings change across DGPs?</li>
 </ul>
 </section>
-<section id="peer-comparison-ratios-bias-corrected" class="slide level2 center">
+<section id="peer-comparison-ratios-bias-corrected" class="slide level2 table-slide center">
 <h2>Peer Comparison Ratios: Bias Corrected</h2>
 <p>Each entry is <span class="math inline">\(\mathrm{MSE}(\text{method})/\mathrm{MSE}(\text{proposed})\)</span>; smaller is better. The first tab is the manuscript’s overall geometric index, and the remaining tabs fix the sparse-sample regime.</p>
 <p>Bias-corrected beta-time campaign.</p>
@@ -1121,7 +1122,7 @@ C(s,t).
 </div>
 </div>
 </section>
-<section id="peer-comparison-ratios-not-bias-corrected" class="slide level2 center">
+<section id="peer-comparison-ratios-not-bias-corrected" class="slide level2 table-slide center">
 <h2>Peer Comparison Ratios: Not Bias Corrected</h2>
 <p>Each entry is <span class="math inline">\(\mathrm{MSE}(\text{method})/\mathrm{MSE}(\text{proposed})\)</span>; smaller is better. The first tab is the overall geometric index, and the remaining tabs fix the sparse-sample regime.</p>
 <p>No-boundary-correction uniform-time control campaign.</p>
@@ -1549,7 +1550,7 @@ C(s,t).
 <li>weights when the generating family is removed.</li>
 </ul>
 </section>
-<section id="averaging-weights-proposed" class="slide level2 center">
+<section id="averaging-weights-proposed" class="slide level2 table-slide center">
 <h2>Averaging Weights: Proposed</h2>
 <p>Average <span class="math inline">\(\widehat{\boldsymbol{\alpha}}\)</span> weights for the proposed estimator. The first tab averages over all available DGP-regime cells; the remaining tabs fix the sparse-sample regime.</p>
 <p>Bias-corrected beta-time campaign.</p>
@@ -1967,7 +1968,7 @@ C(s,t).
 </div>
 </div>
 </section>
-<section id="averaging-weights-family-omitted" class="slide level2 center">
+<section id="averaging-weights-family-omitted" class="slide level2 table-slide center">
 <h2>Averaging Weights: Family Omitted</h2>
 <p>Average <span class="math inline">\(\widehat\alpha\)</span> weights when the DGP family is removed from the candidate menu. The zero diagonal marks the omitted generating family.</p>
 <p>Bias-corrected beta-time campaign.</p>
@@ -2403,8 +2404,28 @@ C(s,t).
 <h1>CD4 Application</h1>
 
 </section>
-<section id="data-motivation" class="slide level2 center">
-<h2>Data Motivation</h2>
+<section id="cd4-data" class="slide level2 center">
+<h2>CD4 Data</h2>
+<p>The application uses CD4 count data distributed with <code>refund</code> <span class="citation" data-cites="refund2026">(<a href="#/references" role="doc-biblioref" onclick="">Goldsmith et al. 2026</a>)</span>.</p>
+<p>CD4 counts are recorded relative to HIV seroconversion.</p>
+<p>Higher CD4 counts generally indicate stronger immune function.</p>
+<p>Lower CD4 counts are associated with greater immune damage.</p>
+<p>Observation times are irregular, sparse, and normalized to <span class="math inline">\([0,1]\)</span> before fitting.</p>
+</section>
+<section id="why-this-example-matters" class="slide level2 center">
+<h2>Why This Example Matters</h2>
+<p>Seroconversion anchors follow-up to a biologically meaningful event.</p>
+<p>The scientific question is not only the average CD4 trajectory.</p>
+<p>We also need to understand:</p>
+<ul>
+<li>how between-patient variability changes over time;</li>
+<li>how strongly early and later immune status are associated;</li>
+<li>how much variation is latent signal rather than measurement noise;</li>
+<li>whether endpoint behavior is distorted by the estimator.</li>
+</ul>
+</section>
+<section id="what-the-estimator-must-separate" class="slide level2 center">
+<h2>What The Estimator Must Separate</h2>
 <p>The CD4 example is a canonical sparse longitudinal FDA setting.</p>
 <p>The observed trajectories are irregular and noisy.</p>
 <p>A covariance estimator must separate:</p>
@@ -2608,6 +2629,9 @@ Efromovich, Sam. 1999. <em>Nonparametric Curve Estimation: Methods, Theory, and 
 </div>
 <div id="ref-Gibbs1997" class="csl-entry" role="listitem">
 Gibbs, Mark N. 1997. <span>“Bayesian Gaussian Processes for Regression and Classification.”</span> PhD thesis, University of Cambridge.
+</div>
+<div id="ref-refund2026" class="csl-entry" role="listitem">
+Goldsmith, Jeff, Fabian Scheipl, Lei Huang, et al. 2026. <em>Refund: Regression with Functional Data</em>. <a href="https://doi.org/10.32614/CRAN.package.refund">https://doi.org/10.32614/CRAN.package.refund</a>.
 </div>
 <div id="ref-LimTeo2009GeneralizedCauchy" class="csl-entry" role="listitem">
 Lim, S. C., and L. P. Teo. 2009. <span>“Gaussian Fields and Gaussian Sheets with Generalized Cauchy Covariance Structure.”</span> <em>Stochastic Processes and Their Applications</em> 119 (4): 1325–56. <a href="https://doi.org/10.1016/j.spa.2008.06.011">https://doi.org/10.1016/j.spa.2008.06.011</a>.
