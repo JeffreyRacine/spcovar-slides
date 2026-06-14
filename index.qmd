@@ -136,7 +136,15 @@ Replication matters.
 
 ## Measurement Error
 
-The covariance of observations is not the latent covariance:
+Let
+
+$$
+C(s,t)=\operatorname{cov}\{X_i(s),X_i(t)\}
+$$
+
+denote the covariance function of the latent process $X$. 
+
+The covariance of observations is not just this latent covariance:
 
 $$
 \operatorname{cov}(Y_{ij},Y_{ik})
@@ -146,6 +154,14 @@ $$
 The diagonal mixes latent variance and noise variance.
 
 The off-diagonal is informative but can be sparse and unevenly distributed.
+
+::: {.notes}
+The left-hand side,
+$\operatorname{cov}(Y_{ij},Y_{ik})$,
+is the covariance of the observed noisy measurements, not the latent covariance function itself. Writing it explicitly makes the distinction clear:
+
+observed covariance = latent covariance + measurement-error contribution
+:::
 
 ## Why Direct Surface Smoothing Can Struggle
 
@@ -284,9 +300,29 @@ $$
 
 Subtracting a noise-variance estimate gives the latent variance estimate.
 
+The noise variance is estimated using very local within-subject contrasts.
+
 ## Noise Variance
 
-The noise variance is estimated using very local within-subject contrasts.
+For close within-curve pairs, the latent curve is nearly unchanged, so
+half-squared local differences mostly reflect measurement noise:
+
+$$
+D_{ijk}
+=\frac12
+\left[
+\{Y_{ij}-\widehat\mu(T_{ij})\}
+-\{Y_{ik}-\widehat\mu(T_{ik})\}
+\right]^2 .
+$$
+
+Average the $k_n$ within-curve pairs with the smallest time gaps
+$|T_{ij}-T_{ik}|$:
+
+$$
+\widehat\sigma_\varepsilon^2
+=\frac{1}{k_n}\sum_{(i,j,k)\in\mathcal N_{k_n}}D_{ijk}.
+$$
 
 The operational rule is deliberately simple:
 
@@ -527,6 +563,349 @@ If it mixes, that is also informative.
 
 # Finite-Sample Evidence
 
+```{r peer-ratio-table-setup}
+#| include: false
+library(knitr)
+
+pretty_simulation <- function(x) {
+  map <- c(
+    "Matern" = "Matérn",
+    "GeneralizedCauchy" = "Generalized Cauchy",
+    "GeneralizedWendland" = "Generalized Wendland",
+    "RationalQuadratic" = "Rational Quadratic"
+  )
+  ifelse(x %in% names(map), unname(map[x]), x)
+}
+
+pretty_name <- function(x) {
+  map <- c(
+    "spcovar default" = "SP",
+    "spcovar default minus DGP family" = "SP-OMIT",
+    "Matern" = "Matérn",
+    "PACE/fdapace" = "PACE",
+    "mcfda Fourier" = "mcfda-F",
+    "mcfda SP" = "mcfda-SP",
+    "GeneralizedCauchy" = "GC",
+    "GeneralizedWendland" = "GW",
+    "RationalQuadratic" = "RQ",
+    "npcovar" = "NP",
+    "simulation" = "DGP"
+  )
+  if (x %in% names(map)) map[[x]] else x
+}
+
+make_peer_ratio_table <- function(dat,
+                                  denominator,
+                                  include_methods,
+                                  sim_order,
+                                  regime = NULL,
+                                  digits = 2L) {
+  if (!nrow(dat)) return(NULL)
+  if (!is.null(regime)) {
+    dat <- dat[dat$regime == regime, , drop = FALSE]
+  }
+  if (!nrow(dat)) return(NULL)
+
+  denom <- dat[dat$method_label == denominator,
+               c("simulation", "regime", "mean_mse_x1000")]
+  names(denom)[3L] <- "den_mse"
+  numer <- dat[dat$method_label %in% include_methods,
+               c("simulation", "regime", "method_label", "mean_mse_x1000")]
+  names(numer)[4L] <- "num_mse"
+  merged <- merge(numer, denom, by = c("simulation", "regime"))
+  merged <- merged[
+    is.finite(merged$num_mse) &
+      is.finite(merged$den_mse) &
+      merged$num_mse > 0 &
+      merged$den_mse > 0,
+    ,
+    drop = FALSE
+  ]
+  if (!nrow(merged)) return(NULL)
+  merged$ratio <- merged$num_mse / merged$den_mse
+
+  make_cell <- function(x) {
+    if (!length(x)) return("")
+    formatC(exp(mean(log(x))), digits = digits, format = "f")
+  }
+
+  rows <- list()
+  for (sim in sim_order) {
+    row <- c(simulation = sim)
+    for (m in include_methods) {
+      row[[m]] <- make_cell(merged$ratio[
+        merged$simulation == sim & merged$method_label == m
+      ])
+    }
+    rows[[length(rows) + 1L]] <- as.data.frame(as.list(row), stringsAsFactors = FALSE)
+  }
+
+  overall <- c(simulation = "Overall")
+  for (m in include_methods) {
+    overall[[m]] <- make_cell(merged$ratio[merged$method_label == m])
+  }
+  rows[[length(rows) + 1L]] <- as.data.frame(as.list(overall), stringsAsFactors = FALSE)
+
+  out <- do.call(rbind, rows)
+  names(out) <- c("simulation", include_methods)
+  rownames(out) <- NULL
+  out
+}
+
+reorder_table_by_row_values <- function(tab,
+                                        row_value = "Overall",
+                                        leading_cols = 1L,
+                                        decreasing = FALSE) {
+  if (is.null(tab) || !nrow(tab) || ncol(tab) <= leading_cols) return(tab)
+  row_idx <- which(tab[[1L]] == row_value)
+  if (!length(row_idx)) return(tab)
+  ordered_cols <- seq.int(leading_cols + 1L, ncol(tab))
+  scores <- suppressWarnings(as.numeric(tab[row_idx[1L], ordered_cols, drop = TRUE]))
+  tab[, c(seq_len(leading_cols), ordered_cols[order(scores, decreasing = decreasing, na.last = TRUE)]), drop = FALSE]
+}
+
+render_peer_ratio_table <- function(tab) {
+  if (is.null(tab) || !nrow(tab)) {
+    cat("Peer comparison summary is not available.")
+    return(invisible(NULL))
+  }
+  kable(
+    tab,
+    format = "html",
+    align = c("l", rep("r", ncol(tab) - 1L)),
+    col.names = vapply(names(tab), pretty_name, character(1L), USE.NAMES = FALSE),
+    row.names = FALSE,
+    escape = FALSE,
+    table.attr = 'class="peer-ratio-table"'
+  )
+}
+
+load_peer_campaign_summaries <- function(campaign_dir, cfg_env) {
+  config_path <- file.path(campaign_dir, "campaign_config.R")
+  results_dir <- file.path(campaign_dir, "results_full")
+  if (!file.exists(config_path) || !dir.exists(results_dir)) return(data.frame())
+
+  out <- list()
+  for (key in cfg_env$campaign_dgp_keys()) {
+    cfg <- cfg_env$campaign_dgp_config(key)
+    for (multiplier in cfg_env$campaign_regime_multipliers) {
+      regime_slug <- tolower(cfg_env$campaign_regime_label(multiplier))
+      summary_path <- file.path(
+        results_dir,
+        key,
+        sprintf("%s_%s_summary.csv", cfg$prefix, regime_slug)
+      )
+      if (!file.exists(summary_path)) next
+      dat <- read.csv(summary_path, stringsAsFactors = FALSE)
+      if (!nrow(dat)) next
+      dat$simulation <- cfg$short_label
+      dat$method_label <- unname(cfg_env$campaign_method_labels[dat$method])
+      out[[length(out) + 1L]] <- dat
+    }
+  }
+  if (!length(out)) data.frame() else do.call(rbind, out)
+}
+
+load_peer_campaign_alphas <- function(campaign_dir, cfg_env) {
+  config_path <- file.path(campaign_dir, "campaign_config.R")
+  results_dir <- file.path(campaign_dir, "results_full")
+  if (!file.exists(config_path) || !dir.exists(results_dir)) return(data.frame())
+
+  out <- list()
+  for (key in cfg_env$campaign_dgp_keys()) {
+    cfg <- cfg_env$campaign_dgp_config(key)
+    for (multiplier in cfg_env$campaign_regime_multipliers) {
+      regime_slug <- tolower(cfg_env$campaign_regime_label(multiplier))
+      alpha_path <- file.path(
+        results_dir,
+        key,
+        sprintf("%s_%s_alpha_summary.csv", cfg$prefix, regime_slug)
+      )
+      if (!file.exists(alpha_path)) next
+      dat <- read.csv(alpha_path, stringsAsFactors = FALSE)
+      if (!nrow(dat)) next
+      dat$simulation <- cfg$short_label
+      dat$method_label <- unname(cfg_env$campaign_method_labels[dat$method])
+      out[[length(out) + 1L]] <- dat
+    }
+  }
+  if (!length(out)) data.frame() else do.call(rbind, out)
+}
+
+build_peer_ratio_tables <- function(campaign_dir) {
+  campaign_dir <- normalizePath(campaign_dir, mustWork = FALSE)
+  config_path <- file.path(campaign_dir, "campaign_config.R")
+  if (!file.exists(config_path)) {
+    return(list(overall = NULL, N = NULL, `2N` = NULL, `4N` = NULL))
+  }
+
+  cfg_env <- new.env(parent = globalenv())
+  source(config_path, local = cfg_env)
+
+  summary_dat <- load_peer_campaign_summaries(campaign_dir, cfg_env)
+  if (!nrow(summary_dat)) {
+    return(list(overall = NULL, N = NULL, `2N` = NULL, `4N` = NULL))
+  }
+
+  summary_dat$simulation <- pretty_simulation(summary_dat$simulation)
+  sim_order <- sort(pretty_simulation(vapply(
+    cfg_env$campaign_dgp_keys(),
+    function(key) cfg_env$campaign_dgp_config(key)$short_label,
+    character(1L)
+  )))
+  peer_methods <- unname(cfg_env$campaign_method_labels[c(
+    "npcovar_nomad",
+    "face_sparse",
+    "fdapace",
+    "rkhscovfun_cv",
+    "mcfda_fourier",
+    "mcfda_sp"
+  )])
+  sp_methods <- unname(cfg_env$campaign_method_labels[c(
+    "spcovar_default",
+    "spcovar_default_minus_own_family"
+  )])
+  table_overall <- make_peer_ratio_table(
+    summary_dat,
+    denominator = sp_methods[1L],
+    include_methods = c(sp_methods[2L], peer_methods),
+    sim_order = sim_order
+  )
+  table_overall <- reorder_table_by_row_values(table_overall)
+  ordered_methods <- names(table_overall)[-1L]
+  table_N <- make_peer_ratio_table(
+    summary_dat,
+    denominator = sp_methods[1L],
+    include_methods = ordered_methods,
+    sim_order = sim_order,
+    regime = "N"
+  )
+  table_2N <- make_peer_ratio_table(
+    summary_dat,
+    denominator = sp_methods[1L],
+    include_methods = ordered_methods,
+    sim_order = sim_order,
+    regime = "2N"
+  )
+  table_4N <- make_peer_ratio_table(
+    summary_dat,
+    denominator = sp_methods[1L],
+    include_methods = ordered_methods,
+    sim_order = sim_order,
+    regime = "4N"
+  )
+  list(overall = table_overall, N = table_N, `2N` = table_2N, `4N` = table_4N)
+}
+
+make_alpha_table <- function(dat,
+                             method_label,
+                             families,
+                             sim_order,
+                             regime = NULL,
+                             digits = 2L) {
+  if (!nrow(dat)) return(NULL)
+  sub <- dat[dat$method_label == method_label, , drop = FALSE]
+  if (!is.null(regime)) {
+    sub <- sub[sub$regime == regime, , drop = FALSE]
+  }
+  if (!nrow(sub)) return(NULL)
+
+  family_value <- function(x, fam) {
+    if (!fam %in% names(x) || is.na(x[[fam]])) 0 else x[[fam]]
+  }
+
+  rows <- list()
+  for (sim in sim_order) {
+    ss <- sub[sub$simulation == sim, , drop = FALSE]
+    if (!nrow(ss)) next
+    means <- tapply(ss$alpha, ss$family, mean)
+    row <- c(DGP = sim)
+    for (fam in families) {
+      row[[fam]] <- formatC(family_value(means, fam), digits = digits, format = "f")
+    }
+    rows[[length(rows) + 1L]] <- as.data.frame(as.list(row), stringsAsFactors = FALSE)
+  }
+
+  overall_means <- tapply(sub$alpha, sub$family, mean)
+  overall_row <- c(DGP = "Overall")
+  for (fam in families) {
+    overall_row[[fam]] <- formatC(family_value(overall_means, fam), digits = digits, format = "f")
+  }
+  rows[[length(rows) + 1L]] <- as.data.frame(as.list(overall_row), stringsAsFactors = FALSE)
+
+  out <- do.call(rbind, rows)
+  names(out) <- c("DGP", families)
+  rownames(out) <- NULL
+  out
+}
+
+build_peer_alpha_tables <- function(campaign_dir) {
+  campaign_dir <- normalizePath(campaign_dir, mustWork = FALSE)
+  config_path <- file.path(campaign_dir, "campaign_config.R")
+  if (!file.exists(config_path)) {
+    empty <- list(overall = NULL, N = NULL, `2N` = NULL, `4N` = NULL)
+    return(list(default = empty, drop = empty))
+  }
+
+  cfg_env <- new.env(parent = globalenv())
+  source(config_path, local = cfg_env)
+
+  alpha_dat <- load_peer_campaign_alphas(campaign_dir, cfg_env)
+  if (!nrow(alpha_dat)) {
+    empty <- list(overall = NULL, N = NULL, `2N` = NULL, `4N` = NULL)
+    return(list(default = empty, drop = empty))
+  }
+
+  alpha_dat$simulation <- pretty_simulation(alpha_dat$simulation)
+  sim_order <- sort(pretty_simulation(vapply(
+    cfg_env$campaign_dgp_keys(),
+    function(key) cfg_env$campaign_dgp_config(key)$short_label,
+    character(1L)
+  )))
+  families <- cfg_env$campaign_default_families[
+    order(pretty_simulation(cfg_env$campaign_default_families))
+  ]
+  sp_methods <- unname(cfg_env$campaign_method_labels[c(
+    "spcovar_default",
+    "spcovar_default_minus_own_family"
+  )])
+
+  build_for_method <- function(method_label) {
+    list(
+      overall = make_alpha_table(alpha_dat, method_label, families, sim_order),
+      N = make_alpha_table(alpha_dat, method_label, families, sim_order, regime = "N"),
+      `2N` = make_alpha_table(alpha_dat, method_label, families, sim_order, regime = "2N"),
+      `4N` = make_alpha_table(alpha_dat, method_label, families, sim_order, regime = "4N")
+    )
+  }
+
+  list(
+    default = build_for_method(sp_methods[1L]),
+    drop = build_for_method(sp_methods[2L])
+  )
+}
+
+render_alpha_table <- function(tab) {
+  if (is.null(tab) || !nrow(tab)) {
+    cat("Averaging-weight summary is not available.")
+    return(invisible(NULL))
+  }
+  kable(
+    tab,
+    format = "html",
+    align = c("l", rep("r", ncol(tab) - 1L)),
+    col.names = vapply(names(tab), pretty_name, character(1L), USE.NAMES = FALSE),
+    row.names = FALSE,
+    escape = FALSE,
+    table.attr = 'class="peer-ratio-table"'
+  )
+}
+
+bc_peer_tables <- build_peer_ratio_tables("../Work_bcgs2_peer_beta_mc")
+nbc_peer_tables <- build_peer_ratio_tables("../Work_nbc_peer_uniform_mc")
+bc_alpha_tables <- build_peer_alpha_tables("../Work_bcgs2_peer_beta_mc")
+```
+
 ## Simulation Design
 
 The revised simulation design emphasizes:
@@ -574,6 +953,86 @@ The point is practical:
 - which methods return complete estimates?
 - how do RMSE and rankings change across DGPs?
 
+## Peer Comparison Ratios: Bias Corrected
+
+Each entry is $\mathrm{MSE}(\text{method})/\mathrm{MSE}(\text{proposed})$;
+smaller is better. The first tab is the manuscript's overall geometric index,
+and the remaining tabs fix the sparse-sample regime.
+
+Bias-corrected beta-time campaign.
+
+::: {.panel-tabset .peer-tabs}
+
+### Overall
+
+```{r}
+#| echo: false
+render_peer_ratio_table(bc_peer_tables$overall)
+```
+
+### N
+
+```{r}
+#| echo: false
+render_peer_ratio_table(bc_peer_tables$N)
+```
+
+### 2N
+
+```{r}
+#| echo: false
+render_peer_ratio_table(bc_peer_tables$`2N`)
+```
+
+### 4N
+
+```{r}
+#| echo: false
+render_peer_ratio_table(bc_peer_tables$`4N`)
+```
+
+:::
+
+## Peer Comparison Ratios: Not Bias Corrected
+
+Each entry is $\mathrm{MSE}(\text{method})/\mathrm{MSE}(\text{proposed})$;
+smaller is better. The first tab is the overall geometric index, and the
+remaining tabs fix the sparse-sample regime.
+
+No-boundary-correction uniform-time control campaign.
+
+::: {.panel-tabset .peer-tabs}
+
+### Overall
+
+```{r}
+#| echo: false
+render_peer_ratio_table(nbc_peer_tables$overall)
+```
+
+### N
+
+```{r}
+#| echo: false
+render_peer_ratio_table(nbc_peer_tables$N)
+```
+
+### 2N
+
+```{r}
+#| echo: false
+render_peer_ratio_table(nbc_peer_tables$`2N`)
+```
+
+### 4N
+
+```{r}
+#| echo: false
+render_peer_ratio_table(nbc_peer_tables$`4N`)
+```
+
+:::
+
 ## Averaging Weights
 
 The $\widehat\alpha$ weights are diagnostic, not just computational detail.
@@ -585,6 +1044,85 @@ The manuscript tables report both:
 
 - weights across DGPs;
 - weights when the generating family is removed.
+
+## Averaging Weights: Proposed
+
+Average $\widehat\alpha$ weights for the proposed estimator. The first tab
+averages over all available DGP-regime cells; the remaining tabs fix the
+sparse-sample regime.
+
+Bias-corrected beta-time campaign.
+
+::: {.panel-tabset .peer-tabs}
+
+### Overall
+
+```{r}
+#| echo: false
+render_alpha_table(bc_alpha_tables$default$overall)
+```
+
+### N
+
+```{r}
+#| echo: false
+render_alpha_table(bc_alpha_tables$default$N)
+```
+
+### 2N
+
+```{r}
+#| echo: false
+render_alpha_table(bc_alpha_tables$default$`2N`)
+```
+
+### 4N
+
+```{r}
+#| echo: false
+render_alpha_table(bc_alpha_tables$default$`4N`)
+```
+
+:::
+
+## Averaging Weights: Family Omitted
+
+Average $\widehat\alpha$ weights when the DGP family is removed from the
+candidate menu. The zero diagonal marks the omitted generating family.
+
+Bias-corrected beta-time campaign.
+
+::: {.panel-tabset .peer-tabs}
+
+### Overall
+
+```{r}
+#| echo: false
+render_alpha_table(bc_alpha_tables$drop$overall)
+```
+
+### N
+
+```{r}
+#| echo: false
+render_alpha_table(bc_alpha_tables$drop$N)
+```
+
+### 2N
+
+```{r}
+#| echo: false
+render_alpha_table(bc_alpha_tables$drop$`2N`)
+```
+
+### 4N
+
+```{r}
+#| echo: false
+render_alpha_table(bc_alpha_tables$drop$`4N`)
+```
+
+:::
 
 ## Reading The Simulation Tables
 

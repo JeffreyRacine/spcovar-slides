@@ -30,3 +30,13 @@
 .reveal {
     font-size: 1.70em;
 }
+
+.reveal .peer-tabs table {
+    font-size: 0.54em;
+}
+
+.reveal .peer-tabs th,
+.reveal .peer-tabs td {
+    padding: 0.16em 0.30em;
+    white-space: nowrap;
+}
