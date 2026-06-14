@@ -1259,30 +1259,131 @@ with the manuscript evidence.
 
 :::
 
-## Location and Scale
+```{r}
+#| label: cd4-default-fits
+#| include: false
 
-![](figures/cd4-location.png){fig-align="center" width="90%"}
+if (!requireNamespace("spcovar", quietly = TRUE)) {
+  stop("The spcovar package is required to render the CD4 slides.", call. = FALSE)
+}
+if (!requireNamespace("refund", quietly = TRUE)) {
+  stop("The refund package is required to render the CD4 slides.", call. = FALSE)
+}
+
+library(spcovar)
+
+data(cd4, package = "refund")
+
+times <- as.numeric(colnames(cd4))
+times01 <- (times - min(times)) / diff(range(times))
+
+Lt <- vector("list", nrow(cd4))
+Ly <- vector("list", nrow(cd4))
+
+for (i in seq_len(nrow(cd4))) {
+  ok <- is.finite(cd4[i, ])
+  Lt[[i]] <- times01[ok]
+  Ly[[i]] <- as.numeric(cd4[i, ok])
+}
+
+fit_cd4_sp <- spcovar(Lt, Ly)
+fit_cd4_np <- npcovar(Lt, Ly)
+```
+
+## Default Semiparametric Fit
+
+::: nonincremental
+
+```{r}
+#| label: fig-cd4-spcovar-default
+#| fig-width: 8.5
+#| fig-height: 5.0
+#| fig.align: "center"
+plot(fit_cd4_sp)
+```
+
+:::
 
 ::: {.content-hidden when-profile="short"}
-## Covariance Contour Views
+## Default Nonparametric Fit
+
+::: nonincremental
+
+```{r}
+#| label: fig-cd4-npcovar-default
+#| fig-width: 8.5
+#| fig-height: 5.0
+#| fig.align: "center"
+plot(fit_cd4_np)
+```
+
+:::
+
+:::
+
+::: {.content-hidden when-profile="short"}
+## Covariance Contour Views {#covariance-contour-views}
 
 ::: nonincremental
 
 Heat maps and contours are a popular way to visualize covariance estimates.
 
-![](figures/cd4-covariance.png){fig-align="center" width="90%"}
+```{r}
+#| label: fig-cd4-spcovar-heatmap-default
+#| fig-width: 7.8
+#| fig-height: 5.2
+#| fig.align: "center"
+plot(fit_cd4_sp, view = "heatmap")
+```
 
 :::
 
 :::
 
-## Covariance Surface Views
+::: {.content-hidden when-profile="short"}
+## Nonparametric Covariance Contour View
+
+::: nonincremental
+
+```{r}
+#| label: fig-cd4-npcovar-heatmap-default
+#| fig-width: 7.8
+#| fig-height: 5.2
+#| fig.align: "center"
+plot(fit_cd4_np, view = "heatmap")
+```
+
+:::
+
+:::
+
+## Semiparametric Covariance Surface
 
 ::: nonincremental
 
 The same covariance estimates can be viewed as full surfaces.
 
-![](figures/cd4-surface-rgl.png){fig-align="center" width="98%"}
+```{r}
+#| label: fig-cd4-spcovar-surface-default
+#| fig-width: 7.8
+#| fig-height: 5.2
+#| fig.align: "center"
+plot(fit_cd4_sp, view = "persp")
+```
+
+:::
+
+## Nonparametric Covariance Surface
+
+::: nonincremental
+
+```{r}
+#| label: fig-cd4-npcovar-surface-default
+#| fig-width: 7.8
+#| fig-height: 5.2
+#| fig.align: "center"
+plot(fit_cd4_np, view = "persp")
+```
 
 :::
 

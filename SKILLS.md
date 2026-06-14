@@ -125,13 +125,9 @@ Important points:
 - Boundary behavior is visually consequential in this application.
 - Sensitivity analysis across boundary choices is a virtue, not a weakness.
 
-Static CD4 figure exports currently live in:
-
-- `/Users/jracine/Development/Rennes_2026/slides_quarto/figures/cd4-location.png`
-- `/Users/jracine/Development/Rennes_2026/slides_quarto/figures/cd4-covariance.png`
-
-These were created from the manuscript-rendered figures and can be refreshed
-when the manuscript figures change.
+The CD4 figures are rendered directly by `index.qmd` from the default
+`spcovar(Lt, Ly)` and `npcovar(Lt, Ly)` calls. Keep these slide figures
+self-contained rather than copying manuscript-rendered PNGs into the deck.
 
 ## Style Guidance
 
@@ -160,4 +156,3 @@ Before making substantial edits:
 Do not mutate files outside `/Users/jracine/Development` unless Jeffrey
 explicitly names the outside path and asks for that mutation in the current
 turn.
-
