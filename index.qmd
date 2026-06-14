@@ -1168,9 +1168,17 @@ But it imposes strong structure:
 
 ![](figures/cd4-location.png){fig-align="center" width="90%"}
 
-## Covariance Surfaces
+## Covariance Contour Views
+
+Heat maps and contours are a popular way to visualize covariance estimates.
 
 ![](figures/cd4-covariance.png){fig-align="center" width="90%"}
+
+## Covariance Surface Views
+
+The same covariance estimates can be viewed as full surfaces.
+
+![](figures/cd4-surface-rgl.png){fig-align="center" width="98%"}
 
 ## CD4 Interpretation
 
