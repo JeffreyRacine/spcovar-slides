@@ -47,21 +47,6 @@ format:
 editor: source
 ---
 
-# Slide Pro-Tips
-
-- `F`: fullscreen
-- `S`: speaker view
-- `E`: export to PDF
-- `B`: pause to black screen
-- `O`: overview
-- `Z`: zoom
-- `Alt` + click: zoom to region
-
-::: {.notes}
-Retained from the Braga revealjs talk. This is mainly a practical opening slide
-for the presenter, and can be hidden late in preparation if preferred.
-:::
-
 # Abstract
 
 We propose a semiparametric covariance estimator for sparsely observed
