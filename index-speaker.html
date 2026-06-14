@@ -12,7 +12,7 @@
   <meta name="author" content="Valentin Patilea^\dagger">
   <meta name="author" content="Jeffrey S. Racine^\ddagger">
   <meta name="dcterms.date" content="2026-06-24">
-  <title>quarto-input7364359c466c5938</title>
+  <title>quarto-input2bd5f8ff63a73e0b</title>
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, minimal-ui">
@@ -249,22 +249,26 @@ Jeffrey S. Racine<span class="math inline">\(^\ddagger\)</span>
 </section>
 <section id="abstract" class="title-slide slide level1 center">
 <h1>Abstract</h1>
-<p>We propose a semiparametric covariance estimator for sparsely observed functional data.</p>
-<p>The estimator decomposes the covariance surface into boundary-corrected nonparametric marginal scale functions and a structured correlation surface. The correlation component is fit over a menu of interpretable positive-definite families and then averaged using data-driven weights.</p>
-<p>The resulting estimator is computationally attractive, retains flexibility where the data are most informative, and provides a direct bridge between fully parametric and fully nonparametric sparse FDA covariance estimation. The talk also emphasizes the data-driven implementation and a CD4 application with static and interactive covariance-surface views.</p>
+<ul>
+<li class="fragment"><p>We propose a semiparametric covariance estimator for sparsely observed functional data.</p></li>
+<li class="fragment"><p>The estimator decomposes the covariance surface into boundary-corrected nonparametric marginal scale functions and a structured correlation surface.</p></li>
+<li class="fragment"><p>The correlation component is fit over a menu of interpretable positive-definite families and then averaged using data-driven weights.</p></li>
+<li class="fragment"><p>The resulting estimator is computationally attractive, retains flexibility where the data are most informative, and provides a direct bridge between fully parametric and fully nonparametric sparse FDA covariance estimation.</p></li>
+<li class="fragment"><p>The talk also emphasizes the data-driven implementation and a CD4 application with static and interactive covariance-surface views.</p></li>
+</ul>
 </section>
 
 <section id="outline-of-talk" class="title-slide slide level1 center">
 <h1>Outline of Talk</h1>
-<ol type="1">
-<li>Sparse FDA covariance: what makes the problem hard</li>
-<li>A semiparametric decomposition</li>
-<li>Nonparametric mean and variance estimation with boundary correction</li>
-<li>Correlation families, model averaging, and implementation details</li>
-<li>Finite-sample evidence</li>
-<li>CD4 application and live covariance-surface demo</li>
-<li>Summary and next steps</li>
-</ol>
+<ul>
+<li class="fragment"><p>Sparse FDA covariance: what makes the problem hard</p></li>
+<li class="fragment"><p>A semiparametric decomposition</p></li>
+<li class="fragment"><p>Nonparametric mean and variance estimation with boundary correction</p></li>
+<li class="fragment"><p>Correlation families, model averaging, and implementation details</p></li>
+<li class="fragment"><p>Finite-sample evidence</p></li>
+<li class="fragment"><p>CD4 application and live covariance-surface demo</p></li>
+<li class="fragment"><p>Summary and next steps</p></li>
+</ul>
 <aside class="notes">
 <p>As in the 2024 talk, do not march through proofs line by line. The audience should understand the estimator, why it is useful, and what the evidence says. Proofs will be added to the manuscript separately.</p>
 <style type="text/css">
@@ -287,19 +291,18 @@ Jeffrey S. Racine<span class="math inline">\(^\ddagger\)</span>
 </section>
 <section id="classical-versus-functional-data" class="slide level2 center">
 <h2>Classical Versus Functional Data</h2>
-<p>Classical sample element:</p>
-<p><span class="math display">\[
+<ul>
+<li class="fragment"><p>Classical sample element: <span class="math display">\[
 Y_i \in \mathbb R^d .
-\]</span></p>
-<p>Functional sample element:</p>
-<p><span class="math display">\[
+\]</span></p></li>
+<li class="fragment"><p>Functional sample element: <span class="math display">\[
 X_i = \{X_i(t): t \in \mathcal T\}.
-\]</span></p>
-<p>Sparse FDA observes only a small, noisy subset:</p>
-<p><span class="math display">\[
+\]</span></p></li>
+<li class="fragment"><p>Sparse FDA observes only a small, noisy subset: <span class="math display">\[
 Y_{ij} = X_i(T_{ij}) + \varepsilon_{ij},
-        \qquad j=1,\ldots,m_i .
-\]</span></p>
+      \qquad j=1,\ldots,m_i .
+\]</span></p></li>
+</ul>
 <aside class="notes">
 <p>This recreates the pedagogical opening used in Braga: begin with the sample element before discussing estimators.</p>
 <style type="text/css">
@@ -316,29 +319,29 @@ Y_{ij} = X_i(T_{ij}) + \varepsilon_{ij},
 </section>
 <section id="sparse-curves" class="slide level2 center">
 <h2>Sparse Curves</h2>
-<p>In dense FDA, each curve carries substantial within-subject information.</p>
-<p>In sparse FDA, covariance information is distributed across many subjects.</p>
-<p>The object of interest is the latent covariance function:</p>
-<p><span class="math display">\[
+<ul>
+<li class="fragment"><p>In dense FDA, each curve carries substantial within-subject information.</p></li>
+<li class="fragment"><p>In sparse FDA, covariance information is distributed across many subjects.</p></li>
+<li class="fragment"><p>The object of interest is the latent covariance function: <span class="math display">\[
 \operatorname{cov}\{X_i(s),X_i(t)\},
-\]</span></p>
-<p>which is learned from irregularly placed within-subject pairs.</p>
-<p>Replication matters.</p>
+\]</span></p></li>
+<li class="fragment"><p>This object is learned from irregularly placed within-subject pairs.</p></li>
+<li class="fragment"><p>Replication matters.</p></li>
+</ul>
 </section>
 <section id="measurement-error" class="slide level2 center">
 <h2>Measurement Error</h2>
-<p>Let</p>
-<p><span class="math display">\[
+<ul>
+<li class="fragment"><p>Let <span class="math display">\[
 C(s,t)=\operatorname{cov}\{X_i(s),X_i(t)\}
-\]</span></p>
-<p>denote the covariance function of the latent process <span class="math inline">\(X\)</span>.</p>
-<p>The covariance of observations is not just this latent covariance:</p>
-<p><span class="math display">\[
+\]</span> denote the covariance function of the latent process <span class="math inline">\(X\)</span>.</p></li>
+<li class="fragment"><p>The covariance of observations is not just this latent covariance: <span class="math display">\[
 \operatorname{cov}(Y_{ij},Y_{ik})
 = C(T_{ij},T_{ik}) + \sigma_\varepsilon^2 1\{j=k\}.
-\]</span></p>
-<p>The diagonal mixes latent variance and noise variance.</p>
-<p>The off-diagonal is informative but can be sparse and unevenly distributed.</p>
+\]</span></p></li>
+<li class="fragment"><p>The diagonal mixes latent variance and noise variance.</p></li>
+<li class="fragment"><p>The off-diagonal is informative but can be sparse and unevenly distributed.</p></li>
+</ul>
 <aside class="notes">
 <p>The left-hand side, <span class="math inline">\(\operatorname{cov}(Y_{ij},Y_{ik})\)</span>, is the covariance of the observed noisy measurements, not the latent covariance function itself. Writing it explicitly makes the distinction clear:</p>
 <p>observed covariance = latent covariance + measurement-error contribution</p>
@@ -356,18 +359,19 @@ C(s,t)=\operatorname{cov}\{X_i(s),X_i(t)\}
 </section>
 <section id="why-direct-surface-smoothing-can-struggle" class="slide level2 center">
 <h2>Why Direct Surface Smoothing Can Struggle</h2>
-<p>Fully nonparametric covariance estimation targets a two-dimensional surface:</p>
-<p><span class="math display">\[
-C(s,t), \qquad (s,t)\in\mathcal T^2 .
-\]</span></p>
-<p>That is flexible, but sparse designs can leave large regions weakly informed.</p>
-<p>The estimator must manage:</p>
 <ul>
-<li>irregular design points,</li>
-<li>measurement error,</li>
-<li>positive-definiteness pressure,</li>
-<li>boundary behavior,</li>
-<li>computation.</li>
+<li class="fragment"><p>Fully nonparametric covariance estimation targets a two-dimensional surface: <span class="math display">\[
+C(s,t), \qquad (s,t)\in\mathcal T^2 .
+\]</span></p></li>
+<li class="fragment"><p>That is flexible, but sparse designs can leave large regions weakly informed.</p></li>
+<li class="fragment"><p>The estimator must manage:</p>
+<ul>
+<li class="fragment">irregular design points,</li>
+<li class="fragment">measurement error,</li>
+<li class="fragment">positive-definiteness pressure,</li>
+<li class="fragment">boundary behavior,</li>
+<li class="fragment">computation.</li>
+</ul></li>
 </ul>
 </section></section>
 <section>
@@ -377,66 +381,68 @@ C(s,t), \qquad (s,t)\in\mathcal T^2 .
 </section>
 <section id="the-object" class="slide level2 center">
 <h2>The Object</h2>
-<p>Let</p>
-<p><span class="math display">\[
+<ul>
+<li class="fragment"><p>Let <span class="math display">\[
 \mu(t)=\mathbb{E}\{X(t)\},
 \qquad
 \sigma^2(t)=\operatorname{var}\{X(t)\},
-\]</span></p>
-<p>and</p>
+\]</span> and</p>
 <p><span class="math display">\[
 \rho(s,t)=\operatorname{corr}\{X(s),X(t)\}.
-\]</span></p>
-<p>Then</p>
-<p><span class="math display">\[
+\]</span></p></li>
+<li class="fragment"><p>Then <span class="math display">\[
 C(s,t)=\sigma(s)\sigma(t)\rho(s,t).
-\]</span></p>
+\]</span></p></li>
+</ul>
 </section>
 <section id="the-main-idea" class="slide level2 center">
 <h2>The Main Idea</h2>
-<p>Estimate the location and marginal scale nonparametrically.</p>
-<p>Estimate correlation semiparametrically:</p>
-<p><span class="math display">\[
+<ul>
+<li class="fragment"><p>Estimate the location and marginal scale nonparametrically.</p></li>
+<li class="fragment"><p>Estimate correlation semiparametrically: <span class="math display">\[
 \widehat C(s,t)
 = \widehat\sigma(s)\widehat\sigma(t)\widehat\rho(s,t).
-\]</span></p>
-<p>The scale functions absorb one-dimensional nonstationarity.</p>
-<p>The correlation surface is constrained only through interpretable, positive-definite correlation families.</p>
+\]</span></p></li>
+<li class="fragment"><p>The scale functions absorb one-dimensional nonstationarity.</p></li>
+<li class="fragment"><p>The correlation surface is constrained only through interpretable, positive-definite correlation families.</p></li>
+</ul>
 </section>
 <section id="why-this-is-useful" class="slide level2 center">
 <h2>Why This Is Useful</h2>
-<p>This decomposition turns a difficult surface estimation problem into:</p>
+<ul>
+<li class="fragment"><p>This decomposition turns a difficult surface estimation problem into:</p>
 <ol type="1">
-<li>two one-dimensional nonparametric regressions;</li>
-<li>one correlation-family fitting problem;</li>
-<li>a model-averaging problem over candidate correlation families.</li>
-</ol>
-<p>The computational burden is closer to parametric fitting than to unrestricted two-dimensional smoothing.</p>
+<li class="fragment">two one-dimensional nonparametric regressions;</li>
+<li class="fragment">one correlation-family fitting problem;</li>
+<li class="fragment">a model-averaging problem over candidate correlation families.</li>
+</ol></li>
+<li class="fragment"><p>The computational burden is closer to parametric fitting than to unrestricted two-dimensional smoothing.</p></li>
+</ul>
 </section>
 <section id="a-statistical-compromise" class="slide level2 center">
 <h2>A Statistical Compromise</h2>
-<p>Fully parametric covariance:</p>
-<p><span class="math display">\[
+<ul>
+<li class="fragment"><p>Fully parametric covariance: <span class="math display">\[
 C_\theta(s,t)
-\]</span></p>
-<p>can be too rigid.</p>
-<p>Fully nonparametric covariance:</p>
-<p><span class="math display">\[
+\]</span> can be too rigid.</p></li>
+<li class="fragment"><p>Fully nonparametric covariance: <span class="math display">\[
 \widehat C_{\mathrm{np}}(s,t)
-\]</span></p>
-<p>can be too variable under sparse designs.</p>
-<p>The proposed estimator lives between these two extremes.</p>
+\]</span> can be too variable under sparse designs.</p></li>
+<li class="fragment"><p>The proposed estimator lives between these two extremes.</p></li>
+</ul>
 </section>
 <section id="relation-to-sparse-fda" class="slide level2 center">
 <h2>Relation To Sparse FDA</h2>
-<p>The sparse FDA setting follows the measurement-error and random-design framework used in the PACE literature <span class="citation" data-cites="Yao2005Sparse">(<a href="#/references" role="doc-biblioref" onclick="">Yao et al. 2005</a>)</span>.</p>
-<p>Our contribution is not curve recovery itself.</p>
-<p>The focus is covariance estimation when one wants:</p>
 <ul>
-<li>interpretable correlation structure,</li>
-<li>flexible marginal variance,</li>
-<li>low computational cost,</li>
-<li>a route for model averaging.</li>
+<li class="fragment"><p>The sparse FDA setting follows the measurement-error and random-design framework used in the PACE literature <span class="citation" data-cites="Yao2005Sparse">(<a href="#/references" role="doc-biblioref" onclick="">Yao et al. 2005</a>)</span>.</p></li>
+<li class="fragment"><p>Our contribution is not curve recovery itself.</p></li>
+<li class="fragment"><p>The focus is covariance estimation when one wants:</p>
+<ul>
+<li class="fragment">interpretable correlation structure,</li>
+<li class="fragment">flexible marginal variance,</li>
+<li class="fragment">low computational cost,</li>
+<li class="fragment">a route for model averaging.</li>
+</ul></li>
 </ul>
 </section></section>
 <section>
@@ -446,119 +452,129 @@ C_\theta(s,t)
 </section>
 <section id="mean-estimation" class="slide level2 center">
 <h2>Mean Estimation</h2>
-<p>The mean is estimated from pooled observations:</p>
-<p><span class="math display">\[
+<ul>
+<li class="fragment"><p>The mean is estimated from pooled observations: <span class="math display">\[
 \widehat\mu(t)
 =\sum_{k=0}^{K}\widehat\theta_k \phi_k(t),
-\]</span></p>
-<p>Let <span class="math inline">\(n=\sum_{i=1}^N M_i\)</span> and let <span class="math inline">\(U_1\leq\cdots\leq U_n\)</span> denote the ordered pooled observation times.</p>
-<p>The coefficients are estimated from the aligned pooled responses, and the basis is selected and truncated from the pooled sample.</p>
-<p>The series step is one-dimensional and computationally inexpensive.</p>
+\]</span></p></li>
+<li class="fragment"><p>Let <span class="math inline">\(n=\sum_{i=1}^N M_i\)</span> and let <span class="math inline">\(U_1\leq\cdots\leq U_n\)</span> denote the ordered pooled observation times.</p></li>
+<li class="fragment"><p>The coefficients are estimated from the aligned pooled responses, and the basis is selected and truncated from the pooled sample.</p></li>
+<li class="fragment"><p>The series step is one-dimensional and computationally inexpensive.</p></li>
+</ul>
 </section>
 <section id="variance-estimation" class="slide level2 center">
 <h2>Variance Estimation</h2>
-<p>After estimating the mean and noise variance, the latent marginal variance is estimated through the variance pseudo-response</p>
-<p><span class="math display">\[
+<ul>
+<li class="fragment"><p>After estimating the mean and noise variance, the latent marginal variance is estimated through the variance pseudo-response <span class="math display">\[
 Z_{ij}^{(v)}
 =\{Y_{ij}-\mu(T_{ij})\}^2-\sigma_\varepsilon^2.
-\]</span></p>
-<p>The target is</p>
-<p><span class="math display">\[
+\]</span></p></li>
+<li class="fragment"><p>The target is <span class="math display">\[
 \sigma^2(t)
 =\mathbb{E}\{Z_{ij}^{(v)}\mid T_{ij}=t\}.
-\]</span></p>
-<p>The feasible version replaces <span class="math inline">\(\mu\)</span> and <span class="math inline">\(\sigma_\varepsilon^2\)</span> by estimates.</p>
-<p>The noise variance is estimated using very local within-subject contrasts.</p>
+\]</span></p></li>
+<li class="fragment"><p>The feasible version replaces <span class="math inline">\(\mu\)</span> and <span class="math inline">\(\sigma_\varepsilon^2\)</span> by estimates.</p></li>
+<li class="fragment"><p>The noise variance is estimated using very local within-subject contrasts.</p></li>
+</ul>
 </section>
 <section id="noise-variance" class="slide level2 center">
 <h2>Noise Variance</h2>
-<p>For close within-curve pairs, the latent curve is nearly unchanged, so half-squared local differences mostly reflect measurement noise:</p>
-<p><span class="math display">\[
+<ul>
+<li class="fragment"><p>For close within-curve pairs, the latent curve is nearly unchanged, so half-squared local differences mostly reflect measurement noise: <span class="math display">\[
 D_{ijk}
 =\frac12
 \left[
 \{Y_{ij}-\widehat\mu(T_{ij})\}
 -\{Y_{ik}-\widehat\mu(T_{ik})\}
 \right]^2 .
-\]</span></p>
-<p>Average the <span class="math inline">\(k_{nn}\)</span> within-curve pairs with the smallest time gaps <span class="math inline">\(|T_{ij}-T_{ik}|\)</span>:</p>
-<p><span class="math display">\[
+\]</span></p></li>
+<li class="fragment"><p>Average the <span class="math inline">\(k_{nn}\)</span> within-curve pairs with the smallest time gaps <span class="math inline">\(|T_{ij}-T_{ik}|\)</span>: <span class="math display">\[
 \widehat\sigma_\varepsilon^2
 =\frac{1}{k_{nn}}\sum_{(i,j,k)\in\mathcal N_{k_{nn}}}D_{ijk}.
-\]</span></p>
-<p>The operational rule is deliberately simple:</p>
-<p><span class="math display">\[
+\]</span></p></li>
+<li class="fragment"><p>The operational rule is deliberately simple: <span class="math display">\[
 k_{nn} \asymp \log n,
 \qquad n=\sum_{i=1}^N M_i.
-\]</span></p>
-<p>This exploits near-neighbor pairs while keeping the estimator computationally light.</p>
+\]</span></p></li>
+<li class="fragment"><p>This exploits near-neighbor pairs while keeping the estimator computationally light.</p></li>
+</ul>
 </section>
 <section id="efromovich-cosine-series" class="slide level2 center">
 <h2>Efromovich Cosine Series</h2>
-<p>Efromovich’s cosine-series approach is attractive because the cosine basis is orthonormal on <span class="math inline">\([0,1]\)</span> and supports thresholding rules <span class="citation" data-cites="efromovich1999">(<a href="#/references" role="doc-biblioref" onclick="">Efromovich 1999</a>)</span>.</p>
-<p>For <span class="math inline">\(k\geq 0\)</span>,</p>
-<p><span class="math display">\[
+<ul>
+<li class="fragment"><p>Efromovich’s cosine-series approach is attractive because the cosine basis is orthonormal on <span class="math inline">\([0,1]\)</span> and supports thresholding rules <span class="citation" data-cites="efromovich1999">(<a href="#/references" role="doc-biblioref" onclick="">Efromovich 1999</a>)</span>.</p></li>
+<li class="fragment"><p>For <span class="math inline">\(k\geq 0\)</span>, <span class="math display">\[
 \phi_k(t)=
 \begin{cases}
 1, &amp; k=0,\\
 \sqrt{2}\cos(k\pi t), &amp; k\geq 1 .
 \end{cases}
-\]</span></p>
-<p>This basis is stable, fast, and surprisingly competitive in finite samples.</p>
+\]</span></p></li>
+<li class="fragment"><p>This basis is stable, fast, and surprisingly competitive in finite samples.</p></li>
+</ul>
 </section>
 <section id="the-boundary-issue" class="slide level2 center">
 <h2>The Boundary Issue</h2>
-<p>The cosine basis imposes</p>
-<p><span class="math display">\[
+<ul>
+<li class="fragment"><p>The cosine basis imposes <span class="math display">\[
 \phi_k'(0)=\phi_k'(1)=0 .
-\]</span></p>
-<p>Any finite cosine expansion therefore has zero derivative at both endpoints.</p>
-<p>That can be helpful when it is true.</p>
-<p>It is restrictive when the mean or variance has genuine endpoint slope.</p>
+\]</span></p></li>
+<li class="fragment"><p>Any finite cosine expansion therefore has zero derivative at both endpoints.</p></li>
+<li class="fragment"><p>That can be helpful when it is true.</p></li>
+<li class="fragment"><p>It is restrictive when the mean or variance has genuine endpoint slope.</p></li>
+</ul>
 </section>
 <section id="efromovichs-remedy" class="slide level2 center">
 <h2>Efromovich’s Remedy</h2>
-<p>Efromovich discusses polynomial correction as a way to handle boundary incompatibility <span class="citation" data-cites="efromovich1999">(<a href="#/references" role="doc-biblioref" onclick="">Efromovich 1999</a>, ch.&nbsp;2)</span>.</p>
-<p>The basic idea is:</p>
+<ul>
+<li class="fragment"><p>Efromovich discusses polynomial correction as a way to handle boundary incompatibility <span class="citation" data-cites="efromovich1999">(<a href="#/references" role="doc-biblioref" onclick="">Efromovich 1999</a>, ch.&nbsp;2)</span>.</p></li>
+<li class="fragment"><p>The basic idea is:</p>
 <ol type="1">
-<li>represent low-order endpoint behavior with polynomial terms;</li>
-<li>let the cosine tail estimate the remaining smooth component.</li>
-</ol>
-<p>This preserves the spirit of the cosine estimator while relaxing the endpoint constraint.</p>
+<li class="fragment">represent low-order endpoint behavior with polynomial terms;</li>
+<li class="fragment">let the cosine tail estimate the remaining smooth component.</li>
+</ol></li>
+<li class="fragment"><p>This preserves the spirit of the cosine estimator while relaxing the endpoint constraint.</p></li>
+</ul>
 </section>
 <section id="orthonormality-matters" class="slide level2 center">
 <h2>Orthonormality Matters</h2>
-<p>Adding polynomial columns directly breaks the simple orthonormal structure that motivates thresholded series estimation.</p>
-<p>The remedy used here is to orthonormalize the finite set of boundary columns and cosine columns.</p>
-<p>Numerically, this is done with a QR/Gram-Schmidt construction <span class="citation" data-cites="bjorck2015">(<a href="#/references" role="doc-biblioref" onclick="">Björck 2015</a>)</span>.</p>
+<ul>
+<li class="fragment"><p>Adding polynomial columns directly breaks the simple orthonormal structure that motivates thresholded series estimation.</p></li>
+<li class="fragment"><p>The remedy used here is to orthonormalize the finite set of boundary columns and cosine columns.</p></li>
+<li class="fragment"><p>Numerically, this is done with a QR/Gram-Schmidt construction <span class="citation" data-cites="bjorck2015">(<a href="#/references" role="doc-biblioref" onclick="">Björck 2015</a>)</span>.</p></li>
+</ul>
 </section>
 <section id="boundary-corrected-basis" class="slide level2 center">
 <h2>Boundary-Corrected Basis</h2>
-<p>For a quadratic correction, start from</p>
-<p><span class="math display">\[
+<ul>
+<li class="fragment"><p>For a quadratic correction, start from <span class="math display">\[
 \{1,\; t,\; t^2,\; \sqrt{2}\cos(\pi t),\ldots,
-  \sqrt{2}\cos(L\pi t)\}.
-\]</span></p>
-<p>Then construct an orthonormal basis spanning the same finite space.</p>
-<p>Linear correction allows a common endpoint slope.</p>
-<p>Quadratic correction allows independent endpoint slopes.</p>
+\sqrt{2}\cos(L\pi t)\}.
+\]</span></p></li>
+<li class="fragment"><p>Then construct an orthonormal basis spanning the same finite space.</p></li>
+<li class="fragment"><p>Linear correction allows a common endpoint slope.</p></li>
+<li class="fragment"><p>Quadratic correction allows independent endpoint slopes.</p></li>
+</ul>
 </section>
 <section id="why-this-is-honest" class="slide level2 center">
 <h2>Why This Is Honest</h2>
-<p>The uncorrected cosine estimator is not naive.</p>
-<p>It is a strong estimator when endpoint slopes are truly zero and is closely related to modified Fourier ideas for nonperiodic functions.</p>
-<p>Boundary correction is chosen because it avoids forcing zero derivatives at the endpoints.</p>
-<p>The price can be variance.</p>
+<ul>
+<li class="fragment"><p>The uncorrected cosine estimator is not naive.</p></li>
+<li class="fragment"><p>It is a strong estimator when endpoint slopes are truly zero and is closely related to modified Fourier ideas for nonperiodic functions.</p></li>
+<li class="fragment"><p>Boundary correction is chosen because it avoids forcing zero derivatives at the endpoints.</p></li>
+<li class="fragment"><p>The price can be variance.</p></li>
+</ul>
 </section>
 <section id="bias-variance-tradeoff" class="slide level2 center">
 <h2>Bias-Variance Tradeoff</h2>
-<p>In finite samples, boundary correction can increase integrated MSE even while removing a visible endpoint distortion.</p>
-<p>This is not a contradiction.</p>
-<p>It is the familiar statistical tradeoff:</p>
-<p><span class="math display">\[
+<ul>
+<li class="fragment"><p>In finite samples, boundary correction can increase integrated MSE even while removing a visible endpoint distortion.</p></li>
+<li class="fragment"><p>This is not a contradiction.</p></li>
+<li class="fragment"><p>It is the familiar statistical tradeoff: <span class="math display">\[
 \operatorname{MSE}(t)
 = \operatorname{Bias}^2(t)+\operatorname{Var}(t).
-\]</span></p>
+\]</span></p></li>
+</ul>
 <aside class="notes">
 <p>This wording mirrors the current manuscript stance: default boundary correction is a defensible choice because it does not build in the zero-derivative prior.</p>
 <style type="text/css">
@@ -580,16 +596,18 @@ k_{nn} \asymp \log n,
 </section>
 <section id="why-correlation-families" class="slide level2 center">
 <h2>Why Correlation Families?</h2>
-<p>Once <span class="math inline">\(\sigma(t)\)</span> is estimated, the remaining object is a correlation surface.</p>
-<p>Correlation families encode shape:</p>
 <ul>
-<li>smoothness,</li>
-<li>local roughness,</li>
-<li>bridge-like behavior,</li>
-<li>varying scale,</li>
-<li>long-range decay.</li>
+<li class="fragment"><p>Once <span class="math inline">\(\sigma(t)\)</span> is estimated, the remaining object is a correlation surface.</p></li>
+<li class="fragment"><p>Correlation families encode shape:</p>
+<ul>
+<li class="fragment">smoothness,</li>
+<li class="fragment">local roughness,</li>
+<li class="fragment">bridge-like behavior,</li>
+<li class="fragment">varying scale,</li>
+<li class="fragment">long-range decay.</li>
+</ul></li>
+<li class="fragment"><p>They also help maintain positive-definite structure.</p></li>
 </ul>
-<p>They also help maintain positive-definite structure.</p>
 </section>
 <section id="candidate-family-menu" class="slide level2 center">
 <h2>Candidate Family Menu</h2>
@@ -635,65 +653,72 @@ k_{nn} \asymp \log n,
 </section>
 <section id="correlation-family-provenance" class="slide level2 center">
 <h2>Correlation Family Provenance</h2>
-<p>Examples include:</p>
 <ul>
-<li>Matern <span class="citation" data-cites="Matern1986">(<a href="#/references" role="doc-biblioref" onclick="">Matérn 1986</a>)</span></li>
-<li>fractional Brownian motion <span class="citation" data-cites="MandelbrotVanNess1968">(<a href="#/references" role="doc-biblioref" onclick="">Mandelbrot and Van Ness 1968</a>)</span></li>
-<li>multifractional Brownian motion <span class="citation" data-cites="PeltierLevyVehel1995">(<a href="#/references" role="doc-biblioref" onclick="">Peltier and Lévy Véhel 1995</a>)</span></li>
-<li>Brownian bridge <span class="citation" data-cites="Doob1949">(<a href="#/references" role="doc-biblioref" onclick="">Doob 1949</a>)</span></li>
-<li>Gaussian-process families <span class="citation" data-cites="RasmussenWilliams2006 Gibbs1997">(<a href="#/references" role="doc-biblioref" onclick="">Rasmussen and Williams 2006</a>; <a href="#/references" role="doc-biblioref" onclick="">Gibbs 1997</a>)</span></li>
-<li>generalized Cauchy <span class="citation" data-cites="LimTeo2009GeneralizedCauchy">(<a href="#/references" role="doc-biblioref" onclick="">Lim and Teo 2009</a>)</span></li>
-<li>generalized Wendland <span class="citation" data-cites="Wendland2005 Bevilacqua2019GeneralizedWendland">(<a href="#/references" role="doc-biblioref" onclick="">Wendland 2005</a>; <a href="#/references" role="doc-biblioref" onclick="">Bevilacqua et al. 2019</a>)</span></li>
+<li class="fragment"><p>Examples include:</p>
+<ul>
+<li class="fragment">Matern <span class="citation" data-cites="Matern1986">(<a href="#/references" role="doc-biblioref" onclick="">Matérn 1986</a>)</span></li>
+<li class="fragment">fractional Brownian motion <span class="citation" data-cites="MandelbrotVanNess1968">(<a href="#/references" role="doc-biblioref" onclick="">Mandelbrot and Van Ness 1968</a>)</span></li>
+<li class="fragment">multifractional Brownian motion <span class="citation" data-cites="PeltierLevyVehel1995">(<a href="#/references" role="doc-biblioref" onclick="">Peltier and Lévy Véhel 1995</a>)</span></li>
+<li class="fragment">Brownian bridge <span class="citation" data-cites="Doob1949">(<a href="#/references" role="doc-biblioref" onclick="">Doob 1949</a>)</span></li>
+<li class="fragment">Gaussian-process families <span class="citation" data-cites="RasmussenWilliams2006 Gibbs1997">(<a href="#/references" role="doc-biblioref" onclick="">Rasmussen and Williams 2006</a>; <a href="#/references" role="doc-biblioref" onclick="">Gibbs 1997</a>)</span></li>
+<li class="fragment">generalized Cauchy <span class="citation" data-cites="LimTeo2009GeneralizedCauchy">(<a href="#/references" role="doc-biblioref" onclick="">Lim and Teo 2009</a>)</span></li>
+<li class="fragment">generalized Wendland <span class="citation" data-cites="Wendland2005 Bevilacqua2019GeneralizedWendland">(<a href="#/references" role="doc-biblioref" onclick="">Wendland 2005</a>; <a href="#/references" role="doc-biblioref" onclick="">Bevilacqua et al. 2019</a>)</span></li>
+</ul></li>
 </ul>
 </section>
 <section id="off-diagonal-fitting" class="slide level2 center">
 <h2>Off-Diagonal Fitting</h2>
-<p>For subject <span class="math inline">\(i\)</span>, form centered products</p>
-<p><span class="math display">\[
+<ul>
+<li class="fragment"><p>For subject <span class="math inline">\(i\)</span>, form centered products <span class="math display">\[
 Z_{ijk}
 =\{Y_{ij}-\widehat\mu(T_{ij})\}
-  \{Y_{ik}-\widehat\mu(T_{ik})\},
+\{Y_{ik}-\widehat\mu(T_{ik})\},
 \qquad j\neq k.
-\]</span></p>
-<p>The off-diagonal avoids direct contamination by measurement error.</p>
-<p>Candidate correlations are fit to standardized products.</p>
+\]</span></p></li>
+<li class="fragment"><p>The off-diagonal avoids direct contamination by measurement error.</p></li>
+<li class="fragment"><p>Candidate correlations are fit to standardized products.</p></li>
+</ul>
 </section>
 <section id="model-averaging" class="slide level2 center">
 <h2>Model Averaging</h2>
-<p>Instead of selecting one correlation family, compute weights</p>
-<p><span class="math display">\[
+<ul>
+<li class="fragment"><p>Instead of selecting one correlation family, compute weights <span class="math display">\[
 \widehat{\boldsymbol{\alpha}}
 =\arg\min_{\boldsymbol{\alpha}\in\Delta}
 \left\|
 \widehat R-\sum_{\ell=1}^L \alpha_\ell R_\ell
 \right\|^2,
-\]</span></p>
-<p>where <span class="math inline">\(\Delta\)</span> is the simplex.</p>
-<p>This follows the spirit of focused/model-averaging ideas <span class="citation" data-cites="CLAESKENS_HJORT:2011">(<a href="#/references" role="doc-biblioref" onclick="">Claeskens and Hjort 2008</a>)</span>.</p>
+\]</span> where <span class="math inline">\(\Delta\)</span> is the simplex.</p></li>
+<li class="fragment"><p>This follows the spirit of focused/model-averaging ideas <span class="citation" data-cites="CLAESKENS_HJORT:2011">(<a href="#/references" role="doc-biblioref" onclick="">Claeskens and Hjort 2008</a>)</span>.</p></li>
+</ul>
 </section>
 <section id="why-average" class="slide level2 center">
 <h2>Why Average?</h2>
-<p>Hard selection is brittle when families are close.</p>
-<p>Model averaging allows:</p>
 <ul>
-<li>dominant weight on a good family,</li>
-<li>insurance when two families explain different regions,</li>
-<li>interpretable diagnostics via <span class="math inline">\(\widehat\alpha\)</span>.</li>
+<li class="fragment"><p>Hard selection is brittle when families are close.</p></li>
+<li class="fragment"><p>Model averaging allows:</p>
+<ul>
+<li class="fragment">dominant weight on a good family,</li>
+<li class="fragment">insurance when two families explain different regions,</li>
+<li class="fragment">interpretable diagnostics via <span class="math inline">\(\widehat\alpha\)</span>.</li>
+</ul></li>
+<li class="fragment"><p>The averaging weights are part of the inferential output.</p></li>
 </ul>
-<p>The averaging weights are part of the inferential output.</p>
 </section>
 <section id="implementation-details" class="slide level2 smaller center">
 <h2>Implementation Details</h2>
-<p>The default fit is data-driven rather than hand-tuned.</p>
-<p>The main tuning choices are selected from the data:</p>
 <ul>
-<li>noise variance <span class="math inline">\((\sigma_\varepsilon^2)\)</span>: nearest within-subject contrasts with <span class="math inline">\(k_{nn}\asymp \log n\)</span>;</li>
-<li>mean and variance functions <span class="math inline">\((\mu(t),\sigma^2(t))\)</span>: projection coefficients are estimated in an orthonormal boundary-corrected cosine-type basis; the boundary columns are retained, and a smoothed Efromovich threshold selects and shrinks the cosine tail;</li>
-<li>nonparametric covariance benchmark <span class="math inline">\((C(s,t))\)</span>: tensor order <span class="math inline">\(J\)</span> and roughness penalty <span class="math inline">\(\lambda\)</span> are selected jointly by curve-level cross-validation or by a NOMAD search over <span class="math inline">\((J,\log_{10}\lambda)\)</span>;</li>
-<li>correlation families <span class="math inline">\((\rho_\theta(s,t))\)</span>: low-dimensional parameters <span class="math inline">\(\theta\)</span> are fit from off-diagonal products, avoiding direct measurement-error contamination;</li>
-<li>model averaging <span class="math inline">\((\widehat\alpha)\)</span>: simplex weights are chosen by the same off-diagonal fitting criterion.</li>
+<li class="fragment"><p>The default fit is data-driven rather than hand-tuned.</p></li>
+<li class="fragment"><p>The main tuning choices are selected from the data:</p>
+<ul>
+<li class="fragment">noise variance <span class="math inline">\((\sigma_\varepsilon^2)\)</span>: nearest within-subject contrasts with <span class="math inline">\(k_{nn}\asymp \log n\)</span>;</li>
+<li class="fragment">mean and variance functions <span class="math inline">\((\mu(t),\sigma^2(t))\)</span>: projection coefficients are estimated in an orthonormal boundary-corrected cosine-type basis; the boundary columns are retained, and a smoothed Efromovich threshold selects and shrinks the cosine tail;</li>
+<li class="fragment">nonparametric covariance benchmark <span class="math inline">\((C(s,t))\)</span>: tensor order <span class="math inline">\(J\)</span> and roughness penalty <span class="math inline">\(\lambda\)</span> are selected jointly by curve-level cross-validation or by a NOMAD search over <span class="math inline">\((J,\log_{10}\lambda)\)</span>;</li>
+<li class="fragment">correlation families <span class="math inline">\((\rho_\theta(s,t))\)</span>: low-dimensional parameters <span class="math inline">\(\theta\)</span> are fit from off-diagonal products, avoiding direct measurement-error contamination;</li>
+<li class="fragment">model averaging <span class="math inline">\((\widehat\alpha)\)</span>: simplex weights are chosen by the same off-diagonal fitting criterion.</li>
+</ul></li>
+<li class="fragment"><p>The demo call <code>spcovar(Lt, Ly)</code> uses these defaults.</p></li>
 </ul>
-<p>The demo call <code>spcovar(Lt, Ly)</code> uses these defaults.</p>
 </section></section>
 <section>
 <section id="parametric-and-nonparametric-benchmarks" class="title-slide slide level1 center">
@@ -702,33 +727,36 @@ Z_{ijk}
 </section>
 <section id="fully-parametric-benchmark" class="slide level2 center">
 <h2>Fully Parametric Benchmark</h2>
-<p>The fully parametric benchmark estimates:</p>
-<p><span class="math display">\[
+<ul>
+<li class="fragment"><p>The fully parametric benchmark estimates: <span class="math display">\[
 \mu_\eta(t),\qquad
 \sigma^2_\gamma(t),\qquad
 \rho_\theta(s,t).
-\]</span></p>
-<p>This is stable and fast when the structure is right.</p>
-<p>It can be misleading when location, scale, or correlation is misspecified.</p>
+\]</span></p></li>
+<li class="fragment"><p>This is stable and fast when the structure is right.</p></li>
+<li class="fragment"><p>It can be misleading when location, scale, or correlation is misspecified.</p></li>
+</ul>
 </section>
 <section id="fully-nonparametric-benchmark" class="slide level2 center">
 <h2>Fully Nonparametric Benchmark</h2>
-<p>The nonparametric covariance benchmark estimates the surface directly:</p>
-<p><span class="math display">\[
+<ul>
+<li class="fragment"><p>The nonparametric covariance benchmark estimates the surface directly: <span class="math display">\[
 C(s,t).
-\]</span></p>
-<p>This is flexible, but the tensor problem is data-hungry under sparse sampling.</p>
-<p>It is a useful competitor and a useful diagnostic.</p>
+\]</span></p></li>
+<li class="fragment"><p>This is flexible, but the tensor problem is data-hungry under sparse sampling.</p></li>
+<li class="fragment"><p>It is a useful competitor and a useful diagnostic.</p></li>
+</ul>
 </section>
 <section id="combined-test-diagnostic" class="slide level2 center">
 <h2>Combined-Test Diagnostic</h2>
-<p>The manuscript also compares convex combinations such as</p>
-<p><span class="math display">\[
+<ul>
+<li class="fragment"><p>The manuscript also compares convex combinations such as <span class="math display">\[
 \lambda\widehat C_{\mathrm{param}}
 +(1-\lambda)\widehat C_{\mathrm{sp}}.
-\]</span></p>
-<p>If the optimum places weight near one estimator, that is informative.</p>
-<p>If it mixes, that is also informative.</p>
+\]</span></p></li>
+<li class="fragment"><p>If the optimum places weight near one estimator, that is informative.</p></li>
+<li class="fragment"><p>If it mixes, that is also informative.</p></li>
+</ul>
 </section></section>
 <section>
 <section id="finite-sample-evidence" class="title-slide slide level1 center">
@@ -737,24 +765,28 @@ C(s,t).
 </section>
 <section id="simulation-design" class="slide level2 center">
 <h2>Simulation Design</h2>
-<p>The revised simulation design emphasizes:</p>
 <ul>
-<li>beta-mixture observation times;</li>
-<li>sparse within-subject sampling;</li>
-<li>non-Neumann mean and variance functions;</li>
-<li>seven correlation DGPs in the peer comparison;</li>
-<li>1000 replications for final tables.</li>
+<li class="fragment"><p>The revised simulation design emphasizes:</p>
+<ul>
+<li class="fragment">beta-mixture observation times;</li>
+<li class="fragment">sparse within-subject sampling;</li>
+<li class="fragment">non-Neumann mean and variance functions;</li>
+<li class="fragment">seven correlation DGPs in the peer comparison;</li>
+<li class="fragment">1000 replications for final tables.</li>
+</ul></li>
+<li class="fragment"><p>This is intentionally harder than a uniform-design, zero-endpoint-slope setting.</p></li>
 </ul>
-<p>This is intentionally harder than a uniform-design, zero-endpoint-slope setting.</p>
 </section>
 <section id="peer-comparison" class="slide level2 center">
 <h2>Peer Comparison</h2>
-<p>The peer comparison places the proposed estimator against available R implementations for sparse functional covariance estimation.</p>
-<p>The point is practical:</p>
 <ul>
-<li>what happens with the same data-generating designs?</li>
-<li>which methods return complete estimates?</li>
-<li>how do MSE ratios and rankings change across DGPs?</li>
+<li class="fragment"><p>The peer comparison places the proposed estimator against available R implementations for sparse functional covariance estimation.</p></li>
+<li class="fragment"><p>The point is practical:</p>
+<ul>
+<li class="fragment">what happens with the same data-generating designs?</li>
+<li class="fragment">which methods return complete estimates?</li>
+<li class="fragment">how do MSE ratios and rankings change across DGPs?</li>
+</ul></li>
 </ul>
 </section>
 <section id="peer-comparison-ratios-bias-corrected" class="slide level2 table-slide center">
@@ -1595,12 +1627,14 @@ C(s,t).
 </section>
 <section id="averaging-weights" class="slide level2 center">
 <h2>Averaging Weights</h2>
-<p>The <span class="math inline">\(\widehat{\boldsymbol{\alpha}}\)</span> weights are diagnostic, not just computational detail.</p>
-<p>They indicate which correlation families explain the simulated or empirical surface.</p>
-<p>The manuscript tables report both:</p>
 <ul>
-<li>weights across DGPs;</li>
-<li>weights when the generating family is removed.</li>
+<li class="fragment"><p>The <span class="math inline">\(\widehat{\boldsymbol{\alpha}}\)</span> weights are diagnostic, not just computational detail.</p></li>
+<li class="fragment"><p>They indicate which correlation families explain the simulated or empirical surface.</p></li>
+<li class="fragment"><p>The manuscript tables report both:</p>
+<ul>
+<li class="fragment">weights across DGPs;</li>
+<li class="fragment">weights when the generating family is removed.</li>
+</ul></li>
 </ul>
 </section>
 <section id="averaging-weights-proposed" class="slide level2 table-slide center">
@@ -2459,45 +2493,53 @@ C(s,t).
 </section>
 <section id="cd4-data" class="slide level2 center">
 <h2>CD4 Data</h2>
-<p>The application uses CD4 count data distributed with <code>refund</code> <span class="citation" data-cites="refund2026">(<a href="#/references" role="doc-biblioref" onclick="">Goldsmith et al. 2026</a>)</span>.</p>
-<p>CD4 counts are recorded relative to HIV seroconversion.</p>
-<p>Higher CD4 counts generally indicate stronger immune function.</p>
-<p>Lower CD4 counts are associated with greater immune damage.</p>
-<p>Observation times are irregular, sparse, and normalized to <span class="math inline">\([0,1]\)</span> before fitting.</p>
+<ul>
+<li class="fragment"><p>The application uses CD4 count data distributed with <code>refund</code> <span class="citation" data-cites="refund2026">(<a href="#/references" role="doc-biblioref" onclick="">Goldsmith et al. 2026</a>)</span>.</p></li>
+<li class="fragment"><p>CD4 counts are recorded relative to HIV seroconversion.</p></li>
+<li class="fragment"><p>Higher CD4 counts generally indicate stronger immune function.</p></li>
+<li class="fragment"><p>Lower CD4 counts are associated with greater immune damage.</p></li>
+<li class="fragment"><p>Observation times are irregular, sparse, and normalized to <span class="math inline">\([0,1]\)</span> before fitting.</p></li>
+</ul>
 </section>
 <section id="why-this-example-matters" class="slide level2 center">
 <h2>Why This Example Matters</h2>
-<p>Seroconversion anchors follow-up to a biologically meaningful event.</p>
-<p>The scientific question is not only the average CD4 trajectory.</p>
-<p>We also need to understand:</p>
 <ul>
-<li>how between-patient variability changes over time;</li>
-<li>how strongly early and later immune status are associated;</li>
-<li>how much variation is latent signal rather than measurement noise;</li>
-<li>whether endpoint behavior is distorted by the estimator.</li>
+<li class="fragment"><p>Seroconversion anchors follow-up to a biologically meaningful event.</p></li>
+<li class="fragment"><p>The scientific question is not only the average CD4 trajectory.</p></li>
+<li class="fragment"><p>We also need to understand:</p>
+<ul>
+<li class="fragment">how between-patient variability changes over time;</li>
+<li class="fragment">how strongly early and later immune status are associated;</li>
+<li class="fragment">how much variation is latent signal rather than measurement noise;</li>
+<li class="fragment">whether endpoint behavior is distorted by the estimator.</li>
+</ul></li>
 </ul>
 </section>
 <section id="what-the-estimator-must-separate" class="slide level2 center">
 <h2>What The Estimator Must Separate</h2>
-<p>The CD4 example is a canonical sparse longitudinal FDA setting.</p>
-<p>The observed trajectories are irregular and noisy.</p>
-<p>A covariance estimator must separate:</p>
 <ul>
-<li>population mean trajectory,</li>
-<li>marginal variance over time,</li>
-<li>within-subject correlation,</li>
-<li>measurement noise.</li>
+<li class="fragment"><p>The CD4 example is a canonical sparse longitudinal FDA setting.</p></li>
+<li class="fragment"><p>The observed trajectories are irregular and noisy.</p></li>
+<li class="fragment"><p>A covariance estimator must separate:</p>
+<ul>
+<li class="fragment">population mean trajectory,</li>
+<li class="fragment">marginal variance over time,</li>
+<li class="fragment">within-subject correlation,</li>
+<li class="fragment">measurement noise.</li>
+</ul></li>
 </ul>
 </section>
 <section id="parametric-benchmark-in-the-application" class="slide level2 center">
 <h2>Parametric Benchmark In The Application</h2>
-<p>A simple parametric benchmark is feasible and interpretable.</p>
-<p>But it imposes strong structure:</p>
 <ul>
-<li>linear mean;</li>
-<li>constant latent variance;</li>
-<li>Gaussian-shaped stationary covariance ridge;</li>
-<li>no sharp separation of latent variation and measurement error.</li>
+<li class="fragment"><p>A simple parametric benchmark is feasible and interpretable.</p></li>
+<li class="fragment"><p>But it imposes strong structure:</p>
+<ul>
+<li class="fragment">linear mean;</li>
+<li class="fragment">constant latent variance;</li>
+<li class="fragment">Gaussian-shaped stationary covariance ridge;</li>
+<li class="fragment">no sharp separation of latent variation and measurement error.</li>
+</ul></li>
 </ul>
 </section>
 <section id="location-and-scale" class="slide level2 center">
@@ -2595,21 +2637,25 @@ C(s,t).
 </section>
 <section id="cd4-interpretation" class="slide level2 center">
 <h2>CD4 Interpretation</h2>
-<p>The application illustrates why boundary behavior matters in practice.</p>
-<p>Uncorrected cosine stages can visibly deform endpoint behavior by imposing zero derivatives.</p>
-<p>Boundary-corrected stages avoid that prior restriction and support sensitivity analysis across plausible choices.</p>
+<ul>
+<li class="fragment"><p>The application illustrates why boundary behavior matters in practice.</p></li>
+<li class="fragment"><p>Uncorrected cosine stages can visibly deform endpoint behavior by imposing zero derivatives.</p></li>
+<li class="fragment"><p>Boundary-corrected stages avoid that prior restriction and support sensitivity analysis across plausible choices.</p></li>
+</ul>
 </section>
 <section id="sensitivity-is-a-feature" class="slide level2 center">
 <h2>Sensitivity Is A Feature</h2>
-<p>No boundary rule is uniformly best.</p>
-<p>The practical recommendation is to examine sensitivity across:</p>
 <ul>
-<li>uncorrected cosine,</li>
-<li>linear boundary correction,</li>
-<li>quadratic boundary correction,</li>
-<li>empirical QR alternatives.</li>
+<li class="fragment"><p>No boundary rule is uniformly best.</p></li>
+<li class="fragment"><p>The practical recommendation is to examine sensitivity across:</p>
+<ul>
+<li class="fragment">uncorrected cosine,</li>
+<li class="fragment">linear boundary correction,</li>
+<li class="fragment">quadratic boundary correction,</li>
+<li class="fragment">empirical QR alternatives.</li>
+</ul></li>
+<li class="fragment"><p>The default should be defensible, not magical.</p></li>
 </ul>
-<p>The default should be defensible, not magical.</p>
 </section></section>
 <section>
 <section id="summary" class="title-slide slide level1 center">
@@ -2618,34 +2664,40 @@ C(s,t).
 </section>
 <section id="main-points" class="slide level2 center">
 <h2>Main Points</h2>
-<p>The proposed estimator:</p>
 <ul>
-<li>decomposes covariance into scale and correlation;</li>
-<li>estimates location and scale nonparametrically;</li>
-<li>fits interpretable correlation families;</li>
-<li>uses model averaging rather than hard family selection;</li>
-<li>chooses the main tuning quantities from the data;</li>
-<li>remains computationally attractive for sparse FDA;</li>
-<li>avoids imposing zero endpoint derivatives by default.</li>
+<li class="fragment"><p>The proposed estimator:</p>
+<ul>
+<li class="fragment">decomposes covariance into scale and correlation;</li>
+<li class="fragment">estimates location and scale nonparametrically;</li>
+<li class="fragment">fits interpretable correlation families;</li>
+<li class="fragment">uses model averaging rather than hard family selection;</li>
+<li class="fragment">chooses the main tuning quantities from the data;</li>
+<li class="fragment">remains computationally attractive for sparse FDA;</li>
+<li class="fragment">avoids imposing zero endpoint derivatives by default.</li>
+</ul></li>
 </ul>
 </section>
 <section id="what-is-coming-next" class="slide level2 center">
 <h2>What Is Coming Next</h2>
-<p>The current manuscript is intentionally ahead of the completed proof section.</p>
-<p>The theory will formalize:</p>
 <ul>
-<li>consistency of the staged estimator;</li>
-<li>behavior of the nonparametric mean and variance stages;</li>
-<li>correlation-family fitting;</li>
-<li>model-averaging behavior;</li>
-<li>comparison with parametric and nonparametric benchmarks.</li>
+<li class="fragment"><p>The current manuscript is intentionally ahead of the completed proof section.</p></li>
+<li class="fragment"><p>The theory will formalize:</p>
+<ul>
+<li class="fragment">consistency of the staged estimator;</li>
+<li class="fragment">behavior of the nonparametric mean and variance stages;</li>
+<li class="fragment">correlation-family fitting;</li>
+<li class="fragment">model-averaging behavior;</li>
+<li class="fragment">comparison with parametric and nonparametric benchmarks.</li>
+</ul></li>
 </ul>
 </section>
 <section id="closing-thought" class="slide level2 center">
 <h2>Closing Thought</h2>
-<p>Sparse covariance estimation is a setting where structure helps.</p>
-<p>The goal is not to choose between parametric and nonparametric estimation.</p>
-<p>The goal is to put structure where it is useful, keep flexibility where it is needed, and make the resulting estimator practical.</p>
+<ul>
+<li class="fragment"><p>Sparse covariance estimation is a setting where structure helps.</p></li>
+<li class="fragment"><p>The goal is not to choose between parametric and nonparametric estimation.</p></li>
+<li class="fragment"><p>The goal is to put structure where it is useful, keep flexibility where it is needed, and make the resulting estimator practical.</p></li>
+</ul>
 </section></section>
 <section>
 <section id="backup-slides" class="title-slide slide level1 center">
@@ -2654,22 +2706,22 @@ C(s,t).
 </section>
 <section id="backup-observation-model" class="slide level2 center">
 <h2>Backup: Observation Model</h2>
-<p>For independent subjects <span class="math inline">\(i=1,\ldots,N\)</span>,</p>
-<p><span class="math display">\[
+<ul>
+<li class="fragment"><p>For independent subjects <span class="math inline">\(i=1,\ldots,N\)</span>, <span class="math display">\[
 Y_{ij}=X_i(T_{ij})+\varepsilon_{ij},
 \qquad j=1,\ldots,M_i.
-\]</span></p>
-<p>Assume</p>
-<p><span class="math display">\[
+\]</span></p></li>
+<li class="fragment"><p>Assume <span class="math display">\[
 E(\varepsilon_{ij})=0,\qquad
 \operatorname{var}(\varepsilon_{ij})=\sigma_\varepsilon^2,
-\]</span></p>
-<p>with measurement error independent of the latent process and design.</p>
+\]</span></p></li>
+<li class="fragment"><p>Measurement error is independent of the latent process and design.</p></li>
+</ul>
 </section>
 <section id="backup-standardized-products" class="slide level2 center">
 <h2>Backup: Standardized Products</h2>
-<p>Define</p>
-<p><span class="math display">\[
+<ul>
+<li class="fragment"><p>Define <span class="math display">\[
 \widehat R_{ijk}
 =
 \frac{
@@ -2679,13 +2731,14 @@ E(\varepsilon_{ij})=0,\qquad
 \widehat\sigma(T_{ij})\widehat\sigma(T_{ik})
 },
 \qquad j\neq k.
-\]</span></p>
-<p>Then fit candidate correlations to <span class="math inline">\(\widehat R_{ijk}\)</span>.</p>
+\]</span></p></li>
+<li class="fragment"><p>Then fit candidate correlations to <span class="math inline">\(\widehat R_{ijk}\)</span>.</p></li>
+</ul>
 </section>
 <section id="backup-correlation-fit" class="slide level2 center">
 <h2>Backup: Correlation Fit</h2>
-<p>For family <span class="math inline">\(\ell\)</span> with parameter <span class="math inline">\(\theta_\ell\)</span>:</p>
-<p><span class="math display">\[
+<ul>
+<li class="fragment"><p>For family <span class="math inline">\(\ell\)</span> with parameter <span class="math inline">\(\theta_\ell\)</span>: <span class="math display">\[
 \widehat\theta_\ell
 =
 \arg\min_{\theta_\ell}
@@ -2695,58 +2748,67 @@ w_{ijk}
 \widehat R_{ijk}
 -\rho_\ell(T_{ij},T_{ik};\theta_\ell)
 \right\}^2 .
-\]</span></p>
-<p>Weights can encode design, trimming, or numerical safeguards.</p>
+\]</span></p></li>
+<li class="fragment"><p>Weights can encode design, trimming, or numerical safeguards.</p></li>
+</ul>
 </section>
 <section id="backup-simplex-averaging" class="slide level2 center">
 <h2>Backup: Simplex Averaging</h2>
-<p>Let <span class="math inline">\(\widehat R_\ell\)</span> denote the fitted correlation matrix or grid surface for candidate family <span class="math inline">\(\ell\)</span>.</p>
-<p>The averaged correlation is</p>
-<p><span class="math display">\[
+<ul>
+<li class="fragment"><p>Let <span class="math inline">\(\widehat R_\ell\)</span> denote the fitted correlation matrix or grid surface for candidate family <span class="math inline">\(\ell\)</span>.</p></li>
+<li class="fragment"><p>The averaged correlation is <span class="math display">\[
 \widehat R_{\boldsymbol{\alpha}}
 =\sum_{\ell=1}^{L}\widehat\alpha_\ell\widehat R_\ell,
 \qquad
 \widehat{\boldsymbol{\alpha}}\in\Delta_L.
-\]</span></p>
+\]</span></p></li>
+</ul>
 </section>
 <section id="backup-boundary-corrected-linear-span" class="slide level2 center">
 <h2>Backup: Boundary-Corrected Linear Span</h2>
-<p>Linear correction starts from</p>
-<p><span class="math display">\[
+<ul>
+<li class="fragment"><p>Linear correction starts from <span class="math display">\[
 \{1,\;t,\;\sqrt{2}\cos(\pi t),\ldots,\sqrt{2}\cos(L\pi t)\}.
-\]</span></p>
-<p>Because <span class="math inline">\(t'(0)=t'(1)=1\)</span>, this permits a common endpoint derivative.</p>
+\]</span></p></li>
+<li class="fragment"><p>Because <span class="math inline">\(t'(0)=t'(1)=1\)</span>, this permits a common endpoint derivative.</p></li>
+</ul>
 </section>
 <section id="backup-boundary-corrected-quadratic-span" class="slide level2 center">
 <h2>Backup: Boundary-Corrected Quadratic Span</h2>
-<p>Quadratic correction starts from</p>
-<p><span class="math display">\[
+<ul>
+<li class="fragment"><p>Quadratic correction starts from <span class="math display">\[
 \{1,\;t,\;t^2,\;\sqrt{2}\cos(\pi t),\ldots,\sqrt{2}\cos(L\pi t)\}.
-\]</span></p>
-<p>Since <span class="math inline">\(t'(0)=1\)</span>, <span class="math inline">\(t'(1)=1\)</span>, <span class="math inline">\(2t|_{t=0}=0\)</span>, and <span class="math inline">\(2t|_{t=1}=2\)</span>, the two endpoint derivatives can differ.</p>
+\]</span></p></li>
+<li class="fragment"><p>Since <span class="math inline">\(t'(0)=1\)</span>, <span class="math inline">\(t'(1)=1\)</span>, <span class="math inline">\(2t|_{t=0}=0\)</span>, and <span class="math inline">\(2t|_{t=1}=2\)</span>, the two endpoint derivatives can differ.</p></li>
+</ul>
 </section>
 <section id="backup-qr-construction" class="slide level2 center">
 <h2>Backup: QR Construction</h2>
-<p>Let <span class="math inline">\(B\)</span> be the evaluated design matrix for the finite span.</p>
-<p>Compute</p>
-<p><span class="math display">\[
+<ul>
+<li class="fragment"><p>Let <span class="math inline">\(B\)</span> be the evaluated design matrix for the finite span.</p></li>
+<li class="fragment"><p>Compute <span class="math display">\[
 B = QR,
-\]</span></p>
-<p>where the columns of <span class="math inline">\(Q\)</span> are orthonormal in the empirical inner product.</p>
-<p>The fitted values are obtained by projecting onto selected columns of <span class="math inline">\(Q\)</span>.</p>
+\]</span></p></li>
+<li class="fragment"><p>The columns of <span class="math inline">\(Q\)</span> are orthonormal in the empirical inner product.</p></li>
+<li class="fragment"><p>The fitted values are obtained by projecting onto selected columns of <span class="math inline">\(Q\)</span>.</p></li>
+</ul>
 </section>
 <section id="backup-why-smooth-thresholding-still-fits" class="slide level2 center">
 <h2>Backup: Why Smooth Thresholding Still Fits</h2>
-<p>The fixed orthonormal finite-span construction preserves the series-estimation logic used by the cosine estimator.</p>
-<p>For the Gram-Schmidt boundary basis, the same smoothed thresholding ideas can be used because the basis remains orthonormal after construction.</p>
-<p>Empirical QR variants require cross-validation because the orthonormalization is sample-design dependent.</p>
+<ul>
+<li class="fragment"><p>The fixed orthonormal finite-span construction preserves the series-estimation logic used by the cosine estimator.</p></li>
+<li class="fragment"><p>For the Gram-Schmidt boundary basis, the same smoothed thresholding ideas can be used because the basis remains orthonormal after construction.</p></li>
+<li class="fragment"><p>Empirical QR variants require cross-validation because the orthonormalization is sample-design dependent.</p></li>
+</ul>
 </section>
 <section id="backup-no-one-boundary-rule-wins-everywhere" class="slide level2 center">
 <h2>Backup: No One Boundary Rule Wins Everywhere</h2>
-<p>Endpoint correction is a bias-correction problem.</p>
-<p>If the true function has zero endpoint slopes, uncorrected cosine can be ideal.</p>
-<p>If the true function has nonzero endpoint slopes, uncorrected cosine can be structurally biased at the boundary.</p>
-<p>The applied answer is sensitivity analysis plus a defensible default.</p>
+<ul>
+<li class="fragment"><p>Endpoint correction is a bias-correction problem.</p></li>
+<li class="fragment"><p>If the true function has zero endpoint slopes, uncorrected cosine can be ideal.</p></li>
+<li class="fragment"><p>If the true function has nonzero endpoint slopes, uncorrected cosine can be structurally biased at the boundary.</p></li>
+<li class="fragment"><p>The applied answer is sensitivity analysis plus a defensible default.</p></li>
+</ul>
 </section></section>
 <section id="references" class="title-slide slide level1 scrollable smaller">
 <h1>References</h1>
