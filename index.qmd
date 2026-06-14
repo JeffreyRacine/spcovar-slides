@@ -52,8 +52,7 @@ editor: source
 - We propose a semiparametric covariance estimator for sparsely observed
   functional data.
 
-- The estimator decomposes the covariance surface into boundary-corrected
-  nonparametric marginal scale functions and a structured correlation surface.
+- The estimator decomposes the covariance surface into nonparametric marginal scale functions and a structured correlation surface.
 
 - The correlation component is fit over a menu of interpretable positive-definite
   families and then averaged using data-driven weights.
@@ -62,8 +61,9 @@ editor: source
   where the data are most informative, and provides a direct bridge between
   fully parametric and fully nonparametric sparse FDA covariance estimation.
 
-- The talk also emphasizes the data-driven implementation and a CD4 application
-  with static and interactive covariance-surface views.
+- Data-driven tuning parameter selection is used throughout.
+
+- An empirical CD4 application is presented with static and interactive covariance-surface views.
 
 ::: {.content-hidden when-profile="short"}
 # Outline of Talk
