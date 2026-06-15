@@ -129,7 +129,7 @@ element before discussing estimators.
 
 - The object of interest is the latent covariance function:
   $$
-  \operatorname{cov}\{X_i(s),X_i(t)\},
+  \operatorname{Cov}\{X(s),X(t)\},
   $$
 
 - This object is learned from irregularly placed within-subject pairs.
@@ -140,13 +140,13 @@ element before discussing estimators.
 
 - Let
   $$
-  C(s,t)=\operatorname{cov}\{X_i(s),X_i(t)\}
+  C(s,t)=\operatorname{Cov}\{X(s),X(t)\}
   $$
   denote the covariance function of the latent process $X$.
 
 - The covariance of observations is not just this latent covariance:
   $$
-  \operatorname{cov}(Y_{ij},Y_{ik})
+  \operatorname{Cov}(Y_{ij},Y_{ik})
   = C(T_{ij},T_{ik}) + \sigma_\varepsilon^2 1\{j=k\}.
   $$
 
@@ -156,7 +156,7 @@ element before discussing estimators.
 
 ::: {.notes}
 The left-hand side,
-$\operatorname{cov}(Y_{ij},Y_{ik})$,
+$\operatorname{Cov}(Y_{ij},Y_{ik})$,
 is the covariance of the observed noisy measurements, not the latent covariance function itself. Writing it explicitly makes the distinction clear:
 
 observed covariance = latent covariance + measurement-error contribution
@@ -195,7 +195,7 @@ observed covariance = latent covariance + measurement-error contribution
   and
 
   $$
-  \rho(s,t)=\operatorname{corr}\{X(s),X(t)\}.
+  \rho(s,t)=\operatorname{Corr}\{X(s),X(t)\}.
   $$
 
 - Then
@@ -510,7 +510,7 @@ over parameter values.
 
 - For subject $i$, form centered products
   $$
-  Z_{ijk}
+  C_{ijk}
   =\{Y_{ij}-\widehat\mu(T_{ij})\}
   \{Y_{ik}-\widehat\mu(T_{ik})\},
   \qquad j\neq k.
@@ -522,15 +522,29 @@ over parameter values.
 
 ## Model Averaging
 
+- Consider one fitted covariance candidate per family,
+$$
+\widehat C_\ell(s,t)
+=
+\widehat\sigma(s)\widehat\sigma(t)\rho_{\widehat\theta_\ell}^{(\ell)}(s,t),
+$$
+where $\ell=1,\ldots,L$ indexes the candidate family.
+
+
 - Instead of selecting one correlation family, compute weights
   $$
-  \widehat{\boldsymbol{\alpha}}
-  =\arg\min_{\boldsymbol{\alpha}\in\Delta}
-  \left\|
-  \widehat R-\sum_{\ell=1}^L \alpha_\ell R_\ell
-  \right\|^2,
+  \arg\min_{\alpha\in\Delta}\left\{
+  \frac{1}{N}\sum_{i=1}^N
+  \frac{1}{M_i(M_i-1)}
+  \sum_{j \ne k}
+  \left[
+  \sum_{\ell=1}^L \alpha_\ell
+  \widehat\sigma(T_{ij})\widehat\sigma(T_{ik})
+  \rho_{\widehat\theta_\ell}^{(\ell)}(T_{ij},T_{ik})
+  - C_{ijk}
+  \right]^2\right\}.
   $$
-  where $\Delta$ is the simplex.
+
 
 - This follows the spirit of focused/model-averaging ideas
   [@CLAESKENS_HJORT:2011].
@@ -550,7 +564,7 @@ over parameter values.
 
 :::
 
-## Implementation Details {.smaller}
+## Implementation Details 
 
 - The default fit is data-driven rather than hand-tuned.
 
@@ -570,8 +584,6 @@ over parameter values.
       measurement-error contamination;
     - model averaging $(\widehat\alpha)$: simplex weights are chosen by the
       same off-diagonal fitting criterion.
-
-- The demo call `spcovar(Lt, Ly)` uses these defaults.
 
 ::: {.content-hidden when-profile="short"}
 # Parametric and Nonparametric Benchmarks
