@@ -340,7 +340,6 @@ $$
 - This exploits near-neighbor pairs while keeping the estimator computationally
   light.
 
-::: {.content-hidden when-profile="short"}
 ## Efromovich Cosine Series
 
 - Efromovich's cosine-series approach is attractive because the cosine basis is
@@ -357,7 +356,41 @@ $$
 
 - This basis is stable, fast, and surprisingly competitive in finite samples.
 
-:::
+## Coefficients And Truncation {.smaller}
+
+- For a one-dimensional target $m(t)=\mathbb E(Z\mid T=t)$,
+  $$
+  m_J(t)=\sum_{k=0}^J\theta_k\phi_k(t),
+  \qquad
+  \theta_k=\int_0^1m(t)\phi_k(t)\,dt .
+  $$
+
+- The coefficients are moments:
+  $$
+  \theta_k=
+  \mathbb E\!\left\{\frac{Z\phi_k(T)}{f_T(T)}\right\}.
+  $$
+
+- With ordered pooled times $U_\ell$, local spacings estimate density:
+  $$
+  \frac{1}{n f_T(U_\ell)}
+  \approx
+  \frac{U_{\ell+s}-U_{\ell-s}}{2s},
+  \qquad
+  s=\left\lceil\frac{1+\log\log(n+20)}{2}\right\rceil .
+  $$
+
+- Hence
+  $$
+  \widehat\theta_k
+  \approx
+  \sum_{\ell=1}^n
+  Z_\ell\phi_k(U_\ell)
+  \frac{U_{\ell+s}-U_{\ell-s}}{2s}.
+  $$
+
+- The retained lag $J$ can be selected by an Efromovich threshold/truncation
+  rule or by cross-validation.
 
 ## The Boundary Issue
 
