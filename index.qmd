@@ -1206,7 +1206,8 @@ Each entry is $\mathrm{MSE}(\text{method})/\mathrm{MSE}(\text{proposed})$;
 smaller is better. The first tab is the manuscript's overall geometric index,
 and the remaining tabs fix the sparse-sample regime.
 
-Beta-time campaign.
+Beta-time campaign ($M_i\in\{1,\ldots,11\}$, baseline $N\approx42$, so
+$\mathbb E[\sum_i M_i]\approx252$).
 
 ::: {.panel-tabset .peer-tabs}
 
@@ -1251,7 +1252,9 @@ Each entry is $\mathrm{MSE}(\text{method})/\mathrm{MSE}(\text{proposed})$;
 smaller is better. The first tab is the overall geometric index, and the
 remaining tabs fix the sparse-sample regime.
 
-No-boundary-correction uniform-time control campaign.
+No-boundary-correction uniform-time control campaign
+($M_i\in\{1,\ldots,11\}$, baseline $N\approx42$, so
+$\mathbb E[\sum_i M_i]\approx252$).
 
 ::: {.panel-tabset .peer-tabs}
 
@@ -1313,7 +1316,8 @@ Average $\widehat{\boldsymbol{\alpha}}$ weights for the proposed estimator. The 
 averages over all available DGP-regime cells; the remaining tabs fix the
 sparse-sample regime.
 
-Beta-time campaign.
+Beta-time campaign ($M_i\in\{1,\ldots,11\}$, baseline $N\approx42$, so
+$\mathbb E[\sum_i M_i]\approx252$).
 
 ::: {.panel-tabset .peer-tabs}
 
@@ -1353,10 +1357,11 @@ render_alpha_table(bc_alpha_tables$default$`4N`)
 
 ::: nonincremental
 
-Average $\widehat\boldsymbol{\alpha}$ weights when the DGP family is removed from the
+Average $\widehat{\boldsymbol{\alpha}}$ weights when the DGP family is removed from the
 candidate menu. The zero diagonal marks the omitted generating family.
 
-Beta-time campaign.
+Beta-time campaign ($M_i\in\{1,\ldots,11\}$, baseline $N\approx42$, so
+$\mathbb E[\sum_i M_i]\approx252$).
 
 ::: {.panel-tabset .peer-tabs}
 
