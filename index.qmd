@@ -401,14 +401,17 @@ $$
 
 - This basis is stable, fast, and surprisingly competitive in finite samples.
 
-## Coefficients And Truncation {.smaller}
-
 - For a one-dimensional target $m(t)=\mathbb E(Z\mid T=t)$,
   $$
   m_J(t)=\sum_{k=0}^J\theta_k\phi_k(t),
   \qquad
   \theta_k=\int_0^1m(t)\phi_k(t)\,dt .
   $$
+
+- The retained lag $J$ can be selected by a threshold/truncation
+  rule or by cross-validation.
+
+## Coefficients And Truncation 
 
 - The coefficients are moments:
   $$
@@ -434,9 +437,7 @@ $$
   \frac{U_{\ell+s}-U_{\ell-s}}{2s}.
   $$
 
-- The retained lag $J$ can be selected by an Efromovich threshold/truncation
-  rule or by cross-validation.
-
+::: {.content-hidden when-profile="short"}
 ## The Boundary Issue
 
 - The cosine basis imposes
@@ -449,6 +450,8 @@ $$
 - That can be helpful when it is true.
 
 - It is restrictive when the mean or variance has genuine endpoint slope.
+
+:::
 
 ::: {.content-hidden when-profile="short"}
 ## Efromovich's Remedy
@@ -480,6 +483,7 @@ $$
 
 :::
 
+::: {.content-hidden when-profile="short"}
 ## Boundary-Corrected Basis
 
 - For a quadratic correction, start from
@@ -494,6 +498,9 @@ $$
 
 - Quadratic correction allows independent endpoint slopes.
 
+:::
+
+::: {.content-hidden when-profile="short"}
 ## Why This Is Honest
 
 - The uncorrected cosine estimator is not naive.
@@ -505,6 +512,8 @@ $$
   the endpoints.
 
 - The price can be variance.
+
+:::
 
 ::: {.content-hidden when-profile="short"}
 ## Bias-Variance Tradeoff

@@ -16,7 +16,13 @@ and the revealjs multiplex/speaker setup expect the canonical names above.
 
 ## Full Talk
 
-Render the full talk with the ordinary command:
+Render the full talk with:
+
+```bash
+make long
+```
+
+This is equivalent to the ordinary Quarto command:
 
 ```bash
 quarto render index.qmd
@@ -26,7 +32,13 @@ This includes all main slides, backup slides, and references.
 
 ## Short Talk
 
-Render the short conference talk with the `short` profile:
+Render the short conference talk with the default make target:
+
+```bash
+make
+```
+
+This is equivalent to rendering the `short` profile explicitly:
 
 ```bash
 quarto render index.qmd --profile short
@@ -74,8 +86,8 @@ Slide content.
 - After changing profile wrappers, render both versions once:
 
 ```bash
-quarto render index.qmd
-quarto render index.qmd --profile short
+make long
+make
 ```
 
 The second command determines what is currently in the canonical published

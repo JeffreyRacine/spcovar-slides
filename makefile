@@ -1,4 +1,13 @@
-talk:
+.DEFAULT_GOAL := short
+
+.PHONY: short talk long open speaker clean
+
+short:
+	quarto render index.qmd --profile short
+
+talk: short
+
+long:
 	quarto render index.qmd
 
 open:

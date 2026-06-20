@@ -12,7 +12,7 @@
   <meta name="author" content="Valentin Patilea^\dagger">
   <meta name="author" content="Jeffrey S. Racine^\ddagger">
   <meta name="dcterms.date" content="2026-06-24">
-  <title>quarto-inputa45fd11da853d5fb</title>
+  <title>quarto-input70735e7c1b3822c</title>
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, minimal-ui">
@@ -388,16 +388,17 @@ k_{nn} \asymp \log n,
 \end{cases}
 \]</span></p></li>
 <li class="fragment"><p>This basis is stable, fast, and surprisingly competitive in finite samples.</p></li>
-</ul>
-</section>
-<section id="coefficients-and-truncation" class="slide level2 smaller center">
-<h2>Coefficients And Truncation</h2>
-<ul>
 <li class="fragment"><p>For a one-dimensional target <span class="math inline">\(m(t)=\mathbb E(Z\mid T=t)\)</span>, <span class="math display">\[
 m_J(t)=\sum_{k=0}^J\theta_k\phi_k(t),
 \qquad
 \theta_k=\int_0^1m(t)\phi_k(t)\,dt .
 \]</span></p></li>
+<li class="fragment"><p>The retained lag <span class="math inline">\(J\)</span> can be selected by a threshold/truncation rule or by cross-validation.</p></li>
+</ul>
+</section>
+<section id="coefficients-and-truncation" class="slide level2 center">
+<h2>Coefficients And Truncation</h2>
+<ul>
 <li class="fragment"><p>The coefficients are moments: <span class="math display">\[
 \theta_k=
 \mathbb E\!\left\{\frac{Z\phi_k(T)}{f_T(T)}\right\}.
@@ -416,39 +417,6 @@ s=\left\lceil\frac{1+\log\log(n+20)}{2}\right\rceil .
 Z_\ell\phi_k(U_\ell)
 \frac{U_{\ell+s}-U_{\ell-s}}{2s}.
 \]</span></p></li>
-<li class="fragment"><p>The retained lag <span class="math inline">\(J\)</span> can be selected by an Efromovich threshold/truncation rule or by cross-validation.</p></li>
-</ul>
-</section>
-<section id="the-boundary-issue" class="slide level2 center">
-<h2>The Boundary Issue</h2>
-<ul>
-<li class="fragment"><p>The cosine basis imposes <span class="math display">\[
-\phi_k'(0)=\phi_k'(1)=0 .
-\]</span></p></li>
-<li class="fragment"><p>Any finite cosine expansion therefore has zero derivative at both endpoints.</p></li>
-<li class="fragment"><p>That can be helpful when it is true.</p></li>
-<li class="fragment"><p>It is restrictive when the mean or variance has genuine endpoint slope.</p></li>
-</ul>
-</section>
-<section id="boundary-corrected-basis" class="slide level2 center">
-<h2>Boundary-Corrected Basis</h2>
-<ul>
-<li class="fragment"><p>For a quadratic correction, start from <span class="math display">\[
-\{1,\; t,\; t^2,\; \sqrt{2}\cos(\pi t),\ldots,
-\sqrt{2}\cos(L\pi t)\}.
-\]</span></p></li>
-<li class="fragment"><p>Then construct an orthonormal basis spanning the same finite space.</p></li>
-<li class="fragment"><p>Linear correction allows a common endpoint slope.</p></li>
-<li class="fragment"><p>Quadratic correction allows independent endpoint slopes.</p></li>
-</ul>
-</section>
-<section id="why-this-is-honest" class="slide level2 center">
-<h2>Why This Is Honest</h2>
-<ul>
-<li class="fragment"><p>The uncorrected cosine estimator is not naive.</p></li>
-<li class="fragment"><p>It is a strong estimator when endpoint slopes are truly zero and is closely related to modified Fourier ideas for nonperiodic functions.</p></li>
-<li class="fragment"><p>Boundary correction is chosen because it avoids forcing zero derivatives at the endpoints.</p></li>
-<li class="fragment"><p>The price can be variance.</p></li>
 </ul>
 </section>
 <section id="parametric-correlation-families" class="slide level2 smaller center">
