@@ -120,10 +120,6 @@ element before discussing estimators.
 
 ## Why Covariance?
 
-- In classical multivariate analysis, the object is $Y_i\in\mathbb R^d$; in
-  FDA, the trajectory $X_i=\{X_i(t):t\in\mathcal T\}$ is the multivariate
-  object (time points along the continuum play the role of coordinates).
-
 - The covariance surface $C(s,t)=\operatorname{Cov}\{X(s),X(t)\}$ describes
   how latent process values move together across time.
 
@@ -274,6 +270,38 @@ observed covariance = latent covariance + measurement-error contribution
 - The computational burden is closer to parametric fitting than to unrestricted
   two-dimensional smoothing.
 
+## Related Work
+
+- Sparse FDA and FPCA foundations:
+
+    - PACE estimates mean/covariance surfaces and recovers scores by conditional
+      expectation [@Yao2005Sparse].
+    - Functional snippets and `mcfda` use Fourier and semiparametric routes for
+      mean/covariance estimation under severe sparse designs [@linwang2022].
+
+- Direct covariance-surface estimation:
+
+    - FACE uses fast penalized-spline covariance smoothing [@Xiao2018SparseFACE].
+    - RKHS methods regularize the covariance operator while enforcing positive
+      semidefiniteness [@WongZhang2019].
+    - Our `NP` benchmark uses a flexible tensor cosine covariance estimator.
+
+- Semiparametric covariance modeling:
+
+    - Variance-correlation decompositions motivate separating marginal scale
+      from dependence structure [@Fan2007; @Fan2008].
+
+::: {.notes}
+PACE: Principal Analysis by Conditional Expectation.
+
+FACE: Fast Covariance Estimation.
+
+RKHS: Reproducing Kernel Hilbert Space.
+
+mcfda: Mean and Covariance Estimation for Functional Snippets and Sparse
+Functional Data.
+:::
+
 ::: {.content-hidden when-profile="short"}
 ## A Statistical Compromise
 
@@ -382,10 +410,7 @@ $$
   \qquad n=\sum_{i=1}^N M_i.
   $$
 
-- This exploits near-neighbor pairs while keeping the estimator computationally
-  light.
-
-## Efromovich Cosine Series
+## Efromovich's Cosine Series
 
 - Efromovich's cosine-series approach is attractive because the cosine basis is
   orthonormal on $[0,1]$ and supports thresholding rules [@efromovich1999].
@@ -411,7 +436,7 @@ $$
 - The retained lag $J$ can be selected by a threshold/truncation
   rule or by cross-validation.
 
-## Coefficients And Truncation 
+## Cosine Series Coefficients 
 
 - The coefficients are moments:
   $$
@@ -573,11 +598,11 @@ is a defensible choice because it does not build in the zero-derivative prior.
 
 :::
 
-## Parametric Correlation Families {.smaller}
+## Parametric Correlation Families: $\widehat\rho(s,t)$ {.smaller}
 
 ::: nonincremental
 
-The library is deliberately heterogeneous; averaging is over shapes, not just
+The library is deliberately heterogeneous; model-averaging is over shapes, not just
 over parameter values.
 
 | Family | Source | Main feature |
@@ -1281,7 +1306,6 @@ render_alpha_table(bc_alpha_tables$default$`4N`)
 
 :::
 
-::: {.content-hidden when-profile="short"}
 ## Averaging Weights: Family Omitted {.table-slide}
 
 ::: nonincremental
@@ -1321,8 +1345,6 @@ render_alpha_table(bc_alpha_tables$drop$`2N`)
 render_alpha_table(bc_alpha_tables$drop$`4N`)
 ```
 
-:::
-
 ::: {.notes}
 The tables are generated from campaign summaries so they remain synchronized
 with the manuscript evidence.
@@ -1346,6 +1368,8 @@ with the manuscript evidence.
 - Higher CD4 counts generally indicate stronger immune function.
 
 - Lower CD4 counts are associated with greater immune damage.
+
+- The sample contains 366 individuals and 1,888 pooled observations.
 
 - Observation times are irregular, sparse, and normalized to $[0,1]$ before
   fitting.
@@ -1514,6 +1538,7 @@ plot(fit_cd4_sp, view = "persp")
 
 :::
 
+::: {.content-hidden when-profile="short"}
 ## Nonparametric Covariance Surface
 
 ::: nonincremental
@@ -1528,7 +1553,8 @@ plot(fit_cd4_np, view = "persp")
 
 :::
 
-::: {.content-hidden when-profile="short"}
+:::
+
 ## Live rgl Demo Code using the R package `spcovar`
 
 ::: nonincremental
@@ -1629,8 +1655,7 @@ plot(fit_cd4_np, view = "rgl")
 
 :::
 
-:::
-
+::: {.content-hidden when-profile="short"}
 ## CD4 Interpretation
 
 - The application illustrates why boundary behavior matters in practice.
@@ -1640,6 +1665,8 @@ plot(fit_cd4_np, view = "rgl")
 
 - Boundary-corrected stages avoid that prior restriction and support sensitivity
   analysis across plausible choices.
+
+:::
 
 ::: {.content-hidden when-profile="short"}
 ## Sensitivity Is A Feature
@@ -1689,7 +1716,7 @@ plot(fit_cd4_np, view = "rgl")
 
 :::
 
-## Closing Thought
+## Closing Thoughts
 
 - Sparse covariance estimation is a setting where structure helps.
 

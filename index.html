@@ -12,7 +12,7 @@
   <meta name="author" content="Valentin Patilea^\dagger">
   <meta name="author" content="Jeffrey S. Racine^\ddagger">
   <meta name="dcterms.date" content="2026-06-24">
-  <title>quarto-input70735e7c1b3822c</title>
+  <title>quarto-inputc283b29bb37f7548</title>
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, minimal-ui">
@@ -33,6 +33,72 @@
       margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
       vertical-align: middle;
     }
+    /* CSS for syntax highlighting */
+    html { -webkit-text-size-adjust: 100%; }
+    pre > code.sourceCode { white-space: pre; position: relative; }
+    pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+    pre > code.sourceCode > span:empty { height: 1.2em; }
+    .sourceCode { overflow: visible; }
+    code.sourceCode > span { color: inherit; text-decoration: inherit; }
+    div.sourceCode { margin: 1em 0; }
+    pre.sourceCode { margin: 0; }
+    @media screen {
+    div.sourceCode { overflow: auto; }
+    }
+    @media print {
+    pre > code.sourceCode { white-space: pre-wrap; }
+    pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+    }
+    pre.numberSource code
+      { counter-reset: source-line 0; }
+    pre.numberSource code > span
+      { position: relative; left: -4em; counter-increment: source-line; }
+    pre.numberSource code > span > a:first-child::before
+      { content: counter(source-line);
+        position: relative; left: -1em; text-align: right; vertical-align: baseline;
+        border: none; display: inline-block;
+        -webkit-touch-callout: none; -webkit-user-select: none;
+        -khtml-user-select: none; -moz-user-select: none;
+        -ms-user-select: none; user-select: none;
+        padding: 0 4px; width: 4em;
+        color: #aaaaaa;
+      }
+    pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+    div.sourceCode
+      { color: #003b4f; background-color: #f1f3f5; }
+    @media screen {
+    pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+    }
+    code span { color: #003b4f; } /* Normal */
+    code span.al { color: #ad0000; } /* Alert */
+    code span.an { color: #5e5e5e; } /* Annotation */
+    code span.at { color: #657422; } /* Attribute */
+    code span.bn { color: #ad0000; } /* BaseN */
+    code span.bu { } /* BuiltIn */
+    code span.cf { color: #003b4f; font-weight: bold; } /* ControlFlow */
+    code span.ch { color: #20794d; } /* Char */
+    code span.cn { color: #8f5902; } /* Constant */
+    code span.co { color: #5e5e5e; } /* Comment */
+    code span.cv { color: #5e5e5e; font-style: italic; } /* CommentVar */
+    code span.do { color: #5e5e5e; font-style: italic; } /* Documentation */
+    code span.dt { color: #ad0000; } /* DataType */
+    code span.dv { color: #ad0000; } /* DecVal */
+    code span.er { color: #ad0000; } /* Error */
+    code span.ex { } /* Extension */
+    code span.fl { color: #ad0000; } /* Float */
+    code span.fu { color: #4758ab; } /* Function */
+    code span.im { color: #00769e; } /* Import */
+    code span.in { color: #5e5e5e; } /* Information */
+    code span.kw { color: #003b4f; font-weight: bold; } /* Keyword */
+    code span.op { color: #5e5e5e; } /* Operator */
+    code span.ot { color: #003b4f; } /* Other */
+    code span.pp { color: #ad0000; } /* Preprocessor */
+    code span.sc { color: #5e5e5e; } /* SpecialChar */
+    code span.ss { color: #20794d; } /* SpecialString */
+    code span.st { color: #20794d; } /* String */
+    code span.va { color: #111111; } /* Variable */
+    code span.vs { color: #20794d; } /* VerbatimString */
+    code span.wa { color: #5e5e5e; font-style: italic; } /* Warning */
     /* CSS for citations */
     div.csl-bib-body { }
     div.csl-entry {
@@ -224,7 +290,6 @@ Y_{ij} = X_i(T_{ij}) + \varepsilon_{ij},
 <section id="why-covariance" class="slide level2 center">
 <h2>Why Covariance?</h2>
 <ul>
-<li class="fragment"><p>In classical multivariate analysis, the object is <span class="math inline">\(Y_i\in\mathbb R^d\)</span>; in FDA, the trajectory <span class="math inline">\(X_i=\{X_i(t):t\in\mathcal T\}\)</span> is the multivariate object (time points along the continuum play the role of coordinates).</p></li>
 <li class="fragment"><p>The covariance surface <span class="math inline">\(C(s,t)=\operatorname{Cov}\{X(s),X(t)\}\)</span> describes how latent process values move together across time.</p></li>
 <li class="fragment"><p>It is the object behind:</p>
 <ul>
@@ -354,6 +419,42 @@ C(s,t)=\sigma(s)\sigma(t)\rho(s,t).
 <li class="fragment"><p>The computational burden is closer to parametric fitting than to unrestricted two-dimensional smoothing.</p></li>
 </ul>
 </section>
+<section id="related-work" class="slide level2 center">
+<h2>Related Work</h2>
+<ul>
+<li class="fragment"><p>Sparse FDA and FPCA foundations:</p>
+<ul>
+<li class="fragment">PACE estimates mean/covariance surfaces and recovers scores by conditional expectation <span class="citation" data-cites="Yao2005Sparse">(<a href="#/references" role="doc-biblioref" onclick="">Yao et al. 2005</a>)</span>.</li>
+<li class="fragment">Functional snippets and <code>mcfda</code> use Fourier and semiparametric routes for mean/covariance estimation under severe sparse designs <span class="citation" data-cites="linwang2022">(<a href="#/references" role="doc-biblioref" onclick="">Lin and Wang 2022</a>)</span>.</li>
+</ul></li>
+<li class="fragment"><p>Direct covariance-surface estimation:</p>
+<ul>
+<li class="fragment">FACE uses fast penalized-spline covariance smoothing <span class="citation" data-cites="Xiao2018SparseFACE">(<a href="#/references" role="doc-biblioref" onclick="">Xiao et al. 2018</a>)</span>.</li>
+<li class="fragment">RKHS methods regularize the covariance operator while enforcing positive semidefiniteness <span class="citation" data-cites="WongZhang2019">(<a href="#/references" role="doc-biblioref" onclick="">Wong and Zhang 2019</a>)</span>.</li>
+<li class="fragment">Our <code>NP</code> benchmark uses a flexible tensor cosine covariance estimator.</li>
+</ul></li>
+<li class="fragment"><p>Semiparametric covariance modeling:</p>
+<ul>
+<li class="fragment">Variance-correlation decompositions motivate separating marginal scale from dependence structure <span class="citation" data-cites="Fan2007 Fan2008">(<a href="#/references" role="doc-biblioref" onclick="">Fan et al. 2007</a>; <a href="#/references" role="doc-biblioref" onclick="">Fan and Wu 2008</a>)</span>.</li>
+</ul></li>
+</ul>
+<aside class="notes">
+<p>PACE: Principal Analysis by Conditional Expectation.</p>
+<p>FACE: Fast Covariance Estimation.</p>
+<p>RKHS: Reproducing Kernel Hilbert Space.</p>
+<p>mcfda: Mean and Covariance Estimation for Functional Snippets and Sparse Functional Data.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
 <section id="noise-variance" class="slide level2 center">
 <h2>Noise Variance</h2>
 <ul>
@@ -373,11 +474,10 @@ D_{ijk}
 k_{nn} \asymp \log n,
 \qquad n=\sum_{i=1}^N M_i.
 \]</span></p></li>
-<li class="fragment"><p>This exploits near-neighbor pairs while keeping the estimator computationally light.</p></li>
 </ul>
 </section>
-<section id="efromovich-cosine-series" class="slide level2 center">
-<h2>Efromovich Cosine Series</h2>
+<section id="efromovichs-cosine-series" class="slide level2 center">
+<h2>Efromovich’s Cosine Series</h2>
 <ul>
 <li class="fragment"><p>Efromovich’s cosine-series approach is attractive because the cosine basis is orthonormal on <span class="math inline">\([0,1]\)</span> and supports thresholding rules <span class="citation" data-cites="efromovich1999">(<a href="#/references" role="doc-biblioref" onclick="">Efromovich 1999</a>)</span>.</p></li>
 <li class="fragment"><p>For <span class="math inline">\(k\geq 0\)</span>, <span class="math display">\[
@@ -396,8 +496,8 @@ m_J(t)=\sum_{k=0}^J\theta_k\phi_k(t),
 <li class="fragment"><p>The retained lag <span class="math inline">\(J\)</span> can be selected by a threshold/truncation rule or by cross-validation.</p></li>
 </ul>
 </section>
-<section id="coefficients-and-truncation" class="slide level2 center">
-<h2>Coefficients And Truncation</h2>
+<section id="cosine-series-coefficients" class="slide level2 center">
+<h2>Cosine Series Coefficients</h2>
 <ul>
 <li class="fragment"><p>The coefficients are moments: <span class="math display">\[
 \theta_k=
@@ -419,9 +519,9 @@ Z_\ell\phi_k(U_\ell)
 \]</span></p></li>
 </ul>
 </section>
-<section id="parametric-correlation-families" class="slide level2 smaller center">
-<h2>Parametric Correlation Families</h2>
-<p>The library is deliberately heterogeneous; averaging is over shapes, not just over parameter values.</p>
+<section id="parametric-correlation-families-widehatrhost" class="slide level2 smaller center">
+<h2>Parametric Correlation Families: <span class="math inline">\(\widehat\rho(s,t)\)</span></h2>
+<p>The library is deliberately heterogeneous; model-averaging is over shapes, not just over parameter values.</p>
 <table class="caption-top">
 <colgroup>
 <col style="width: 33%">
@@ -1472,6 +1572,437 @@ C_{ijk}
 </div>
 </div>
 </section>
+<section id="averaging-weights-family-omitted" class="slide level2 table-slide center">
+<h2>Averaging Weights: Family Omitted</h2>
+<p>Average <span class="math inline">\(\widehat\alpha\)</span> weights when the DGP family is removed from the candidate menu. The zero diagonal marks the omitted generating family.</p>
+<p>Bias-corrected beta-time campaign.</p>
+<div class="panel-tabset peer-tabs">
+<ul id="tabset-3" class="panel-tabset-tabby"><li><a data-tabby-default="" href="#tabset-3-1">Overall</a></li><li><a href="#tabset-3-2">N</a></li><li><a href="#tabset-3-3">2N</a></li><li><a href="#tabset-3-4">4N</a></li></ul>
+<div class="tab-content peer-tabs">
+<div id="tabset-3-1">
+<div class="cell" data-layout-align="center">
+<div class="cell-output-display">
+<table class="peer-ratio-table caption-top">
+<thead>
+<tr class="header">
+<th style="text-align: left;" data-quarto-table-cell-role="th">DGP</th>
+<th style="text-align: right;" data-quarto-table-cell-role="th">Bridge</th>
+<th style="text-align: right;" data-quarto-table-cell-role="th">GC</th>
+<th style="text-align: right;" data-quarto-table-cell-role="th">GW</th>
+<th style="text-align: right;" data-quarto-table-cell-role="th">Gibbs</th>
+<th style="text-align: right;" data-quarto-table-cell-role="th">Matérn</th>
+<th style="text-align: right;" data-quarto-table-cell-role="th">mfBm</th>
+<th style="text-align: right;" data-quarto-table-cell-role="th">RQ</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">Bridge</td>
+<td style="text-align: right;">0.00</td>
+<td style="text-align: right;">0.10</td>
+<td style="text-align: right;">0.04</td>
+<td style="text-align: right;">0.34</td>
+<td style="text-align: right;">0.07</td>
+<td style="text-align: right;">0.34</td>
+<td style="text-align: right;">0.10</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Generalized Cauchy</td>
+<td style="text-align: right;">0.07</td>
+<td style="text-align: right;">0.00</td>
+<td style="text-align: right;">0.04</td>
+<td style="text-align: right;">0.31</td>
+<td style="text-align: right;">0.10</td>
+<td style="text-align: right;">0.18</td>
+<td style="text-align: right;">0.31</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Generalized Wendland</td>
+<td style="text-align: right;">0.05</td>
+<td style="text-align: right;">0.07</td>
+<td style="text-align: right;">0.00</td>
+<td style="text-align: right;">0.70</td>
+<td style="text-align: right;">0.10</td>
+<td style="text-align: right;">0.03</td>
+<td style="text-align: right;">0.05</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Gibbs</td>
+<td style="text-align: right;">0.10</td>
+<td style="text-align: right;">0.07</td>
+<td style="text-align: right;">0.43</td>
+<td style="text-align: right;">0.00</td>
+<td style="text-align: right;">0.05</td>
+<td style="text-align: right;">0.16</td>
+<td style="text-align: right;">0.19</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Matérn</td>
+<td style="text-align: right;">0.05</td>
+<td style="text-align: right;">0.13</td>
+<td style="text-align: right;">0.09</td>
+<td style="text-align: right;">0.50</td>
+<td style="text-align: right;">0.00</td>
+<td style="text-align: right;">0.14</td>
+<td style="text-align: right;">0.09</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">mfBm</td>
+<td style="text-align: right;">0.16</td>
+<td style="text-align: right;">0.17</td>
+<td style="text-align: right;">0.02</td>
+<td style="text-align: right;">0.48</td>
+<td style="text-align: right;">0.08</td>
+<td style="text-align: right;">0.00</td>
+<td style="text-align: right;">0.09</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Rational Quadratic</td>
+<td style="text-align: right;">0.03</td>
+<td style="text-align: right;">0.19</td>
+<td style="text-align: right;">0.06</td>
+<td style="text-align: right;">0.52</td>
+<td style="text-align: right;">0.06</td>
+<td style="text-align: right;">0.14</td>
+<td style="text-align: right;">0.00</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Overall</td>
+<td style="text-align: right;">0.08</td>
+<td style="text-align: right;">0.12</td>
+<td style="text-align: right;">0.11</td>
+<td style="text-align: right;">0.47</td>
+<td style="text-align: right;">0.08</td>
+<td style="text-align: right;">0.16</td>
+<td style="text-align: right;">0.14</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+</div>
+<div id="tabset-3-2">
+<div class="cell" data-layout-align="center">
+<div class="cell-output-display">
+<table class="peer-ratio-table caption-top">
+<thead>
+<tr class="header">
+<th style="text-align: left;" data-quarto-table-cell-role="th">DGP</th>
+<th style="text-align: right;" data-quarto-table-cell-role="th">Bridge</th>
+<th style="text-align: right;" data-quarto-table-cell-role="th">GC</th>
+<th style="text-align: right;" data-quarto-table-cell-role="th">GW</th>
+<th style="text-align: right;" data-quarto-table-cell-role="th">Gibbs</th>
+<th style="text-align: right;" data-quarto-table-cell-role="th">Matérn</th>
+<th style="text-align: right;" data-quarto-table-cell-role="th">mfBm</th>
+<th style="text-align: right;" data-quarto-table-cell-role="th">RQ</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">Bridge</td>
+<td style="text-align: right;">0.00</td>
+<td style="text-align: right;">0.09</td>
+<td style="text-align: right;">0.04</td>
+<td style="text-align: right;">0.43</td>
+<td style="text-align: right;">0.05</td>
+<td style="text-align: right;">0.30</td>
+<td style="text-align: right;">0.09</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Generalized Cauchy</td>
+<td style="text-align: right;">0.05</td>
+<td style="text-align: right;">0.00</td>
+<td style="text-align: right;">0.04</td>
+<td style="text-align: right;">0.40</td>
+<td style="text-align: right;">0.06</td>
+<td style="text-align: right;">0.21</td>
+<td style="text-align: right;">0.23</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Generalized Wendland</td>
+<td style="text-align: right;">0.06</td>
+<td style="text-align: right;">0.08</td>
+<td style="text-align: right;">0.00</td>
+<td style="text-align: right;">0.70</td>
+<td style="text-align: right;">0.09</td>
+<td style="text-align: right;">0.03</td>
+<td style="text-align: right;">0.04</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Gibbs</td>
+<td style="text-align: right;">0.11</td>
+<td style="text-align: right;">0.07</td>
+<td style="text-align: right;">0.42</td>
+<td style="text-align: right;">0.00</td>
+<td style="text-align: right;">0.04</td>
+<td style="text-align: right;">0.17</td>
+<td style="text-align: right;">0.18</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Matérn</td>
+<td style="text-align: right;">0.05</td>
+<td style="text-align: right;">0.10</td>
+<td style="text-align: right;">0.08</td>
+<td style="text-align: right;">0.55</td>
+<td style="text-align: right;">0.00</td>
+<td style="text-align: right;">0.16</td>
+<td style="text-align: right;">0.07</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">mfBm</td>
+<td style="text-align: right;">0.13</td>
+<td style="text-align: right;">0.21</td>
+<td style="text-align: right;">0.02</td>
+<td style="text-align: right;">0.50</td>
+<td style="text-align: right;">0.04</td>
+<td style="text-align: right;">0.00</td>
+<td style="text-align: right;">0.10</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Rational Quadratic</td>
+<td style="text-align: right;">0.03</td>
+<td style="text-align: right;">0.17</td>
+<td style="text-align: right;">0.05</td>
+<td style="text-align: right;">0.54</td>
+<td style="text-align: right;">0.03</td>
+<td style="text-align: right;">0.17</td>
+<td style="text-align: right;">0.00</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Overall</td>
+<td style="text-align: right;">0.07</td>
+<td style="text-align: right;">0.12</td>
+<td style="text-align: right;">0.11</td>
+<td style="text-align: right;">0.52</td>
+<td style="text-align: right;">0.05</td>
+<td style="text-align: right;">0.17</td>
+<td style="text-align: right;">0.12</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+</div>
+<div id="tabset-3-3">
+<div class="cell" data-layout-align="center">
+<div class="cell-output-display">
+<table class="peer-ratio-table caption-top">
+<thead>
+<tr class="header">
+<th style="text-align: left;" data-quarto-table-cell-role="th">DGP</th>
+<th style="text-align: right;" data-quarto-table-cell-role="th">Bridge</th>
+<th style="text-align: right;" data-quarto-table-cell-role="th">GC</th>
+<th style="text-align: right;" data-quarto-table-cell-role="th">GW</th>
+<th style="text-align: right;" data-quarto-table-cell-role="th">Gibbs</th>
+<th style="text-align: right;" data-quarto-table-cell-role="th">Matérn</th>
+<th style="text-align: right;" data-quarto-table-cell-role="th">mfBm</th>
+<th style="text-align: right;" data-quarto-table-cell-role="th">RQ</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">Bridge</td>
+<td style="text-align: right;">0.00</td>
+<td style="text-align: right;">0.10</td>
+<td style="text-align: right;">0.04</td>
+<td style="text-align: right;">0.34</td>
+<td style="text-align: right;">0.07</td>
+<td style="text-align: right;">0.34</td>
+<td style="text-align: right;">0.11</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Generalized Cauchy</td>
+<td style="text-align: right;">0.06</td>
+<td style="text-align: right;">0.00</td>
+<td style="text-align: right;">0.04</td>
+<td style="text-align: right;">0.32</td>
+<td style="text-align: right;">0.10</td>
+<td style="text-align: right;">0.18</td>
+<td style="text-align: right;">0.30</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Generalized Wendland</td>
+<td style="text-align: right;">0.05</td>
+<td style="text-align: right;">0.06</td>
+<td style="text-align: right;">0.00</td>
+<td style="text-align: right;">0.71</td>
+<td style="text-align: right;">0.10</td>
+<td style="text-align: right;">0.03</td>
+<td style="text-align: right;">0.05</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Gibbs</td>
+<td style="text-align: right;">0.09</td>
+<td style="text-align: right;">0.07</td>
+<td style="text-align: right;">0.42</td>
+<td style="text-align: right;">0.00</td>
+<td style="text-align: right;">0.06</td>
+<td style="text-align: right;">0.16</td>
+<td style="text-align: right;">0.19</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Matérn</td>
+<td style="text-align: right;">0.05</td>
+<td style="text-align: right;">0.12</td>
+<td style="text-align: right;">0.09</td>
+<td style="text-align: right;">0.51</td>
+<td style="text-align: right;">0.00</td>
+<td style="text-align: right;">0.14</td>
+<td style="text-align: right;">0.09</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">mfBm</td>
+<td style="text-align: right;">0.15</td>
+<td style="text-align: right;">0.17</td>
+<td style="text-align: right;">0.02</td>
+<td style="text-align: right;">0.48</td>
+<td style="text-align: right;">0.08</td>
+<td style="text-align: right;">0.00</td>
+<td style="text-align: right;">0.10</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Rational Quadratic</td>
+<td style="text-align: right;">0.03</td>
+<td style="text-align: right;">0.17</td>
+<td style="text-align: right;">0.06</td>
+<td style="text-align: right;">0.54</td>
+<td style="text-align: right;">0.07</td>
+<td style="text-align: right;">0.14</td>
+<td style="text-align: right;">0.00</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Overall</td>
+<td style="text-align: right;">0.07</td>
+<td style="text-align: right;">0.12</td>
+<td style="text-align: right;">0.11</td>
+<td style="text-align: right;">0.48</td>
+<td style="text-align: right;">0.08</td>
+<td style="text-align: right;">0.17</td>
+<td style="text-align: right;">0.14</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+</div>
+<div id="tabset-3-4">
+<div class="cell" data-layout-align="center">
+<div class="cell-output-display">
+<table class="peer-ratio-table caption-top">
+<thead>
+<tr class="header">
+<th style="text-align: left;" data-quarto-table-cell-role="th">DGP</th>
+<th style="text-align: right;" data-quarto-table-cell-role="th">Bridge</th>
+<th style="text-align: right;" data-quarto-table-cell-role="th">GC</th>
+<th style="text-align: right;" data-quarto-table-cell-role="th">GW</th>
+<th style="text-align: right;" data-quarto-table-cell-role="th">Gibbs</th>
+<th style="text-align: right;" data-quarto-table-cell-role="th">Matérn</th>
+<th style="text-align: right;" data-quarto-table-cell-role="th">mfBm</th>
+<th style="text-align: right;" data-quarto-table-cell-role="th">RQ</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">Bridge</td>
+<td style="text-align: right;">0.00</td>
+<td style="text-align: right;">0.10</td>
+<td style="text-align: right;">0.04</td>
+<td style="text-align: right;">0.26</td>
+<td style="text-align: right;">0.10</td>
+<td style="text-align: right;">0.39</td>
+<td style="text-align: right;">0.11</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Generalized Cauchy</td>
+<td style="text-align: right;">0.09</td>
+<td style="text-align: right;">0.00</td>
+<td style="text-align: right;">0.03</td>
+<td style="text-align: right;">0.20</td>
+<td style="text-align: right;">0.15</td>
+<td style="text-align: right;">0.14</td>
+<td style="text-align: right;">0.40</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Generalized Wendland</td>
+<td style="text-align: right;">0.04</td>
+<td style="text-align: right;">0.08</td>
+<td style="text-align: right;">0.00</td>
+<td style="text-align: right;">0.69</td>
+<td style="text-align: right;">0.12</td>
+<td style="text-align: right;">0.02</td>
+<td style="text-align: right;">0.05</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Gibbs</td>
+<td style="text-align: right;">0.09</td>
+<td style="text-align: right;">0.08</td>
+<td style="text-align: right;">0.43</td>
+<td style="text-align: right;">0.00</td>
+<td style="text-align: right;">0.06</td>
+<td style="text-align: right;">0.14</td>
+<td style="text-align: right;">0.20</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Matérn</td>
+<td style="text-align: right;">0.05</td>
+<td style="text-align: right;">0.17</td>
+<td style="text-align: right;">0.11</td>
+<td style="text-align: right;">0.44</td>
+<td style="text-align: right;">0.00</td>
+<td style="text-align: right;">0.11</td>
+<td style="text-align: right;">0.12</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">mfBm</td>
+<td style="text-align: right;">0.19</td>
+<td style="text-align: right;">0.14</td>
+<td style="text-align: right;">0.01</td>
+<td style="text-align: right;">0.47</td>
+<td style="text-align: right;">0.11</td>
+<td style="text-align: right;">0.00</td>
+<td style="text-align: right;">0.08</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Rational Quadratic</td>
+<td style="text-align: right;">0.04</td>
+<td style="text-align: right;">0.22</td>
+<td style="text-align: right;">0.07</td>
+<td style="text-align: right;">0.48</td>
+<td style="text-align: right;">0.07</td>
+<td style="text-align: right;">0.12</td>
+<td style="text-align: right;">0.00</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Overall</td>
+<td style="text-align: right;">0.08</td>
+<td style="text-align: right;">0.13</td>
+<td style="text-align: right;">0.12</td>
+<td style="text-align: right;">0.42</td>
+<td style="text-align: right;">0.10</td>
+<td style="text-align: right;">0.15</td>
+<td style="text-align: right;">0.16</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<aside class="notes">
+<p>The tables are generated from campaign summaries so they remain synchronized with the manuscript evidence.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</div>
+</div>
+</div>
+</section>
 <section id="cd4-data" class="slide level2 center">
 <h2>CD4 Data</h2>
 <ul>
@@ -1479,6 +2010,7 @@ C_{ijk}
 <li class="fragment"><p>CD4 counts are recorded relative to HIV seroconversion.</p></li>
 <li class="fragment"><p>Higher CD4 counts generally indicate stronger immune function.</p></li>
 <li class="fragment"><p>Lower CD4 counts are associated with greater immune damage.</p></li>
+<li class="fragment"><p>The sample contains 366 individuals and 1,888 pooled observations.</p></li>
 <li class="fragment"><p>Observation times are irregular, sparse, and normalized to <span class="math inline">\([0,1]\)</span> before fitting.</p></li>
 </ul>
 </section>
@@ -1509,19 +2041,97 @@ Figure&nbsp;1
 <img data-src="index_files/figure-revealjs/fig-cd4-spcovar-surface-default-1.png" id="fig-cd4-spcovar-surface-default" class="quarto-figure quarto-figure-center r-stretch" width="748"><p class="caption">
 Figure&nbsp;2
 </p></section>
-<section id="nonparametric-covariance-surface" class="slide level2 center">
-<h2>Nonparametric Covariance Surface</h2>
-
-<img data-src="index_files/figure-revealjs/fig-cd4-npcovar-surface-default-1.png" id="fig-cd4-npcovar-surface-default" class="quarto-figure quarto-figure-center r-stretch" width="748"><p class="caption">
-Figure&nbsp;3
-</p></section>
-<section id="cd4-interpretation" class="slide level2 center">
-<h2>CD4 Interpretation</h2>
-<ul>
-<li class="fragment"><p>The application illustrates why boundary behavior matters in practice.</p></li>
-<li class="fragment"><p>Uncorrected cosine stages can visibly deform endpoint behavior by imposing zero derivatives.</p></li>
-<li class="fragment"><p>Boundary-corrected stages avoid that prior restriction and support sensitivity analysis across plausible choices.</p></li>
-</ul>
+<section id="live-rgl-demo-code-using-the-r-package-spcovar" class="slide level2 center">
+<h2>Live rgl Demo Code using the R package <code>spcovar</code></h2>
+<div class="cell" data-layout-align="center">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href=""></a><span class="do">## The R package spcovar is installed from GitHub until it is available on CRAN.</span></span>
+<span id="cb1-2"><a href=""></a><span class="do">## The remotes package is the lightweight installer route.</span></span>
+<span id="cb1-3"><a href=""></a></span>
+<span id="cb1-4"><a href=""></a><span class="cf">if</span> (<span class="sc">!</span><span class="fu">requireNamespace</span>(<span class="st">"spcovar"</span>, <span class="at">quietly =</span> <span class="cn">TRUE</span>)) {</span>
+<span id="cb1-5"><a href=""></a>  <span class="cf">if</span> (<span class="sc">!</span><span class="fu">requireNamespace</span>(<span class="st">"remotes"</span>, <span class="at">quietly =</span> <span class="cn">TRUE</span>)) {</span>
+<span id="cb1-6"><a href=""></a>    <span class="fu">install.packages</span>(<span class="st">"remotes"</span>)</span>
+<span id="cb1-7"><a href=""></a>  }</span>
+<span id="cb1-8"><a href=""></a>  remotes<span class="sc">::</span><span class="fu">install_github</span>(<span class="st">"JeffreyRacine/spcovar"</span>)</span>
+<span id="cb1-9"><a href=""></a>}</span>
+<span id="cb1-10"><a href=""></a></span>
+<span id="cb1-11"><a href=""></a>required_packages <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">"refund"</span>, <span class="st">"rgl"</span>)</span>
+<span id="cb1-12"><a href=""></a>missing_packages <span class="ot">&lt;-</span> required_packages[</span>
+<span id="cb1-13"><a href=""></a>  <span class="sc">!</span><span class="fu">vapply</span>(required_packages, requireNamespace, <span class="fu">logical</span>(<span class="dv">1</span>), <span class="at">quietly =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb1-14"><a href=""></a>]</span>
+<span id="cb1-15"><a href=""></a></span>
+<span id="cb1-16"><a href=""></a><span class="cf">if</span> (<span class="fu">length</span>(missing_packages)) {</span>
+<span id="cb1-17"><a href=""></a>  <span class="fu">stop</span>(</span>
+<span id="cb1-18"><a href=""></a>    <span class="st">"Please install the required package(s): "</span>,</span>
+<span id="cb1-19"><a href=""></a>    <span class="fu">paste</span>(missing_packages, <span class="at">collapse =</span> <span class="st">", "</span>),</span>
+<span id="cb1-20"><a href=""></a>    <span class="at">call. =</span> <span class="cn">FALSE</span></span>
+<span id="cb1-21"><a href=""></a>  )</span>
+<span id="cb1-22"><a href=""></a>}</span>
+<span id="cb1-23"><a href=""></a></span>
+<span id="cb1-24"><a href=""></a><span class="do">## Load the spcovar package, which contains the proposed estimator and plotting</span></span>
+<span id="cb1-25"><a href=""></a><span class="do">## methods.</span></span>
+<span id="cb1-26"><a href=""></a></span>
+<span id="cb1-27"><a href=""></a><span class="fu">library</span>(spcovar)</span>
+<span id="cb1-28"><a href=""></a></span>
+<span id="cb1-29"><a href=""></a><span class="do">## Load the CD4 cell count data from the refund package.</span></span>
+<span id="cb1-30"><a href=""></a></span>
+<span id="cb1-31"><a href=""></a><span class="fu">data</span>(cd4, <span class="at">package =</span> <span class="st">"refund"</span>)</span>
+<span id="cb1-32"><a href=""></a></span>
+<span id="cb1-33"><a href=""></a><span class="do">## The data are in a matrix with rows corresponding to subjects and columns</span></span>
+<span id="cb1-34"><a href=""></a><span class="do">## corresponding to time points.  We will convert the time points to the unit</span></span>
+<span id="cb1-35"><a href=""></a><span class="do">## interval and create lists of time points and observations for each subject,</span></span>
+<span id="cb1-36"><a href=""></a><span class="do">## which is the format required by spcovar.</span></span>
+<span id="cb1-37"><a href=""></a></span>
+<span id="cb1-38"><a href=""></a>times <span class="ot">&lt;-</span> <span class="fu">as.numeric</span>(<span class="fu">colnames</span>(cd4))</span>
+<span id="cb1-39"><a href=""></a>times01 <span class="ot">&lt;-</span> (times <span class="sc">-</span> <span class="fu">min</span>(times)) <span class="sc">/</span> <span class="fu">diff</span>(<span class="fu">range</span>(times))</span>
+<span id="cb1-40"><a href=""></a></span>
+<span id="cb1-41"><a href=""></a>Lt <span class="ot">&lt;-</span> <span class="fu">vector</span>(<span class="st">"list"</span>, <span class="fu">nrow</span>(cd4))</span>
+<span id="cb1-42"><a href=""></a>Ly <span class="ot">&lt;-</span> <span class="fu">vector</span>(<span class="st">"list"</span>, <span class="fu">nrow</span>(cd4))</span>
+<span id="cb1-43"><a href=""></a></span>
+<span id="cb1-44"><a href=""></a><span class="cf">for</span> (i <span class="cf">in</span> <span class="fu">seq_len</span>(<span class="fu">nrow</span>(cd4))) {</span>
+<span id="cb1-45"><a href=""></a>  ok <span class="ot">&lt;-</span> <span class="fu">is.finite</span>(cd4[i, ])</span>
+<span id="cb1-46"><a href=""></a>  Lt[[i]] <span class="ot">&lt;-</span> times01[ok]</span>
+<span id="cb1-47"><a href=""></a>  Ly[[i]] <span class="ot">&lt;-</span> <span class="fu">as.numeric</span>(cd4[i, ok])</span>
+<span id="cb1-48"><a href=""></a>}</span>
+<span id="cb1-49"><a href=""></a></span>
+<span id="cb1-50"><a href=""></a><span class="do">## Estimate the mean, standard deviation, and covariance surface using spcovar.</span></span>
+<span id="cb1-51"><a href=""></a></span>
+<span id="cb1-52"><a href=""></a>fit_cd4_sp <span class="ot">&lt;-</span> <span class="fu">spcovar</span>(</span>
+<span id="cb1-53"><a href=""></a>  <span class="at">Lt =</span> Lt,</span>
+<span id="cb1-54"><a href=""></a>  <span class="at">Ly =</span> Ly,</span>
+<span id="cb1-55"><a href=""></a>  <span class="at">mean_basis =</span> <span class="st">"cosine_bc_gs2"</span>,</span>
+<span id="cb1-56"><a href=""></a>  <span class="at">var_basis =</span> <span class="st">"cosine_bc_gs2"</span></span>
+<span id="cb1-57"><a href=""></a>)</span>
+<span id="cb1-58"><a href=""></a></span>
+<span id="cb1-59"><a href=""></a><span class="do">## Plot the mean, standard deviation, and covariance surface estimates.</span></span>
+<span id="cb1-60"><a href=""></a></span>
+<span id="cb1-61"><a href=""></a><span class="fu">plot</span>(fit_cd4_sp)</span>
+<span id="cb1-62"><a href=""></a></span>
+<span id="cb1-63"><a href=""></a><span class="do">## Plot the covariance surface estimate in an interactive rgl widget.</span></span>
+<span id="cb1-64"><a href=""></a></span>
+<span id="cb1-65"><a href=""></a><span class="fu">plot</span>(fit_cd4_sp, <span class="at">view =</span> <span class="st">"rgl"</span>)</span>
+<span id="cb1-66"><a href=""></a></span>
+<span id="cb1-67"><a href=""></a><span class="do">## Estimate the mean, standard deviation, and fully nonparametric covariance</span></span>
+<span id="cb1-68"><a href=""></a><span class="do">## surface using npcovar.</span></span>
+<span id="cb1-69"><a href=""></a></span>
+<span id="cb1-70"><a href=""></a>fit_cd4_np <span class="ot">&lt;-</span> <span class="fu">npcovar</span>(</span>
+<span id="cb1-71"><a href=""></a>  <span class="at">Lt =</span> Lt,</span>
+<span id="cb1-72"><a href=""></a>  <span class="at">Ly =</span> Ly,</span>
+<span id="cb1-73"><a href=""></a>  <span class="at">nomad =</span> <span class="cn">TRUE</span>,</span>
+<span id="cb1-74"><a href=""></a>  <span class="at">standardize =</span> <span class="cn">TRUE</span>,</span>
+<span id="cb1-75"><a href=""></a>  <span class="at">mean_basis =</span> <span class="st">"cosine_bc_gs2"</span>,</span>
+<span id="cb1-76"><a href=""></a>  <span class="at">var_basis =</span> <span class="st">"cosine_bc_gs2"</span>,</span>
+<span id="cb1-77"><a href=""></a>  <span class="at">covariance_basis =</span> <span class="st">"cosine_bc_gs2"</span></span>
+<span id="cb1-78"><a href=""></a>)</span>
+<span id="cb1-79"><a href=""></a></span>
+<span id="cb1-80"><a href=""></a><span class="do">## Plot the mean, standard deviation, and covariance surface estimates.</span></span>
+<span id="cb1-81"><a href=""></a></span>
+<span id="cb1-82"><a href=""></a><span class="fu">plot</span>(fit_cd4_np)</span>
+<span id="cb1-83"><a href=""></a></span>
+<span id="cb1-84"><a href=""></a><span class="do">## Plot the fully nonparametric covariance surface estimate in an interactive</span></span>
+<span id="cb1-85"><a href=""></a><span class="do">## rgl widget.</span></span>
+<span id="cb1-86"><a href=""></a></span>
+<span id="cb1-87"><a href=""></a><span class="fu">plot</span>(fit_cd4_np, <span class="at">view =</span> <span class="st">"rgl"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
 </section>
 <section id="main-points" class="slide level2 center">
 <h2>Main Points</h2>
@@ -1538,8 +2148,8 @@ Figure&nbsp;3
 </ul></li>
 </ul>
 </section>
-<section id="closing-thought" class="slide level2 center">
-<h2>Closing Thought</h2>
+<section id="closing-thoughts" class="slide level2 center">
+<h2>Closing Thoughts</h2>
 <ul>
 <li class="fragment"><p>Sparse covariance estimation is a setting where structure helps.</p></li>
 <li class="fragment"><p>The goal is not to choose between parametric and nonparametric estimation.</p></li>
@@ -1671,6 +2281,12 @@ Doob, J. L. 1949. <span>“Heuristic Approach to the <span>K</span>olmogorov-<sp
 </div>
 <div id="ref-efromovich1999" class="csl-entry" role="listitem">
 Efromovich, Sam. 1999. <em>Nonparametric Curve Estimation: Methods, Theory, and Applications</em>. Springer Series in Statistics. Springer-Verlag. <a href="https://doi.org/10.1007/b97679">https://doi.org/10.1007/b97679</a>.
+</div>
+<div id="ref-Fan2007" class="csl-entry" role="listitem">
+Fan, Jianqing, Tao Huang, and Runze Li. 2007. <span>“Analysis of Longitudinal Data with Semiparametric Estimation of Covariance Function.”</span> <em>Journal of the American Statistical Association</em> 102 (478): 632–41. <a href="https://doi.org/10.1198/016214507000000095">https://doi.org/10.1198/016214507000000095</a>.
+</div>
+<div id="ref-Fan2008" class="csl-entry" role="listitem">
+Fan, Jianqing, and Yichao Wu. 2008. <span>“Semiparametric Estimation of Covariance Matrices for Longitudinal Data.”</span> <em>Journal of the American Statistical Association</em> 103 (484): 1520–33. <a href="https://doi.org/10.1198/016214508000000742">https://doi.org/10.1198/016214508000000742</a>.
 </div>
 <div id="ref-Gibbs1997" class="csl-entry" role="listitem">
 Gibbs, Mark N. 1997. <span>“Bayesian Gaussian Processes for Regression and Classification.”</span> PhD thesis, University of Cambridge.
