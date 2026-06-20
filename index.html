@@ -12,7 +12,7 @@
   <meta name="author" content="Valentin Patilea^\dagger">
   <meta name="author" content="Jeffrey S. Racine^\ddagger">
   <meta name="dcterms.date" content="2026-06-24">
-  <title>quarto-input473675ee11764173</title>
+  <title>quarto-inputa45fd11da853d5fb</title>
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, minimal-ui">
@@ -193,13 +193,77 @@ Jeffrey S. Racine<span class="math inline">\(^\ddagger\)</span>
 <li class="fragment"><p>An empirical CD4 application is presented with static and interactive covariance-surface views.</p></li>
 </ul>
 </section>
+<section id="classical-versus-functional-data" class="slide level2 center">
+<h2>Classical Versus Functional Data</h2>
+<ul>
+<li class="fragment"><p>Classical sample element: <span class="math display">\[
+Y_i \in \mathbb R^d .
+\]</span></p></li>
+<li class="fragment"><p>Functional sample element: <span class="math display">\[
+X_i = \{X_i(t): t \in \mathcal T\}.
+\]</span></p></li>
+<li class="fragment"><p>Sparse FDA observes only a small, noisy subset: <span class="math display">\[
+Y_{ij} = X_i(T_{ij}) + \varepsilon_{ij},
+      \qquad j=1,\ldots,M_i .
+\]</span></p></li>
+</ul>
+<aside class="notes">
+<p>This recreates the pedagogical opening used in Braga: begin with the sample element before discussing estimators.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="why-covariance" class="slide level2 center">
+<h2>Why Covariance?</h2>
+<ul>
+<li class="fragment"><p>In classical multivariate analysis, the object is <span class="math inline">\(Y_i\in\mathbb R^d\)</span>; in FDA, the trajectory <span class="math inline">\(X_i=\{X_i(t):t\in\mathcal T\}\)</span> is the multivariate object (time points along the continuum play the role of coordinates).</p></li>
+<li class="fragment"><p>The covariance surface <span class="math inline">\(C(s,t)=\operatorname{Cov}\{X(s),X(t)\}\)</span> describes how latent process values move together across time.</p></li>
+<li class="fragment"><p>It is the object behind:</p>
+<ul>
+<li class="fragment">dependence along the continuum;</li>
+<li class="fragment">separation of latent signal from measurement noise;</li>
+<li class="fragment">dimension reduction through FPCA/eigenfunctions.</li>
+</ul></li>
+<li class="fragment"><p>For sparse noisy observations, <span class="math display">\[
+\operatorname{Cov}(Y_{ij},Y_{ik})
+=
+C(T_{ij},T_{ik})+\sigma_\varepsilon^2 1\{j=k\}.
+\]</span></p></li>
+<li class="fragment"><p>Estimating <span class="math inline">\(C(s,t)\)</span> is the path from scattered measurements to latent trajectory structure.</p></li>
+</ul>
+</section>
+<section id="example---childrens-growth" class="slide level2 center">
+<h2>Example - Children’s Growth</h2>
+<ul>
+<li class="fragment"><p>Let <span class="math inline">\(X_i(t)\)</span> be child <span class="math inline">\(i\)</span>’s latent growth trajectory at age <span class="math inline">\(t\)</span>.</p></li>
+<li class="fragment"><p>The covariance surface tracks how growth at two ages varies together across children: <span class="math display">\[
+C(s,t)=\operatorname{Cov}\{X(s),X(t)\}.
+\]</span></p></li>
+<li class="fragment"><p>If <span class="math inline">\(C(2,12)\)</span> is large and positive, children above average at age 2 tend also to be above average at age 12.</p></li>
+<li class="fragment"><p>This is why covariance is central:</p>
+<ul>
+<li class="fragment">it separates latent growth variation from measurement noise;</li>
+<li class="fragment">it reveals dependence across age;</li>
+<li class="fragment">it supports FPCA/eigenfunctions that summarize dominant growth patterns.</li>
+</ul></li>
+<li class="fragment"><p>In this example, principal components may correspond to overall size, timing of growth spurts, or other shape features (our focus here is strictly on covariance estimation).</p></li>
+</ul>
+</section>
 <section id="sparse-curves" class="slide level2 center">
 <h2>Sparse Curves</h2>
 <ul>
 <li class="fragment"><p>In dense FDA, each curve carries substantial within-subject information.</p></li>
 <li class="fragment"><p>In sparse FDA, covariance information is distributed across many subjects.</p></li>
 <li class="fragment"><p>The object of interest is the latent covariance function: <span class="math display">\[
-\operatorname{Cov}\{X(s),X(t)\},
+\operatorname{Cov}\{X(s),X(t)\}.
 \]</span></p></li>
 <li class="fragment"><p>This object is learned from irregularly placed within-subject pairs.</p></li>
 <li class="fragment"><p>Replication matters.</p></li>

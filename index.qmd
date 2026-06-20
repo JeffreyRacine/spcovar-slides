@@ -95,7 +95,6 @@ Proofs will be added to the manuscript separately.
 
 :::
 
-::: {.content-hidden when-profile="short"}
 ## Classical Versus Functional Data
 
 - Classical sample element:
@@ -119,7 +118,53 @@ This recreates the pedagogical opening used in Braga: begin with the sample
 element before discussing estimators.
 :::
 
-:::
+## Why Covariance?
+
+- In classical multivariate analysis, the object is $Y_i\in\mathbb R^d$; in
+  FDA, the trajectory $X_i=\{X_i(t):t\in\mathcal T\}$ is the multivariate
+  object (time points along the continuum play the role of coordinates).
+
+- The covariance surface $C(s,t)=\operatorname{Cov}\{X(s),X(t)\}$ describes
+  how latent process values move together across time.
+
+- It is the object behind:
+
+    - dependence along the continuum;
+    - separation of latent signal from measurement noise;
+    - dimension reduction through FPCA/eigenfunctions.
+
+- For sparse noisy observations,
+  $$
+  \operatorname{Cov}(Y_{ij},Y_{ik})
+  =
+  C(T_{ij},T_{ik})+\sigma_\varepsilon^2 1\{j=k\}.
+  $$
+
+- Estimating $C(s,t)$ is the path from scattered measurements to latent
+  trajectory structure.
+
+## Example - Children's Growth
+
+- Let $X_i(t)$ be child $i$'s latent growth trajectory at age $t$.
+
+- The covariance surface tracks how growth at two ages varies together across
+  children:
+  $$
+  C(s,t)=\operatorname{Cov}\{X(s),X(t)\}.
+  $$
+
+- If $C(2,12)$ is large and positive, children above average at age 2 tend also
+  to be above average at age 12.
+
+- This is why covariance is central:
+
+    - it separates latent growth variation from measurement noise;
+    - it reveals dependence across age;
+    - it supports FPCA/eigenfunctions that summarize dominant growth patterns.
+
+- In this example, principal components may correspond to overall size, timing
+  of growth spurts, or other shape features (our focus here is strictly on
+  covariance estimation).
 
 ## Sparse Curves
 
@@ -129,7 +174,7 @@ element before discussing estimators.
 
 - The object of interest is the latent covariance function:
   $$
-  \operatorname{Cov}\{X(s),X(t)\},
+  \operatorname{Cov}\{X(s),X(t)\}.
   $$
 
 - This object is learned from irregularly placed within-subject pairs.
