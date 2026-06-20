@@ -48,3 +48,25 @@
     padding: 0.16em 0.30em;
     white-space: nowrap;
 }
+
+.reveal table.cd4-count-table {
+    margin-left: 0 !important;
+    margin-right: auto !important;
+}
+
+.reveal .cd4-count-fragment {
+    margin-left: 2.25em;
+    margin-top: 0.30em;
+}
+
+.reveal table.cd4-count-table th,
+.reveal table.cd4-count-table td {
+    padding: 0.12em 0.24em;
+    white-space: nowrap;
+    text-align: right;
+}
+
+.reveal table.cd4-count-table th:first-child,
+.reveal table.cd4-count-table td:first-child {
+    text-align: left;
+}

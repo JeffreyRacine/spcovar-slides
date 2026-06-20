@@ -12,7 +12,7 @@
   <meta name="author" content="Valentin Patilea^\dagger">
   <meta name="author" content="Jeffrey S. Racine^\ddagger">
   <meta name="dcterms.date" content="2026-06-24">
-  <title>quarto-inputc283b29bb37f7548</title>
+  <title>quarto-inputacb4a13058c282d0</title>
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, minimal-ui">
@@ -256,7 +256,7 @@ Jeffrey S. Racine<span class="math inline">\(^\ddagger\)</span>
 <li class="fragment"><p>The correlation component is fit over a menu of interpretable positive-definite families and then averaged using data-driven weights.</p></li>
 <li class="fragment"><p>The resulting estimator is computationally attractive, retains flexibility where the data are most informative, and provides a direct bridge between fully parametric and fully nonparametric sparse FDA covariance estimation.</p></li>
 <li class="fragment"><p>Data-driven tuning parameter selection is used throughout.</p></li>
-<li class="fragment"><p>An empirical CD4 application is presented with static and interactive covariance-surface views.</p></li>
+<li class="fragment"><p>An empirical CD4 application is presented.</p></li>
 </ul>
 </section>
 <section id="classical-versus-functional-data" class="slide level2 center">
@@ -601,7 +601,7 @@ C_{ijk}
 \widehat\sigma(s)\widehat\sigma(t)\rho_{\widehat\theta_\ell}^{(\ell)}(s,t),
 \]</span> where <span class="math inline">\(\ell=1,\ldots,L\)</span> indexes the candidate family.</p></li>
 <li class="fragment"><p>Instead of selecting one correlation family, compute weights <span class="math display">\[
-\arg\min_{\alpha\in\Delta}\left\{
+\arg\min_{\boldsymbol{\alpha}\in\Delta}\left\{
 \frac{1}{N}\sum_{i=1}^N
 \frac{1}{M_i(M_i-1)}
 \sum_{j \ne k}
@@ -625,7 +625,7 @@ C_{ijk}
 <li class="fragment">mean and variance functions <span class="math inline">\((\mu(t),\sigma^2(t))\)</span>: projection coefficients are estimated in an orthonormal boundary-corrected cosine-type basis; the boundary columns are retained, and a smoothed Efromovich threshold selects and shrinks the cosine tail;</li>
 <li class="fragment">nonparametric covariance benchmark <span class="math inline">\((C(s,t))\)</span>: tensor order <span class="math inline">\(J\)</span> and roughness penalty <span class="math inline">\(\lambda\)</span> are selected jointly by curve-level cross-validation or by a NOMAD search over <span class="math inline">\((J,\log_{10}\lambda)\)</span>;</li>
 <li class="fragment">correlation families <span class="math inline">\((\rho_\theta(s,t))\)</span>: low-dimensional parameters <span class="math inline">\(\theta\)</span> are fit from off-diagonal products, avoiding direct measurement-error contamination;</li>
-<li class="fragment">model averaging <span class="math inline">\((\widehat\alpha)\)</span>: simplex weights are chosen by the same off-diagonal fitting criterion.</li>
+<li class="fragment">model averaging <span class="math inline">\((\widehat\boldsymbol{\alpha})\)</span>: simplex weights are chosen by the same off-diagonal fitting criterion.</li>
 </ul></li>
 </ul>
 </section>
@@ -1574,7 +1574,7 @@ C_{ijk}
 </section>
 <section id="averaging-weights-family-omitted" class="slide level2 table-slide center">
 <h2>Averaging Weights: Family Omitted</h2>
-<p>Average <span class="math inline">\(\widehat\alpha\)</span> weights when the DGP family is removed from the candidate menu. The zero diagonal marks the omitted generating family.</p>
+<p>Average <span class="math inline">\(\widehat\boldsymbol{\alpha}\)</span> weights when the DGP family is removed from the candidate menu. The zero diagonal marks the omitted generating family.</p>
 <p>Bias-corrected beta-time campaign.</p>
 <div class="panel-tabset peer-tabs">
 <ul id="tabset-3" class="panel-tabset-tabby"><li><a data-tabby-default="" href="#tabset-3-1">Overall</a></li><li><a href="#tabset-3-2">N</a></li><li><a href="#tabset-3-3">2N</a></li><li><a href="#tabset-3-4">4N</a></li></ul>
@@ -2013,6 +2013,44 @@ C_{ijk}
 <li class="fragment"><p>The sample contains 366 individuals and 1,888 pooled observations.</p></li>
 <li class="fragment"><p>Observation times are irregular, sparse, and normalized to <span class="math inline">\([0,1]\)</span> before fitting.</p></li>
 </ul>
+<div class="fragment cd4-count-fragment">
+<div class="cell" data-layout-align="center">
+<div class="cell-output-display">
+<table class="cd4-count-table caption-top">
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">Points per curve</td>
+<td style="text-align: left;">1</td>
+<td style="text-align: right;">2</td>
+<td style="text-align: right;">3</td>
+<td style="text-align: right;">4</td>
+<td style="text-align: right;">5</td>
+<td style="text-align: right;">6</td>
+<td style="text-align: right;">7</td>
+<td style="text-align: right;">8</td>
+<td style="text-align: right;">9</td>
+<td style="text-align: right;">10</td>
+<td style="text-align: right;">11</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Number of curves</td>
+<td style="text-align: left;">17</td>
+<td style="text-align: right;">29</td>
+<td style="text-align: right;">45</td>
+<td style="text-align: right;">62</td>
+<td style="text-align: right;">49</td>
+<td style="text-align: right;">61</td>
+<td style="text-align: right;">44</td>
+<td style="text-align: right;">30</td>
+<td style="text-align: right;">20</td>
+<td style="text-align: right;">8</td>
+<td style="text-align: right;">1</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+</div>
 </section>
 <section id="why-this-example-matters" class="slide level2 center">
 <h2>Why This Example Matters</h2>
@@ -2023,8 +2061,7 @@ C_{ijk}
 <ul>
 <li class="fragment">how between-patient variability changes over time;</li>
 <li class="fragment">how strongly early and later immune status are associated;</li>
-<li class="fragment">how much variation is latent signal rather than measurement noise;</li>
-<li class="fragment">whether endpoint behavior is distorted by the estimator.</li>
+<li class="fragment">how much variation is latent signal rather than measurement noise.</li>
 </ul></li>
 </ul>
 </section>
@@ -2054,83 +2091,85 @@ Figure&nbsp;2
 <span id="cb1-8"><a href=""></a>  remotes<span class="sc">::</span><span class="fu">install_github</span>(<span class="st">"JeffreyRacine/spcovar"</span>)</span>
 <span id="cb1-9"><a href=""></a>}</span>
 <span id="cb1-10"><a href=""></a></span>
-<span id="cb1-11"><a href=""></a>required_packages <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">"refund"</span>, <span class="st">"rgl"</span>)</span>
-<span id="cb1-12"><a href=""></a>missing_packages <span class="ot">&lt;-</span> required_packages[</span>
-<span id="cb1-13"><a href=""></a>  <span class="sc">!</span><span class="fu">vapply</span>(required_packages, requireNamespace, <span class="fu">logical</span>(<span class="dv">1</span>), <span class="at">quietly =</span> <span class="cn">TRUE</span>)</span>
-<span id="cb1-14"><a href=""></a>]</span>
-<span id="cb1-15"><a href=""></a></span>
-<span id="cb1-16"><a href=""></a><span class="cf">if</span> (<span class="fu">length</span>(missing_packages)) {</span>
-<span id="cb1-17"><a href=""></a>  <span class="fu">stop</span>(</span>
-<span id="cb1-18"><a href=""></a>    <span class="st">"Please install the required package(s): "</span>,</span>
-<span id="cb1-19"><a href=""></a>    <span class="fu">paste</span>(missing_packages, <span class="at">collapse =</span> <span class="st">", "</span>),</span>
-<span id="cb1-20"><a href=""></a>    <span class="at">call. =</span> <span class="cn">FALSE</span></span>
-<span id="cb1-21"><a href=""></a>  )</span>
-<span id="cb1-22"><a href=""></a>}</span>
-<span id="cb1-23"><a href=""></a></span>
-<span id="cb1-24"><a href=""></a><span class="do">## Load the spcovar package, which contains the proposed estimator and plotting</span></span>
-<span id="cb1-25"><a href=""></a><span class="do">## methods.</span></span>
-<span id="cb1-26"><a href=""></a></span>
-<span id="cb1-27"><a href=""></a><span class="fu">library</span>(spcovar)</span>
+<span id="cb1-11"><a href=""></a><span class="do">## crs provides the NOMAD-backed tuning route used by the nonparametric fit.</span></span>
+<span id="cb1-12"><a href=""></a></span>
+<span id="cb1-13"><a href=""></a>required_packages <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">"refund"</span>, <span class="st">"rgl"</span>, <span class="st">"crs"</span>)</span>
+<span id="cb1-14"><a href=""></a>missing_packages <span class="ot">&lt;-</span> required_packages[</span>
+<span id="cb1-15"><a href=""></a>  <span class="sc">!</span><span class="fu">vapply</span>(required_packages, requireNamespace, <span class="fu">logical</span>(<span class="dv">1</span>), <span class="at">quietly =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb1-16"><a href=""></a>]</span>
+<span id="cb1-17"><a href=""></a></span>
+<span id="cb1-18"><a href=""></a><span class="cf">if</span> (<span class="fu">length</span>(missing_packages)) {</span>
+<span id="cb1-19"><a href=""></a>  <span class="fu">stop</span>(</span>
+<span id="cb1-20"><a href=""></a>    <span class="st">"Please install the required package(s): "</span>,</span>
+<span id="cb1-21"><a href=""></a>    <span class="fu">paste</span>(missing_packages, <span class="at">collapse =</span> <span class="st">", "</span>),</span>
+<span id="cb1-22"><a href=""></a>    <span class="at">call. =</span> <span class="cn">FALSE</span></span>
+<span id="cb1-23"><a href=""></a>  )</span>
+<span id="cb1-24"><a href=""></a>}</span>
+<span id="cb1-25"><a href=""></a></span>
+<span id="cb1-26"><a href=""></a><span class="do">## Load the spcovar package, which contains the proposed estimator and plotting</span></span>
+<span id="cb1-27"><a href=""></a><span class="do">## methods.</span></span>
 <span id="cb1-28"><a href=""></a></span>
-<span id="cb1-29"><a href=""></a><span class="do">## Load the CD4 cell count data from the refund package.</span></span>
+<span id="cb1-29"><a href=""></a><span class="fu">library</span>(spcovar)</span>
 <span id="cb1-30"><a href=""></a></span>
-<span id="cb1-31"><a href=""></a><span class="fu">data</span>(cd4, <span class="at">package =</span> <span class="st">"refund"</span>)</span>
+<span id="cb1-31"><a href=""></a><span class="do">## Load the CD4 cell count data from the refund package.</span></span>
 <span id="cb1-32"><a href=""></a></span>
-<span id="cb1-33"><a href=""></a><span class="do">## The data are in a matrix with rows corresponding to subjects and columns</span></span>
-<span id="cb1-34"><a href=""></a><span class="do">## corresponding to time points.  We will convert the time points to the unit</span></span>
-<span id="cb1-35"><a href=""></a><span class="do">## interval and create lists of time points and observations for each subject,</span></span>
-<span id="cb1-36"><a href=""></a><span class="do">## which is the format required by spcovar.</span></span>
-<span id="cb1-37"><a href=""></a></span>
-<span id="cb1-38"><a href=""></a>times <span class="ot">&lt;-</span> <span class="fu">as.numeric</span>(<span class="fu">colnames</span>(cd4))</span>
-<span id="cb1-39"><a href=""></a>times01 <span class="ot">&lt;-</span> (times <span class="sc">-</span> <span class="fu">min</span>(times)) <span class="sc">/</span> <span class="fu">diff</span>(<span class="fu">range</span>(times))</span>
-<span id="cb1-40"><a href=""></a></span>
-<span id="cb1-41"><a href=""></a>Lt <span class="ot">&lt;-</span> <span class="fu">vector</span>(<span class="st">"list"</span>, <span class="fu">nrow</span>(cd4))</span>
-<span id="cb1-42"><a href=""></a>Ly <span class="ot">&lt;-</span> <span class="fu">vector</span>(<span class="st">"list"</span>, <span class="fu">nrow</span>(cd4))</span>
-<span id="cb1-43"><a href=""></a></span>
-<span id="cb1-44"><a href=""></a><span class="cf">for</span> (i <span class="cf">in</span> <span class="fu">seq_len</span>(<span class="fu">nrow</span>(cd4))) {</span>
-<span id="cb1-45"><a href=""></a>  ok <span class="ot">&lt;-</span> <span class="fu">is.finite</span>(cd4[i, ])</span>
-<span id="cb1-46"><a href=""></a>  Lt[[i]] <span class="ot">&lt;-</span> times01[ok]</span>
-<span id="cb1-47"><a href=""></a>  Ly[[i]] <span class="ot">&lt;-</span> <span class="fu">as.numeric</span>(cd4[i, ok])</span>
-<span id="cb1-48"><a href=""></a>}</span>
-<span id="cb1-49"><a href=""></a></span>
-<span id="cb1-50"><a href=""></a><span class="do">## Estimate the mean, standard deviation, and covariance surface using spcovar.</span></span>
+<span id="cb1-33"><a href=""></a><span class="fu">data</span>(cd4, <span class="at">package =</span> <span class="st">"refund"</span>)</span>
+<span id="cb1-34"><a href=""></a></span>
+<span id="cb1-35"><a href=""></a><span class="do">## The data are in a matrix with rows corresponding to subjects and columns</span></span>
+<span id="cb1-36"><a href=""></a><span class="do">## corresponding to time points.  We will convert the time points to the unit</span></span>
+<span id="cb1-37"><a href=""></a><span class="do">## interval and create lists of time points and observations for each subject,</span></span>
+<span id="cb1-38"><a href=""></a><span class="do">## which is the format required by spcovar.</span></span>
+<span id="cb1-39"><a href=""></a></span>
+<span id="cb1-40"><a href=""></a>times <span class="ot">&lt;-</span> <span class="fu">as.numeric</span>(<span class="fu">colnames</span>(cd4))</span>
+<span id="cb1-41"><a href=""></a>times01 <span class="ot">&lt;-</span> (times <span class="sc">-</span> <span class="fu">min</span>(times)) <span class="sc">/</span> <span class="fu">diff</span>(<span class="fu">range</span>(times))</span>
+<span id="cb1-42"><a href=""></a></span>
+<span id="cb1-43"><a href=""></a>Lt <span class="ot">&lt;-</span> <span class="fu">vector</span>(<span class="st">"list"</span>, <span class="fu">nrow</span>(cd4))</span>
+<span id="cb1-44"><a href=""></a>Ly <span class="ot">&lt;-</span> <span class="fu">vector</span>(<span class="st">"list"</span>, <span class="fu">nrow</span>(cd4))</span>
+<span id="cb1-45"><a href=""></a></span>
+<span id="cb1-46"><a href=""></a><span class="cf">for</span> (i <span class="cf">in</span> <span class="fu">seq_len</span>(<span class="fu">nrow</span>(cd4))) {</span>
+<span id="cb1-47"><a href=""></a>  ok <span class="ot">&lt;-</span> <span class="fu">is.finite</span>(cd4[i, ])</span>
+<span id="cb1-48"><a href=""></a>  Lt[[i]] <span class="ot">&lt;-</span> times01[ok]</span>
+<span id="cb1-49"><a href=""></a>  Ly[[i]] <span class="ot">&lt;-</span> <span class="fu">as.numeric</span>(cd4[i, ok])</span>
+<span id="cb1-50"><a href=""></a>}</span>
 <span id="cb1-51"><a href=""></a></span>
-<span id="cb1-52"><a href=""></a>fit_cd4_sp <span class="ot">&lt;-</span> <span class="fu">spcovar</span>(</span>
-<span id="cb1-53"><a href=""></a>  <span class="at">Lt =</span> Lt,</span>
-<span id="cb1-54"><a href=""></a>  <span class="at">Ly =</span> Ly,</span>
-<span id="cb1-55"><a href=""></a>  <span class="at">mean_basis =</span> <span class="st">"cosine_bc_gs2"</span>,</span>
-<span id="cb1-56"><a href=""></a>  <span class="at">var_basis =</span> <span class="st">"cosine_bc_gs2"</span></span>
-<span id="cb1-57"><a href=""></a>)</span>
-<span id="cb1-58"><a href=""></a></span>
-<span id="cb1-59"><a href=""></a><span class="do">## Plot the mean, standard deviation, and covariance surface estimates.</span></span>
+<span id="cb1-52"><a href=""></a><span class="do">## Estimate the mean, standard deviation, and covariance surface using spcovar.</span></span>
+<span id="cb1-53"><a href=""></a></span>
+<span id="cb1-54"><a href=""></a>fit_cd4_sp <span class="ot">&lt;-</span> <span class="fu">spcovar</span>(</span>
+<span id="cb1-55"><a href=""></a>  <span class="at">Lt =</span> Lt,</span>
+<span id="cb1-56"><a href=""></a>  <span class="at">Ly =</span> Ly,</span>
+<span id="cb1-57"><a href=""></a>  <span class="at">mean_basis =</span> <span class="st">"cosine_bc_gs2"</span>,</span>
+<span id="cb1-58"><a href=""></a>  <span class="at">var_basis =</span> <span class="st">"cosine_bc_gs2"</span></span>
+<span id="cb1-59"><a href=""></a>)</span>
 <span id="cb1-60"><a href=""></a></span>
-<span id="cb1-61"><a href=""></a><span class="fu">plot</span>(fit_cd4_sp)</span>
+<span id="cb1-61"><a href=""></a><span class="do">## Plot the mean, standard deviation, and covariance surface estimates.</span></span>
 <span id="cb1-62"><a href=""></a></span>
-<span id="cb1-63"><a href=""></a><span class="do">## Plot the covariance surface estimate in an interactive rgl widget.</span></span>
+<span id="cb1-63"><a href=""></a><span class="fu">plot</span>(fit_cd4_sp)</span>
 <span id="cb1-64"><a href=""></a></span>
-<span id="cb1-65"><a href=""></a><span class="fu">plot</span>(fit_cd4_sp, <span class="at">view =</span> <span class="st">"rgl"</span>)</span>
+<span id="cb1-65"><a href=""></a><span class="do">## Plot the covariance surface estimate in an interactive rgl widget.</span></span>
 <span id="cb1-66"><a href=""></a></span>
-<span id="cb1-67"><a href=""></a><span class="do">## Estimate the mean, standard deviation, and fully nonparametric covariance</span></span>
-<span id="cb1-68"><a href=""></a><span class="do">## surface using npcovar.</span></span>
-<span id="cb1-69"><a href=""></a></span>
-<span id="cb1-70"><a href=""></a>fit_cd4_np <span class="ot">&lt;-</span> <span class="fu">npcovar</span>(</span>
-<span id="cb1-71"><a href=""></a>  <span class="at">Lt =</span> Lt,</span>
-<span id="cb1-72"><a href=""></a>  <span class="at">Ly =</span> Ly,</span>
-<span id="cb1-73"><a href=""></a>  <span class="at">nomad =</span> <span class="cn">TRUE</span>,</span>
-<span id="cb1-74"><a href=""></a>  <span class="at">standardize =</span> <span class="cn">TRUE</span>,</span>
-<span id="cb1-75"><a href=""></a>  <span class="at">mean_basis =</span> <span class="st">"cosine_bc_gs2"</span>,</span>
-<span id="cb1-76"><a href=""></a>  <span class="at">var_basis =</span> <span class="st">"cosine_bc_gs2"</span>,</span>
-<span id="cb1-77"><a href=""></a>  <span class="at">covariance_basis =</span> <span class="st">"cosine_bc_gs2"</span></span>
-<span id="cb1-78"><a href=""></a>)</span>
-<span id="cb1-79"><a href=""></a></span>
-<span id="cb1-80"><a href=""></a><span class="do">## Plot the mean, standard deviation, and covariance surface estimates.</span></span>
+<span id="cb1-67"><a href=""></a><span class="fu">plot</span>(fit_cd4_sp, <span class="at">view =</span> <span class="st">"rgl"</span>)</span>
+<span id="cb1-68"><a href=""></a></span>
+<span id="cb1-69"><a href=""></a><span class="do">## Estimate the mean, standard deviation, and fully nonparametric covariance</span></span>
+<span id="cb1-70"><a href=""></a><span class="do">## surface using npcovar.</span></span>
+<span id="cb1-71"><a href=""></a></span>
+<span id="cb1-72"><a href=""></a><span class="co"># fit_cd4_np &lt;- npcovar(</span></span>
+<span id="cb1-73"><a href=""></a><span class="co">#   Lt = Lt,</span></span>
+<span id="cb1-74"><a href=""></a><span class="co">#   Ly = Ly,</span></span>
+<span id="cb1-75"><a href=""></a><span class="co">#   nomad = TRUE,</span></span>
+<span id="cb1-76"><a href=""></a><span class="co">#   standardize = TRUE,</span></span>
+<span id="cb1-77"><a href=""></a><span class="co">#   mean_basis = "cosine_bc_gs2",</span></span>
+<span id="cb1-78"><a href=""></a><span class="co">#   var_basis = "cosine_bc_gs2",</span></span>
+<span id="cb1-79"><a href=""></a><span class="co">#   covariance_basis = "cosine_bc_gs2"</span></span>
+<span id="cb1-80"><a href=""></a><span class="co"># )</span></span>
 <span id="cb1-81"><a href=""></a></span>
-<span id="cb1-82"><a href=""></a><span class="fu">plot</span>(fit_cd4_np)</span>
+<span id="cb1-82"><a href=""></a><span class="do">## Plot the mean, standard deviation, and covariance surface estimates.</span></span>
 <span id="cb1-83"><a href=""></a></span>
-<span id="cb1-84"><a href=""></a><span class="do">## Plot the fully nonparametric covariance surface estimate in an interactive</span></span>
-<span id="cb1-85"><a href=""></a><span class="do">## rgl widget.</span></span>
-<span id="cb1-86"><a href=""></a></span>
-<span id="cb1-87"><a href=""></a><span class="fu">plot</span>(fit_cd4_np, <span class="at">view =</span> <span class="st">"rgl"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<span id="cb1-84"><a href=""></a><span class="co"># plot(fit_cd4_np)</span></span>
+<span id="cb1-85"><a href=""></a></span>
+<span id="cb1-86"><a href=""></a><span class="do">## Plot the fully nonparametric covariance surface estimate in an interactive</span></span>
+<span id="cb1-87"><a href=""></a><span class="do">## rgl widget.</span></span>
+<span id="cb1-88"><a href=""></a></span>
+<span id="cb1-89"><a href=""></a><span class="co"># plot(fit_cd4_np, view = "rgl")</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 </section>
 <section id="main-points" class="slide level2 center">
@@ -2154,117 +2193,6 @@ Figure&nbsp;2
 <li class="fragment"><p>Sparse covariance estimation is a setting where structure helps.</p></li>
 <li class="fragment"><p>The goal is not to choose between parametric and nonparametric estimation.</p></li>
 <li class="fragment"><p>The goal is to put structure where it is useful, keep flexibility where it is needed, and make the resulting estimator practical.</p></li>
-</ul>
-</section></section>
-<section>
-<section id="backup-slides" class="title-slide slide level1 center">
-<h1>Backup Slides</h1>
-
-</section>
-<section id="backup-observation-model" class="slide level2 center">
-<h2>Backup: Observation Model</h2>
-<ul>
-<li class="fragment"><p>For independent subjects <span class="math inline">\(i=1,\ldots,N\)</span>, <span class="math display">\[
-Y_{ij}=X_i(T_{ij})+\varepsilon_{ij},
-\qquad j=1,\ldots,M_i.
-\]</span></p></li>
-<li class="fragment"><p>Assume <span class="math display">\[
-E(\varepsilon_{ij})=0,\qquad
-\operatorname{var}(\varepsilon_{ij})=\sigma_\varepsilon^2,
-\]</span></p></li>
-<li class="fragment"><p>Measurement error is independent of the latent process and design.</p></li>
-</ul>
-</section>
-<section id="backup-standardized-products" class="slide level2 center">
-<h2>Backup: Standardized Products</h2>
-<ul>
-<li class="fragment"><p>Define <span class="math display">\[
-\widehat R_{ijk}
-=
-\frac{
-\{Y_{ij}-\widehat\mu(T_{ij})\}
-\{Y_{ik}-\widehat\mu(T_{ik})\}
-}{
-\widehat\sigma(T_{ij})\widehat\sigma(T_{ik})
-},
-\qquad j\neq k.
-\]</span></p></li>
-<li class="fragment"><p>Then fit candidate correlations to <span class="math inline">\(\widehat R_{ijk}\)</span>.</p></li>
-</ul>
-</section>
-<section id="backup-correlation-fit" class="slide level2 center">
-<h2>Backup: Correlation Fit</h2>
-<ul>
-<li class="fragment"><p>For family <span class="math inline">\(\ell\)</span> with parameter <span class="math inline">\(\theta_\ell\)</span>: <span class="math display">\[
-\widehat\theta_\ell
-=
-\arg\min_{\theta_\ell}
-\sum_{i}\sum_{j\neq k}
-w_{ijk}
-\left\{
-\widehat R_{ijk}
--\rho_\ell(T_{ij},T_{ik};\theta_\ell)
-\right\}^2 .
-\]</span></p></li>
-<li class="fragment"><p>Weights can encode design, trimming, or numerical safeguards.</p></li>
-</ul>
-</section>
-<section id="backup-simplex-averaging" class="slide level2 center">
-<h2>Backup: Simplex Averaging</h2>
-<ul>
-<li class="fragment"><p>Let <span class="math inline">\(\widehat R_\ell\)</span> denote the fitted correlation matrix or grid surface for candidate family <span class="math inline">\(\ell\)</span>.</p></li>
-<li class="fragment"><p>The averaged correlation is <span class="math display">\[
-\widehat R_{\boldsymbol{\alpha}}
-=\sum_{\ell=1}^{L}\widehat\alpha_\ell\widehat R_\ell,
-\qquad
-\widehat{\boldsymbol{\alpha}}\in\Delta_L.
-\]</span></p></li>
-</ul>
-</section>
-<section id="backup-boundary-corrected-linear-span" class="slide level2 center">
-<h2>Backup: Boundary-Corrected Linear Span</h2>
-<ul>
-<li class="fragment"><p>Linear correction starts from <span class="math display">\[
-\{1,\;t,\;\sqrt{2}\cos(\pi t),\ldots,\sqrt{2}\cos(L\pi t)\}.
-\]</span></p></li>
-<li class="fragment"><p>Because <span class="math inline">\(t'(0)=t'(1)=1\)</span>, this permits a common endpoint derivative.</p></li>
-</ul>
-</section>
-<section id="backup-boundary-corrected-quadratic-span" class="slide level2 center">
-<h2>Backup: Boundary-Corrected Quadratic Span</h2>
-<ul>
-<li class="fragment"><p>Quadratic correction starts from <span class="math display">\[
-\{1,\;t,\;t^2,\;\sqrt{2}\cos(\pi t),\ldots,\sqrt{2}\cos(L\pi t)\}.
-\]</span></p></li>
-<li class="fragment"><p>Since <span class="math inline">\(t'(0)=1\)</span>, <span class="math inline">\(t'(1)=1\)</span>, <span class="math inline">\(2t|_{t=0}=0\)</span>, and <span class="math inline">\(2t|_{t=1}=2\)</span>, the two endpoint derivatives can differ.</p></li>
-</ul>
-</section>
-<section id="backup-qr-construction" class="slide level2 center">
-<h2>Backup: QR Construction</h2>
-<ul>
-<li class="fragment"><p>Let <span class="math inline">\(B\)</span> be the evaluated design matrix for the finite span.</p></li>
-<li class="fragment"><p>Compute <span class="math display">\[
-B = QR,
-\]</span></p></li>
-<li class="fragment"><p>The columns of <span class="math inline">\(Q\)</span> are orthonormal in the empirical inner product.</p></li>
-<li class="fragment"><p>The fitted values are obtained by projecting onto selected columns of <span class="math inline">\(Q\)</span>.</p></li>
-</ul>
-</section>
-<section id="backup-why-smooth-thresholding-still-fits" class="slide level2 center">
-<h2>Backup: Why Smooth Thresholding Still Fits</h2>
-<ul>
-<li class="fragment"><p>The fixed orthonormal finite-span construction preserves the series-estimation logic used by the cosine estimator.</p></li>
-<li class="fragment"><p>For the Gram-Schmidt boundary basis, the same smoothed thresholding ideas can be used because the basis remains orthonormal after construction.</p></li>
-<li class="fragment"><p>Empirical QR variants require cross-validation because the orthonormalization is sample-design dependent.</p></li>
-</ul>
-</section>
-<section id="backup-no-one-boundary-rule-wins-everywhere" class="slide level2 center">
-<h2>Backup: No One Boundary Rule Wins Everywhere</h2>
-<ul>
-<li class="fragment"><p>Endpoint correction is a bias-correction problem.</p></li>
-<li class="fragment"><p>If the true function has zero endpoint slopes, uncorrected cosine can be ideal.</p></li>
-<li class="fragment"><p>If the true function has nonzero endpoint slopes, uncorrected cosine can be structurally biased at the boundary.</p></li>
-<li class="fragment"><p>The applied answer is sensitivity analysis plus a defensible default.</p></li>
 </ul>
 </section></section>
 <section id="references" class="title-slide slide level1 scrollable smaller">

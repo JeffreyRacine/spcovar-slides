@@ -18,7 +18,9 @@ if (!requireNamespace("spcovar", quietly = TRUE)) {
   remotes::install_github("JeffreyRacine/spcovar")
 }
 
-required_packages <- c("refund", "rgl")
+# crs provides the NOMAD-backed tuning route used by the nonparametric fit.
+
+required_packages <- c("refund", "rgl", "crs")
 missing_packages <- required_packages[
   !vapply(required_packages, requireNamespace, logical(1), quietly = TRUE)
 ]

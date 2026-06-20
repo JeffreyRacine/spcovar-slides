@@ -63,7 +63,7 @@ editor: source
 
 - Data-driven tuning parameter selection is used throughout.
 
-- An empirical CD4 application is presented with static and interactive covariance-surface views.
+- An empirical CD4 application is presented.
 
 ::: {.content-hidden when-profile="short"}
 # Outline of Talk
@@ -645,7 +645,7 @@ where $\ell=1,\ldots,L$ indexes the candidate family.
 
 - Instead of selecting one correlation family, compute weights
   $$
-  \arg\min_{\alpha\in\Delta}\left\{
+  \arg\min_{\boldsymbol{\alpha}\in\Delta}\left\{
   \frac{1}{N}\sum_{i=1}^N
   \frac{1}{M_i(M_i-1)}
   \sum_{j \ne k}
@@ -670,7 +670,7 @@ where $\ell=1,\ldots,L$ indexes the candidate family.
 
     - dominant weight on a good family,
     - insurance when two families explain different regions,
-    - interpretable diagnostics via $\widehat\alpha$.
+    - interpretable diagnostics via $\widehat\boldsymbol{\alpha}$.
 
 - The averaging weights are part of the inferential output.
 
@@ -694,7 +694,7 @@ where $\ell=1,\ldots,L$ indexes the candidate family.
     - correlation families $(\rho_\theta(s,t))$: low-dimensional parameters
       $\theta$ are fit from off-diagonal products, avoiding direct
       measurement-error contamination;
-    - model averaging $(\widehat\alpha)$: simplex weights are chosen by the
+    - model averaging $(\widehat\boldsymbol{\alpha})$: simplex weights are chosen by the
       same off-diagonal fitting criterion.
 
 ::: {.content-hidden when-profile="short"}
@@ -1310,7 +1310,7 @@ render_alpha_table(bc_alpha_tables$default$`4N`)
 
 ::: nonincremental
 
-Average $\widehat\alpha$ weights when the DGP family is removed from the
+Average $\widehat\boldsymbol{\alpha}$ weights when the DGP family is removed from the
 candidate menu. The zero diagonal marks the omitted generating family.
 
 Bias-corrected beta-time campaign.
@@ -1374,6 +1374,28 @@ with the manuscript evidence.
 - Observation times are irregular, sparse, and normalized to $[0,1]$ before
   fitting.
 
+::: {.fragment .cd4-count-fragment}
+
+```{r}
+#| echo: false
+data(cd4, package = "refund")
+point_count_tab_slide <- table(rowSums(is.finite(cd4)))
+point_count_display_slide <- rbind(
+  `Points per curve` = names(point_count_tab_slide),
+  `Number of curves` = as.character(as.integer(point_count_tab_slide))
+)
+knitr::kable(
+  point_count_display_slide,
+  format = "html",
+  align = c("l", rep("r", ncol(point_count_display_slide) - 1L)),
+  row.names = TRUE,
+  col.names = NULL,
+  table.attr = 'class="cd4-count-table"'
+)
+```
+
+:::
+
 ## Why This Example Matters
 
 - Seroconversion anchors follow-up to a biologically meaningful event.
@@ -1384,8 +1406,7 @@ with the manuscript evidence.
 
     - how between-patient variability changes over time;
     - how strongly early and later immune status are associated;
-    - how much variation is latent signal rather than measurement noise;
-    - whether endpoint behavior is distorted by the estimator.
+    - how much variation is latent signal rather than measurement noise.
 
 ::: {.content-hidden when-profile="short"}
 ## What The Estimator Must Separate
@@ -1574,7 +1595,9 @@ if (!requireNamespace("spcovar", quietly = TRUE)) {
   remotes::install_github("JeffreyRacine/spcovar")
 }
 
-required_packages <- c("refund", "rgl")
+## crs provides the NOMAD-backed tuning route used by the nonparametric fit.
+
+required_packages <- c("refund", "rgl", "crs")
 missing_packages <- required_packages[
   !vapply(required_packages, requireNamespace, logical(1), quietly = TRUE)
 ]
@@ -1633,24 +1656,24 @@ plot(fit_cd4_sp, view = "rgl")
 ## Estimate the mean, standard deviation, and fully nonparametric covariance
 ## surface using npcovar.
 
-fit_cd4_np <- npcovar(
-  Lt = Lt,
-  Ly = Ly,
-  nomad = TRUE,
-  standardize = TRUE,
-  mean_basis = "cosine_bc_gs2",
-  var_basis = "cosine_bc_gs2",
-  covariance_basis = "cosine_bc_gs2"
-)
+# fit_cd4_np <- npcovar(
+#   Lt = Lt,
+#   Ly = Ly,
+#   nomad = TRUE,
+#   standardize = TRUE,
+#   mean_basis = "cosine_bc_gs2",
+#   var_basis = "cosine_bc_gs2",
+#   covariance_basis = "cosine_bc_gs2"
+# )
 
 ## Plot the mean, standard deviation, and covariance surface estimates.
 
-plot(fit_cd4_np)
+# plot(fit_cd4_np)
 
 ## Plot the fully nonparametric covariance surface estimate in an interactive
 ## rgl widget.
 
-plot(fit_cd4_np, view = "rgl")
+# plot(fit_cd4_np, view = "rgl")
 ```
 
 :::
@@ -1725,8 +1748,11 @@ plot(fit_cd4_np, view = "rgl")
 - The goal is to put structure where it is useful, keep flexibility where it is
   needed, and make the resulting estimator practical.
 
+::: {.content-hidden when-profile="short"}
 # Backup Slides
+:::
 
+::: {.content-hidden when-profile="short"}
 ## Backup: Observation Model
 
 - For independent subjects $i=1,\ldots,N$,
@@ -1742,7 +1768,9 @@ plot(fit_cd4_np, view = "rgl")
   $$
 
 - Measurement error is independent of the latent process and design.
+:::
 
+::: {.content-hidden when-profile="short"}
 ## Backup: Standardized Products
 
 - Define
@@ -1759,7 +1787,9 @@ plot(fit_cd4_np, view = "rgl")
   $$
 
 - Then fit candidate correlations to $\widehat R_{ijk}$.
+:::
 
+::: {.content-hidden when-profile="short"}
 ## Backup: Correlation Fit
 
 - For family $\ell$ with parameter $\theta_\ell$:
@@ -1776,7 +1806,9 @@ plot(fit_cd4_np, view = "rgl")
   $$
 
 - Weights can encode design, trimming, or numerical safeguards.
+:::
 
+::: {.content-hidden when-profile="short"}
 ## Backup: Simplex Averaging
 
 - Let $\widehat R_\ell$ denote the fitted correlation matrix or grid surface for
@@ -1789,7 +1821,9 @@ plot(fit_cd4_np, view = "rgl")
   \qquad
   \widehat{\boldsymbol{\alpha}}\in\Delta_L.
   $$
+:::
 
+::: {.content-hidden when-profile="short"}
 ## Backup: Boundary-Corrected Linear Span
 
 - Linear correction starts from
@@ -1798,7 +1832,9 @@ plot(fit_cd4_np, view = "rgl")
   $$
 
 - Because $t'(0)=t'(1)=1$, this permits a common endpoint derivative.
+:::
 
+::: {.content-hidden when-profile="short"}
 ## Backup: Boundary-Corrected Quadratic Span
 
 - Quadratic correction starts from
@@ -1808,7 +1844,9 @@ plot(fit_cd4_np, view = "rgl")
 
 - Since $t'(0)=1$, $t'(1)=1$, $2t|_{t=0}=0$, and $2t|_{t=1}=2$,
   the two endpoint derivatives can differ.
+:::
 
+::: {.content-hidden when-profile="short"}
 ## Backup: QR Construction
 
 - Let $B$ be the evaluated design matrix for the finite span.
@@ -1821,7 +1859,9 @@ plot(fit_cd4_np, view = "rgl")
 - The columns of $Q$ are orthonormal in the empirical inner product.
 
 - The fitted values are obtained by projecting onto selected columns of $Q$.
+:::
 
+::: {.content-hidden when-profile="short"}
 ## Backup: Why Smooth Thresholding Still Fits
 
 - The fixed orthonormal finite-span construction preserves the series-estimation
@@ -1832,7 +1872,9 @@ plot(fit_cd4_np, view = "rgl")
 
 - Empirical QR variants require cross-validation because the orthonormalization
   is sample-design dependent.
+:::
 
+::: {.content-hidden when-profile="short"}
 ## Backup: No One Boundary Rule Wins Everywhere
 
 - Endpoint correction is a bias-correction problem.
@@ -1844,6 +1886,8 @@ plot(fit_cd4_np, view = "rgl")
   structurally biased at the boundary.
 
 - The applied answer is sensitivity analysis plus a defensible default.
+
+:::
 
 # References {.scrollable}
 
