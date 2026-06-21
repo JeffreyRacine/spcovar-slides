@@ -667,7 +667,6 @@ is a defensible choice because it does not build in the zero-derivative prior.
 - Examples include:
 
     - Matern [@Matern1986]
-    - fractional Brownian motion [@MandelbrotVanNess1968]
     - multifractional Brownian motion [@PeltierLevyVehel1995]
     - Brownian bridge [@Doob1949]
     - Gaussian-process families [@RasmussenWilliams2006; @Gibbs1997]
@@ -686,7 +685,6 @@ over parameter values.
 | Family | Source | Main feature |
 |---|---|---|
 | Matérn | @Matern1986 | stationary range and smoothness benchmark |
-| fBm | @MandelbrotVanNess1968 | self-similar roughness |
 | mfBm | @PeltierLevyVehel1995 | time-varying roughness |
 | Brownian bridge | @Doob1949 | endpoint-constrained nonstationarity |
 | Rational quadratic | @RasmussenWilliams2006 | scale mixtures of local ranges |
