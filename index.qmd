@@ -149,6 +149,8 @@ Equivalent phrases to use verbally:
 
 ## Example (Children's Growth)
 
+::: {.callout-note appearance="simple"}
+
 - Let $X_i(t)$ be child $i$'s latent growth trajectory at age $t$.
 
 - The covariance surface tracks how growth at two ages varies together across
@@ -169,6 +171,8 @@ Equivalent phrases to use verbally:
 - In this example, principal components may correspond to overall size, timing
   of growth spurts, or other shape features (our focus here is strictly on
   covariance estimation).
+
+:::
 
 ## Sparse Curves
 
@@ -1439,6 +1443,8 @@ with the manuscript evidence.
 
 ## Example (CD4 Data)
 
+::: {.callout-note appearance="simple"}
+
 - The application uses CD4 count data distributed with `refund` [@refund2026].
 
 - CD4 counts are recorded relative to HIV seroconversion.
@@ -1474,7 +1480,11 @@ knitr::kable(
 
 :::
 
+:::
+
 ## Example (CD4 - Why This Example Matters)
+
+::: {.callout-note appearance="simple"}
 
 - Seroconversion anchors follow-up to a biologically meaningful event.
 
@@ -1486,8 +1496,12 @@ knitr::kable(
     - how strongly early and later immune status are associated;
     - how much variation is latent signal rather than measurement noise.
 
+:::
+
 ::: {.content-hidden when-profile="short"}
 ## Example (CD4 - What The Estimator Must Separate)
+
+::: {.callout-note appearance="simple"}
 
 - The CD4 example is a canonical sparse longitudinal FDA setting.
 
@@ -1502,8 +1516,12 @@ knitr::kable(
 
 :::
 
+:::
+
 ::: {.content-hidden when-profile="short"}
 ## Example (CD4 - Parametric Benchmark In The Application)
+
+::: {.callout-note appearance="simple"}
 
 - A simple parametric benchmark is feasible and interpretable.
 
@@ -1513,6 +1531,8 @@ knitr::kable(
     - constant latent variance;
     - Gaussian-shaped stationary covariance ridge;
     - no sharp separation of latent variation and measurement error.
+
+:::
 
 :::
 
@@ -1830,6 +1850,8 @@ plot(fit_cd4_np, view = "rgl")
 ::: {.content-hidden when-profile="short"}
 ## Example (CD4 - Interpretation)
 
+::: {.callout-note appearance="simple"}
+
 - The application illustrates why boundary behavior matters in practice.
 
 - Uncorrected cosine stages can visibly deform endpoint behavior by imposing
@@ -1840,8 +1862,12 @@ plot(fit_cd4_np, view = "rgl")
 
 :::
 
+:::
+
 ::: {.content-hidden when-profile="short"}
 ## Example (CD4 - Sensitivity Is A Feature)
+
+::: {.callout-note appearance="simple"}
 
 - No boundary rule is uniformly best.
 
@@ -1853,6 +1879,8 @@ plot(fit_cd4_np, view = "rgl")
     - empirical QR alternatives.
 
 - The default should be defensible, not magical.
+
+:::
 
 :::
 
