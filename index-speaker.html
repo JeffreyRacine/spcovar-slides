@@ -12,7 +12,7 @@
   <meta name="author" content="Valentin Patilea^\dagger">
   <meta name="author" content="Jeffrey S. Racine^\ddagger">
   <meta name="dcterms.date" content="2026-06-24">
-  <title>quarto-input84cba27b29df5ead</title>
+  <title>quarto-inputf60773c51a08d6a1</title>
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, minimal-ui">
@@ -472,6 +472,20 @@ C(s,t)=\sigma(s)\sigma(t)\rho(s,t).
           overflow: hidden!important;
           display:block!important;
       }</style></aside>
+</section>
+<section id="assumptions" class="slide level2 center">
+<h2>Assumptions</h2>
+<ul>
+<li class="fragment"><p>Sparse observation model: <span class="math display">\[
+Y_{ij}=X_i(T_{ij})+\varepsilon_{ij},
+\qquad
+1\le i\le N,\quad 1\le j\le M_i.
+\]</span></p></li>
+<li class="fragment"><p><span class="math inline">\(X_i(\cdot)\)</span> are independent copies of a second-order latent process <span class="math inline">\(X\)</span> on <span class="math inline">\([0,1]\)</span>.</p></li>
+<li class="fragment"><p>The design points <span class="math inline">\(T_{ij}\)</span> are i.i.d. as <span class="math inline">\(T\)</span>, and the errors <span class="math inline">\(\varepsilon_{ij}\)</span> are centered i.i.d. with variance <span class="math inline">\(\sigma_\varepsilon^2\)</span>.</p></li>
+<li class="fragment"><p>The collections <span class="math inline">\(\{X_i\}\)</span>, <span class="math inline">\(\{T_{ij}\}\)</span>, and <span class="math inline">\(\{\varepsilon_{ij}\}\)</span> are mutually independent.</p></li>
+<li class="fragment"><p>The <span class="math inline">\(M_i\)</span> are bounded and treated as fixed; if random and independent, the analysis is conditional on the <span class="math inline">\(M_i\)</span>.</p></li>
+</ul>
 </section>
 <section id="implementation-details" class="slide level2 center">
 <h2>Implementation Details</h2>

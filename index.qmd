@@ -310,6 +310,28 @@ mcfda: Mean and Covariance Estimation for Functional Snippets and Sparse
 Functional Data.
 :::
 
+## Assumptions
+
+- Sparse observation model:
+  $$
+  Y_{ij}=X_i(T_{ij})+\varepsilon_{ij},
+  \qquad
+  1\le i\le N,\quad 1\le j\le M_i.
+  $$
+
+- $X_i(\cdot)$ are independent copies of a second-order latent process $X$ on
+  $[0,1]$.
+
+- The design points $T_{ij}$ are i.i.d. as $T$, and the errors
+  $\varepsilon_{ij}$ are centered i.i.d. with variance
+  $\sigma_\varepsilon^2$.
+
+- The collections $\{X_i\}$, $\{T_{ij}\}$, and $\{\varepsilon_{ij}\}$ are
+  mutually independent.
+
+- The $M_i$ are bounded and treated as fixed; if random and independent, the
+  analysis is conditional on the $M_i$.
+
 ::: {.content-visible when-profile="short"}
 ## Implementation Details 
 
