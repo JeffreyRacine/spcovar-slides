@@ -47,7 +47,7 @@ format:
 editor: source
 ---
 
-# Abstract
+# Overview
 
 - We propose a semiparametric covariance estimator for sparsely observed
   functional data.
@@ -63,7 +63,7 @@ editor: source
 
 - Data-driven tuning parameter selection is used throughout.
 
-- An empirical CD4 application is presented.
+- An empirical CD4 count application is presented.
 
 ::: {.content-hidden when-profile="short"}
 # Outline of Talk
@@ -97,12 +97,13 @@ Proofs will be added to the manuscript separately.
 
 ## Classical Versus Functional Data
 
-- Classical sample element:
+- Classical data: $Y_i$ is a finite-dimensional draw from a random vector $Y$:
   $$
   Y_i \in \mathbb R^d .
   $$
 
-- Functional sample element:
+- Functional data: $X_i$ is an infinite-dimensional draw from a random function
+  $X(\cdot)$, indexed by a continuum $t \in \mathcal T$:
   $$
   X_i = \{X_i(t): t \in \mathcal T\}.
   $$
@@ -114,8 +115,7 @@ Proofs will be added to the manuscript separately.
   $$
 
 ::: {.notes}
-This recreates the pedagogical opening used in Braga: begin with the sample
-element before discussing estimators.
+Begin with the sample element before proceeding.
 :::
 
 ## Why Covariance?
@@ -139,7 +139,15 @@ element before discussing estimators.
 - Estimating $C(s,t)$ is the path from scattered measurements to latent
   trajectory structure.
 
-## Example - Children's Growth
+::: {.notes}
+Equivalent phrases to use verbally:
+
+- the latent covariance surface $C(s,t)$;
+- the covariance function of the latent process;
+- $C(s,t)=\operatorname{Cov}\{X(s),X(t)\}$, the latent process covariance.
+:::
+
+## Example (Children's Growth)
 
 - Let $X_i(t)$ be child $i$'s latent growth trajectory at age $t$.
 
@@ -231,7 +239,7 @@ observed covariance = latent covariance + measurement-error contribution
   $$
   \mu(t)=\mathbb{E}\{X(t)\},
   \qquad
-  \sigma^2(t)=\operatorname{var}\{X(t)\},
+  \sigma^2(t)=\operatorname{Var}\{X(t)\},
   $$
   and
 
@@ -410,7 +418,7 @@ $$
   \qquad n=\sum_{i=1}^N M_i.
   $$
 
-## Efromovich's Cosine Series
+## Efromovich's Cosine Series Estimator
 
 - Efromovich's cosine-series approach is attractive because the cosine basis is
   orthonormal on $[0,1]$ and supports thresholding rules [@efromovich1999].
@@ -598,7 +606,7 @@ is a defensible choice because it does not build in the zero-derivative prior.
 
 :::
 
-## Parametric Correlation Families: $\widehat\rho(s,t)$ {.smaller}
+## Parametric Correlation Families for $\rho(s,t)$ {.smaller}
 
 ::: nonincremental
 
@@ -703,15 +711,15 @@ where $\ell=1,\ldots,L$ indexes the candidate family.
 
 - The main tuning choices are selected from the data:
 
-    - noise variance $(\sigma_\varepsilon^2)$: nearest within-subject contrasts
+    - noise variance $\sigma_\varepsilon^2$: nearest within-subject contrasts
       with $k_{nn}\asymp \log n$;
-    - mean and variance functions $(\mu(t),\sigma^2(t))$: projection
-      coefficients are estimated in the standard cosine basis, and a smoothed
-      Efromovich threshold selects the retained cosine terms;
-    - correlation families $(\rho_\theta(s,t))$: low-dimensional parameters
+    - mean and variance functions $\mu(t),\sigma^2(t)$: projection
+      coefficients are estimated in an orthonormal cosine-type series basis,
+      and a smoothed Efromovich threshold selects the retained cosine terms;
+    - correlation families $\rho_\theta(s,t)$: low-dimensional parameters
       $\theta$ are fit from off-diagonal products, avoiding direct
       measurement-error contamination;
-    - model averaging ($\widehat{\boldsymbol{\alpha}})$: simplex weights are chosen by the
+    - model averaging weights $\widehat{\boldsymbol{\alpha}}$: simplex weights are chosen by the
       same off-diagonal fitting criterion.
 
 :::
@@ -1407,7 +1415,7 @@ with the manuscript evidence.
 
 :::
 
-## CD4 Data
+## Example (CD4 Data)
 
 - The application uses CD4 count data distributed with `refund` [@refund2026].
 
@@ -1444,7 +1452,7 @@ knitr::kable(
 
 :::
 
-## Why This Example Matters
+## Example (CD4 - Why This Example Matters)
 
 - Seroconversion anchors follow-up to a biologically meaningful event.
 
@@ -1457,7 +1465,7 @@ knitr::kable(
     - how much variation is latent signal rather than measurement noise.
 
 ::: {.content-hidden when-profile="short"}
-## What The Estimator Must Separate
+## Example (CD4 - What The Estimator Must Separate)
 
 - The CD4 example is a canonical sparse longitudinal FDA setting.
 
@@ -1473,7 +1481,7 @@ knitr::kable(
 :::
 
 ::: {.content-hidden when-profile="short"}
-## Parametric Benchmark In The Application
+## Example (CD4 - Parametric Benchmark In The Application)
 
 - A simple parametric benchmark is feasible and interpretable.
 
@@ -1524,7 +1532,7 @@ fit_cd4_np <- npcovar(Lt, Ly,
                       covariance_basis = "cosine_bc_gs2")
 ```
 
-## Default Semiparametric Fit
+## Example (CD4 - Default Semiparametric Fit)
 
 ::: nonincremental
 
@@ -1539,7 +1547,7 @@ plot(fit_cd4_sp)
 :::
 
 ::: {.content-hidden when-profile="short"}
-## Default Nonparametric Fit
+## Example (CD4 - Default Nonparametric Fit)
 
 ::: nonincremental
 
@@ -1556,7 +1564,7 @@ plot(fit_cd4_np)
 :::
 
 ::: {.content-hidden when-profile="short"}
-## Covariance Contour Views {#covariance-contour-views}
+## Example (CD4 - Semiparametric Covariance Contour View) {#covariance-contour-views}
 
 ::: nonincremental
 
@@ -1575,7 +1583,7 @@ plot(fit_cd4_sp, view = "heatmap")
 :::
 
 ::: {.content-hidden when-profile="short"}
-## Nonparametric Covariance Contour View
+## Example (CD4 - Nonparametric Covariance Contour View)
 
 ::: nonincremental
 
@@ -1591,11 +1599,7 @@ plot(fit_cd4_np, view = "heatmap")
 
 :::
 
-## Semiparametric Covariance Surface
-
-::: nonincremental
-
-The same covariance estimates can be viewed as full surfaces.
+## Example (CD4 - Semiparametric Covariance Surface)
 
 ```{r}
 #| label: fig-cd4-spcovar-surface-default
@@ -1605,10 +1609,8 @@ The same covariance estimates can be viewed as full surfaces.
 plot(fit_cd4_sp, view = "persp")
 ```
 
-:::
-
 ::: {.content-hidden when-profile="short"}
-## Nonparametric Covariance Surface
+## Example (CD4 - Nonparametric Covariance Surface)
 
 ::: nonincremental
 
@@ -1626,9 +1628,7 @@ plot(fit_cd4_np, view = "persp")
 
 ::: {.content-visible when-profile="short"}
 
-## Live rgl Demo Code using the R package `spcovar`
-
-::: nonincremental
+## Example (CD4 - Live rgl Demo Code using the R package `spcovar`)
 
 ```{r}
 #| echo: true
@@ -1696,18 +1696,15 @@ fit_cd4_sp <- spcovar(Lt = Lt, Ly = Ly)
 plot(fit_cd4_sp)
 
 ## Plot the covariance surface estimate in an interactive rgl widget.
-## See ?plot.spcovar_fit for options to customize the plot.
 
 plot(fit_cd4_sp, view = "rgl")
 ```
 
 :::
 
-:::
-
 ::: {.content-hidden when-profile="short"}
 
-## Live rgl Demo Code using the R package `spcovar`
+## Example (CD4 - Live rgl Demo Code using the R package `spcovar`)
 
 ::: nonincremental
 
@@ -1779,7 +1776,6 @@ fit_cd4_sp <- spcovar(Lt = Lt, Ly = Ly)
 plot(fit_cd4_sp)
 
 ## Plot the covariance surface estimate in an interactive rgl widget.
-## See ?plot.spcovar_fit for options to customize the plot.
 
 plot(fit_cd4_sp, view = "rgl")
 
@@ -1787,7 +1783,12 @@ plot(fit_cd4_sp, view = "rgl")
 ## surface using npcovar. See ?npcovar for options to customize the fit,
 ## including the mean and variance.
 
-fit_cd4_np <- npcovar(Lt = Lt, Ly = Ly)
+fit_cd4_np <- npcovar(
+  Lt = Lt,
+  Ly = Ly,
+  nomad = TRUE,
+  standardize = TRUE
+)
 
 ## Plot the mean, standard deviation, and covariance surface estimates.
 ## See ?plot.npcovar_fit for options to customize the plot.
@@ -1796,7 +1797,6 @@ plot(fit_cd4_np)
 
 ## Plot the fully nonparametric covariance surface estimate in an interactive
 ## rgl widget.
-## See ?plot.npcovar_fit for options to customize the plot.
 
 plot(fit_cd4_np, view = "rgl")
 ```
@@ -1806,7 +1806,7 @@ plot(fit_cd4_np, view = "rgl")
 :::
 
 ::: {.content-hidden when-profile="short"}
-## CD4 Interpretation
+## Example (CD4 - Interpretation)
 
 - The application illustrates why boundary behavior matters in practice.
 
@@ -1819,7 +1819,7 @@ plot(fit_cd4_np, view = "rgl")
 :::
 
 ::: {.content-hidden when-profile="short"}
-## Sensitivity Is A Feature
+## Example (CD4 - Sensitivity Is A Feature)
 
 - No boundary rule is uniformly best.
 
@@ -1891,7 +1891,7 @@ plot(fit_cd4_np, view = "rgl")
 - Assume
   $$
   E(\varepsilon_{ij})=0,\qquad
-  \operatorname{var}(\varepsilon_{ij})=\sigma_\varepsilon^2,
+  \operatorname{Var}(\varepsilon_{ij})=\sigma_\varepsilon^2,
   $$
 
 - Measurement error is independent of the latent process and design.
