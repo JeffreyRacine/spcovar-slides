@@ -1624,6 +1624,8 @@ plot(fit_cd4_np, view = "persp")
 
 :::
 
+::: {.content-visible when-profile="short"}
+
 ## Live rgl Demo Code using the R package `spcovar`
 
 ::: nonincremental
@@ -1632,6 +1634,83 @@ plot(fit_cd4_np, view = "persp")
 #| echo: true
 #| eval: false
 #| label: fig-fexbwselcddens
+
+## The R package spcovar is installed from GitHub until it is available on CRAN.
+## The remotes package is the lightweight installer route.
+
+if (!requireNamespace("spcovar", quietly = TRUE)) {
+  if (!requireNamespace("remotes", quietly = TRUE)) {
+    install.packages("remotes")
+  }
+  remotes::install_github("JeffreyRacine/spcovar")
+}
+
+required_packages <- c("refund", "rgl")
+missing_packages <- required_packages[
+  !vapply(required_packages, requireNamespace, logical(1), quietly = TRUE)
+]
+
+if (length(missing_packages)) {
+  stop(
+    "Please install the required package(s): ",
+    paste(missing_packages, collapse = ", "),
+    call. = FALSE
+  )
+}
+
+## Load the spcovar package, which contains the proposed estimator and plotting
+## methods.
+
+library(spcovar)
+
+## Load the CD4 cell count data from the refund package.
+
+data(cd4, package = "refund")
+
+## The data are in a matrix with rows corresponding to subjects and columns
+## corresponding to time points.  We will convert the time points to the unit
+## interval and create lists of time points and observations for each subject,
+## which is the format required by spcovar.
+
+times <- as.numeric(colnames(cd4))
+times01 <- (times - min(times)) / diff(range(times))
+
+Lt <- vector("list", nrow(cd4))
+Ly <- vector("list", nrow(cd4))
+
+for (i in seq_len(nrow(cd4))) {
+  ok <- is.finite(cd4[i, ])
+  Lt[[i]] <- times01[ok]
+  Ly[[i]] <- as.numeric(cd4[i, ok])
+}
+
+## Estimate the mean, standard deviation, and covariance surface using spcovar.
+
+fit_cd4_sp <- spcovar(Lt = Lt, Ly = Ly)
+
+## Plot the mean, standard deviation, and covariance surface estimates.
+
+plot(fit_cd4_sp)
+
+## Plot the covariance surface estimate in an interactive rgl widget.
+
+plot(fit_cd4_sp, view = "rgl")
+```
+
+:::
+
+:::
+
+::: {.content-hidden when-profile="short"}
+
+## Live rgl Demo Code using the R package `spcovar`
+
+::: nonincremental
+
+```{r}
+#| echo: true
+#| eval: false
+#| label: fig-fexbwselcddens-long
 
 ## The R package spcovar is installed from GitHub until it is available on CRAN.
 ## The remotes package is the lightweight installer route.
@@ -1699,22 +1778,24 @@ plot(fit_cd4_sp, view = "rgl")
 ## Estimate the mean, standard deviation, and fully nonparametric covariance
 ## surface using npcovar.
 
-# fit_cd4_np <- npcovar(
-#   Lt = Lt,
-#   Ly = Ly,
-#   nomad = TRUE,
-#   standardize = TRUE
-# )
+fit_cd4_np <- npcovar(
+  Lt = Lt,
+  Ly = Ly,
+  nomad = TRUE,
+  standardize = TRUE
+)
 
 ## Plot the mean, standard deviation, and covariance surface estimates.
 
-# plot(fit_cd4_np)
+plot(fit_cd4_np)
 
 ## Plot the fully nonparametric covariance surface estimate in an interactive
 ## rgl widget.
 
-# plot(fit_cd4_np, view = "rgl")
+plot(fit_cd4_np, view = "rgl")
 ```
+
+:::
 
 :::
 
