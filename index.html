@@ -12,7 +12,7 @@
   <meta name="author" content="Valentin Patilea^\dagger">
   <meta name="author" content="Jeffrey S. Racine^\ddagger">
   <meta name="dcterms.date" content="2026-06-24">
-  <title>quarto-input205ac897d1227217</title>
+  <title>quarto-input829a31d4dd6d2ea3</title>
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, minimal-ui">
@@ -348,6 +348,19 @@ C(s,t)=\operatorname{Cov}\{X(s),X(t)\}.
 </div>
 </div>
 </div>
+<aside class="notes">
+<p>In this example, <span class="math inline">\(X_i(t)\)</span> is a conceptual latent growth trajectory, so its units are determined by the growth outcome being modeled. If the outcome is height, then <span class="math inline">\(t\)</span> is age, for example in years, and <span class="math inline">\(X_i(t)\)</span> is latent height, for example in centimeters. The observed measurement <span class="math inline">\(Y_{ij}=X_i(T_{ij})+\varepsilon_{ij}\)</span> is then also in centimeters, and the measurement error <span class="math inline">\(\varepsilon_{ij}\)</span> has the same units.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
 </section>
 <section id="sparse-curves" class="slide level2 center">
 <h2>Sparse Curves</h2>
@@ -467,6 +480,7 @@ C(s,t)=\sigma(s)\sigma(t)\rho(s,t).
 </ul>
 <aside class="notes">
 <p>PACE: Principal Analysis by Conditional Expectation.</p>
+<p>FPCA: Functional Principal Component Analysis.</p>
 <p>FACE: Fast Covariance Estimation.</p>
 <p>RKHS: Reproducing Kernel Hilbert Space.</p>
 <p>mcfda: Mean and Covariance Estimation for Functional Snippets and Sparse Functional Data.</p>
@@ -2110,6 +2124,19 @@ C_{ijk}
 </div>
 </div>
 </div>
+<aside class="notes">
+<p>CD4 refers to CD4-positive T lymphocytes, a class of immune cells targeted by HIV. CD4 cell counts are a standard clinical marker of immune status in HIV infection: lower counts indicate immune suppression and greater disease progression risk. Seroconversion is the transition point at which HIV antibodies become detectable, so measuring time relative to seroconversion gives a common clinical origin for the longitudinal trajectories.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
 </section>
 <section id="example-cd4---why-this-example-matters" class="slide level2 center">
 <h2>Example (CD4 - Why This Example Matters)</h2>
