@@ -1685,14 +1685,18 @@ for (i in seq_len(nrow(cd4))) {
 }
 
 ## Estimate the mean, standard deviation, and covariance surface using spcovar.
+## See ?spcovar for options to customize the fit, including the mean and
+## variance.
 
 fit_cd4_sp <- spcovar(Lt = Lt, Ly = Ly)
 
 ## Plot the mean, standard deviation, and covariance surface estimates.
+## See ?plot.spcovar_fit for options to customize the plot.
 
 plot(fit_cd4_sp)
 
 ## Plot the covariance surface estimate in an interactive rgl widget.
+## See ?plot.spcovar_fit for options to customize the plot.
 
 plot(fit_cd4_sp, view = "rgl")
 ```
@@ -1764,33 +1768,35 @@ for (i in seq_len(nrow(cd4))) {
 }
 
 ## Estimate the mean, standard deviation, and covariance surface using spcovar.
+## See ?spcovar for options to customize the fit, including the mean and
+## variance.
 
 fit_cd4_sp <- spcovar(Lt = Lt, Ly = Ly)
 
 ## Plot the mean, standard deviation, and covariance surface estimates.
+## See ?plot.spcovar_fit for options to customize the plot.
 
 plot(fit_cd4_sp)
 
 ## Plot the covariance surface estimate in an interactive rgl widget.
+## See ?plot.spcovar_fit for options to customize the plot.
 
 plot(fit_cd4_sp, view = "rgl")
 
 ## Estimate the mean, standard deviation, and fully nonparametric covariance
-## surface using npcovar.
+## surface using npcovar. See ?npcovar for options to customize the fit,
+## including the mean and variance.
 
-fit_cd4_np <- npcovar(
-  Lt = Lt,
-  Ly = Ly,
-  nomad = TRUE,
-  standardize = TRUE
-)
+fit_cd4_np <- npcovar(Lt = Lt, Ly = Ly)
 
 ## Plot the mean, standard deviation, and covariance surface estimates.
+## See ?plot.npcovar_fit for options to customize the plot.
 
 plot(fit_cd4_np)
 
 ## Plot the fully nonparametric covariance surface estimate in an interactive
 ## rgl widget.
+## See ?plot.npcovar_fit for options to customize the plot.
 
 plot(fit_cd4_np, view = "rgl")
 ```
