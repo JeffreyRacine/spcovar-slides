@@ -1672,6 +1672,8 @@ plot(fit_cd4_np, view = "persp")
 
 ## Example (CD4 - Live rgl Demo Code using the R package `spcovar`)
 
+::: {.callout-note appearance="simple"}
+
 ```{r}
 #| echo: true
 #| eval: false
@@ -1744,9 +1746,13 @@ plot(fit_cd4_sp, view = "rgl")
 
 :::
 
+:::
+
 ::: {.content-hidden when-profile="short"}
 
 ## Example (CD4 - Live rgl Demo Code using the R package `spcovar`)
+
+::: {.callout-note appearance="simple"}
 
 ::: nonincremental
 
@@ -1842,6 +1848,8 @@ plot(fit_cd4_np)
 
 plot(fit_cd4_np, view = "rgl")
 ```
+
+:::
 
 :::
 
