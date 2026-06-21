@@ -12,7 +12,7 @@
   <meta name="author" content="Valentin Patilea^\dagger">
   <meta name="author" content="Jeffrey S. Racine^\ddagger">
   <meta name="dcterms.date" content="2026-06-24">
-  <title>quarto-inputcc5cbaaf7608fdfb</title>
+  <title>quarto-input84cba27b29df5ead</title>
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, minimal-ui">
@@ -473,6 +473,19 @@ C(s,t)=\sigma(s)\sigma(t)\rho(s,t).
           display:block!important;
       }</style></aside>
 </section>
+<section id="implementation-details" class="slide level2 center">
+<h2>Implementation Details</h2>
+<ul>
+<li class="fragment"><p>The default fit is data-driven rather than hand-tuned.</p></li>
+<li class="fragment"><p>The main tuning choices are selected from the data:</p>
+<ul>
+<li class="fragment">noise variance <span class="math inline">\(\sigma_\varepsilon^2\)</span>: nearest within-subject contrasts with <span class="math inline">\(k_{nn}\asymp \log n\)</span>;</li>
+<li class="fragment">mean and variance functions <span class="math inline">\(\mu(t),\sigma^2(t)\)</span>: projection coefficients are estimated in an orthonormal cosine-type series basis, and a smoothed Efromovich threshold selects the retained cosine terms;</li>
+<li class="fragment">correlation families <span class="math inline">\(\rho_\theta(s,t)\)</span>: low-dimensional parameters <span class="math inline">\(\theta\)</span> are fit from off-diagonal products, avoiding direct measurement-error contamination;</li>
+<li class="fragment">model averaging weights <span class="math inline">\(\widehat{\boldsymbol{\alpha}}\)</span>: simplex weights are chosen by the same off-diagonal fitting criterion.</li>
+</ul></li>
+</ul>
+</section>
 <section id="noise-variance" class="slide level2 center">
 <h2>Noise Variance</h2>
 <ul>
@@ -646,19 +659,6 @@ C_{ijk}
 <li class="fragment"><p>The averaged estimator is <span class="math inline">\(\widehat C_{\boldsymbol{\alpha}}(s,t)=\sum_{\ell=1}^L
 \alpha_\ell \widehat C_\ell(s,t)\)</span>, with <span class="math inline">\(\alpha_\ell \ge 0\)</span> and <span class="math inline">\(\sum_{\ell=1}^L \alpha_\ell = 1\)</span>.</p></li>
 <li class="fragment"><p>This follows the spirit of focused/model-averaging ideas <span class="citation" data-cites="CLAESKENS_HJORT:2011">(<a href="#/references" role="doc-biblioref" onclick="">Claeskens and Hjort 2008</a>)</span>.</p></li>
-</ul>
-</section>
-<section id="implementation-details" class="slide level2 center">
-<h2>Implementation Details</h2>
-<ul>
-<li class="fragment"><p>The default fit is data-driven rather than hand-tuned.</p></li>
-<li class="fragment"><p>The main tuning choices are selected from the data:</p>
-<ul>
-<li class="fragment">noise variance <span class="math inline">\(\sigma_\varepsilon^2\)</span>: nearest within-subject contrasts with <span class="math inline">\(k_{nn}\asymp \log n\)</span>;</li>
-<li class="fragment">mean and variance functions <span class="math inline">\(\mu(t),\sigma^2(t)\)</span>: projection coefficients are estimated in an orthonormal cosine-type series basis, and a smoothed Efromovich threshold selects the retained cosine terms;</li>
-<li class="fragment">correlation families <span class="math inline">\(\rho_\theta(s,t)\)</span>: low-dimensional parameters <span class="math inline">\(\theta\)</span> are fit from off-diagonal products, avoiding direct measurement-error contamination;</li>
-<li class="fragment">model averaging weights <span class="math inline">\(\widehat{\boldsymbol{\alpha}}\)</span>: simplex weights are chosen by the same off-diagonal fitting criterion.</li>
-</ul></li>
 </ul>
 </section>
 <section id="simulation-design" class="slide level2 center">

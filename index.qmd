@@ -310,6 +310,50 @@ mcfda: Mean and Covariance Estimation for Functional Snippets and Sparse
 Functional Data.
 :::
 
+::: {.content-visible when-profile="short"}
+## Implementation Details 
+
+- The default fit is data-driven rather than hand-tuned.
+
+- The main tuning choices are selected from the data:
+
+    - noise variance $\sigma_\varepsilon^2$: nearest within-subject contrasts
+      with $k_{nn}\asymp \log n$;
+    - mean and variance functions $\mu(t),\sigma^2(t)$: projection
+      coefficients are estimated in an orthonormal cosine-type series basis,
+      and a smoothed Efromovich threshold selects the retained cosine terms;
+    - correlation families $\rho_\theta(s,t)$: low-dimensional parameters
+      $\theta$ are fit from off-diagonal products, avoiding direct
+      measurement-error contamination;
+    - model averaging weights $\widehat{\boldsymbol{\alpha}}$: simplex weights are chosen by the
+      same off-diagonal fitting criterion.
+
+:::
+
+::: {.content-hidden when-profile="short"}
+## Implementation Details 
+
+- The default fit is data-driven rather than hand-tuned.
+
+- The main tuning choices are selected from the data:
+
+    - noise variance $(\sigma_\varepsilon^2)$: nearest within-subject contrasts
+      with $k_{nn}\asymp \log n$;
+    - mean and variance functions $(\mu(t),\sigma^2(t))$: projection
+      coefficients are estimated in an orthonormal boundary-corrected
+      cosine-type basis; the boundary columns are retained, and a smoothed
+      Efromovich threshold selects and shrinks the cosine tail;
+    - nonparametric covariance benchmark $(C(s,t))$: tensor order $J$ and
+      roughness penalty $\lambda$ are selected jointly by curve-level
+      cross-validation or by a NOMAD search over $(J,\log_{10}\lambda)$;
+    - correlation families $(\rho_\theta(s,t))$: low-dimensional parameters
+      $\theta$ are fit from off-diagonal products, avoiding direct
+      measurement-error contamination;
+    - model averaging ($\widehat{\boldsymbol{\alpha}})$: simplex weights are chosen by the
+      same off-diagonal fitting criterion.
+
+:::
+
 ::: {.content-hidden when-profile="short"}
 ## A Statistical Compromise
 
@@ -701,50 +745,6 @@ where $\ell=1,\ldots,L$ indexes the candidate family.
     - interpretable diagnostics via $\widehat\boldsymbol{\alpha}$.
 
 - The averaging weights are part of the inferential output.
-
-:::
-
-::: {.content-visible when-profile="short"}
-## Implementation Details 
-
-- The default fit is data-driven rather than hand-tuned.
-
-- The main tuning choices are selected from the data:
-
-    - noise variance $\sigma_\varepsilon^2$: nearest within-subject contrasts
-      with $k_{nn}\asymp \log n$;
-    - mean and variance functions $\mu(t),\sigma^2(t)$: projection
-      coefficients are estimated in an orthonormal cosine-type series basis,
-      and a smoothed Efromovich threshold selects the retained cosine terms;
-    - correlation families $\rho_\theta(s,t)$: low-dimensional parameters
-      $\theta$ are fit from off-diagonal products, avoiding direct
-      measurement-error contamination;
-    - model averaging weights $\widehat{\boldsymbol{\alpha}}$: simplex weights are chosen by the
-      same off-diagonal fitting criterion.
-
-:::
-
-::: {.content-hidden when-profile="short"}
-## Implementation Details 
-
-- The default fit is data-driven rather than hand-tuned.
-
-- The main tuning choices are selected from the data:
-
-    - noise variance $(\sigma_\varepsilon^2)$: nearest within-subject contrasts
-      with $k_{nn}\asymp \log n$;
-    - mean and variance functions $(\mu(t),\sigma^2(t))$: projection
-      coefficients are estimated in an orthonormal boundary-corrected
-      cosine-type basis; the boundary columns are retained, and a smoothed
-      Efromovich threshold selects and shrinks the cosine tail;
-    - nonparametric covariance benchmark $(C(s,t))$: tensor order $J$ and
-      roughness penalty $\lambda$ are selected jointly by curve-level
-      cross-validation or by a NOMAD search over $(J,\log_{10}\lambda)$;
-    - correlation families $(\rho_\theta(s,t))$: low-dimensional parameters
-      $\theta$ are fit from off-diagonal products, avoiding direct
-      measurement-error contamination;
-    - model averaging ($\widehat{\boldsymbol{\alpha}})$: simplex weights are chosen by the
-      same off-diagonal fitting criterion.
 
 :::
 
