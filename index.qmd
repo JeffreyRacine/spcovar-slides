@@ -282,15 +282,27 @@ observed covariance = latent covariance + measurement-error contribution
 
 ## The Main Idea
 
-- Estimate marginal scale nonparametrically.
+- Estimate the marginal scale nonparametrically.
 
 - Fit the correlation component using low-dimensional positive-definite
   parametric families.
+  $$
+  \rho_{\widehat\theta_\ell}^{(\ell)}(s,t),
+  \qquad \ell=1,\ldots,L .
+  $$
 
 - Average the resulting covariance candidates with data-driven weights.
   $$
-  \widehat C(s,t)
-  = \widehat\sigma(s)\widehat\sigma(t)\widehat\rho(s,t).
+  \widehat C_{\boldsymbol{\alpha}}(s,t)
+  =
+  \sum_{\ell=1}^L \alpha_\ell \widehat C_\ell(s,t),
+  \qquad
+  \widehat C_\ell(s,t)
+  =
+  \widehat\sigma(s)\widehat\sigma(t)
+  \rho_{\widehat\theta_\ell}^{(\ell)}(s,t),
+  \qquad
+  \alpha_\ell\ge 0,\quad \sum_{\ell=1}^L\alpha_\ell=1 .
   $$
 
 - The scale functions absorb one-dimensional nonstationarity.
