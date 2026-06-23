@@ -12,7 +12,7 @@
   <meta name="author" content="Valentin Patilea^\dagger">
   <meta name="author" content="Jeffrey S. Racine^\ddagger">
   <meta name="dcterms.date" content="2026-06-24">
-  <title>quarto-inpute1e476033555d152</title>
+  <title>quarto-input77427ad2be629caf</title>
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, minimal-ui">
@@ -724,7 +724,7 @@ C_{ijk}
 </ul>
 </section>
 <section id="peer-estimators-in-the-simulation" class="slide level2 smaller center">
-<h2>Peer Estimators In The Simulation</h2>
+<h2>Peer Estimators in the Simulation</h2>
 <p>The peer comparison uses available R implementations where possible; the table labels refer to the implemented estimators.</p>
 <table class="caption-top">
 <colgroup>
@@ -815,6 +815,37 @@ C_{ijk}
           overflow: hidden!important;
           display:block!important;
       }</style></aside>
+</section>
+<section id="peer-comparison-mse" class="slide level2 center">
+<h2>Peer Comparison</h2>
+<ul>
+<li class="fragment"><p>For replication <span class="math inline">\(b\)</span>, estimator <span class="math inline">\(m\)</span>, DGP <span class="math inline">\(d\)</span>, and sample-size regime <span class="math inline">\(r\)</span>, on the grid <span class="math inline">\(\mathcal G=\{u_1,\ldots,u_G\}\)</span>, <span class="math inline">\(G=25\)</span>, <span class="math inline">\(u_g\in[0.05,0.95]\)</span>, <span class="math display">\[
+\operatorname{MSE}_{bmdr}
+=
+G^{-2}
+\sum_{a=1}^G\sum_{c=1}^G
+\left\{
+\widehat C_{bmdr}(u_a,u_c)-C_d(u_a,u_c)
+\right\}^2 .
+\]</span></p></li>
+<li class="fragment"><p>The table entries average this quantity over Monte Carlo replications and report <span class="math inline">\(1000\times\overline{\operatorname{MSE}}_{mdr}\)</span>.</p></li>
+<li class="fragment"><p>Relative entries divide by the corresponding <code>spcovar</code> value.</p></li>
+<li class="fragment"><p>The <code>Overall</code> index is the geometric mean of those ratios over the included DGP-regime cells: <span class="math display">\[
+\operatorname{Index}_m
+=
+\exp\left[
+\frac{1}{|\mathcal I|}
+\sum_{(d,r)\in\mathcal I}
+\log\left\{
+\frac{
+\overline{\operatorname{MSE}}_{mdr}
+}{
+\overline{\operatorname{MSE}}_{\mathrm{spcovar},dr}
+}
+\right\}
+\right].
+\]</span></p></li>
+</ul>
 </section>
 <section id="peer-comparison-ratios" class="slide level2 table-slide center">
 <h2>Peer Comparison Ratios</h2>
@@ -2196,7 +2227,7 @@ Figure&nbsp;2
 <div class="callout-icon-container">
 <i class="callout-icon"></i>
 </div>
-<p><strong>CD4 - Live rgl Demo Code using the R package <code>spcovar</code></strong></p>
+<p><strong>CD4 - Live rgl Demo Code Using the R Package <code>spcovar</code></strong></p>
 </div>
 <div class="callout-content">
 <div class="cell" data-layout-align="center">

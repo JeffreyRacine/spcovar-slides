@@ -380,7 +380,7 @@ Functional Data.
   analysis is conditional on the $M_i$.
 
 ::: {.content-visible when-profile="short"}
-## Implementation Details 
+## Implementation Details
 
 - The default fit is data-driven rather than hand-tuned.
 
@@ -400,7 +400,7 @@ Functional Data.
 :::
 
 ::: {.content-hidden when-profile="short"}
-## Implementation Details 
+## Implementation Details
 
 - The default fit is data-driven rather than hand-tuned.
 
@@ -443,7 +443,7 @@ Functional Data.
 :::
 
 ::: {.content-hidden when-profile="short"}
-## Relation To Sparse FDA
+## Relation to Sparse FDA
 
 - The sparse FDA setting follows the measurement-error and random-design
   framework used in the PACE literature [@Yao2005Sparse].
@@ -557,7 +557,7 @@ $$
 - The retained lag $J$ can be selected by a threshold/truncation
   rule or by cross-validation.
 
-## Cosine Series Coefficients 
+## Cosine Series Coefficients
 
 - The coefficients are moments:
   $$
@@ -1240,7 +1240,7 @@ bc_alpha_tables <- build_peer_alpha_tables("../Work_bcgs2_peer_beta_mc")
 
 :::
 
-## Peer Estimators In The Simulation {.smaller}
+## Peer Estimators in the Simulation {.smaller}
 
 ::: nonincremental
 
@@ -1272,6 +1272,44 @@ Exact campaign calls:
 - `mcfda-F`: `mcfda::meanfunc(..., method = "FOURIER", tuning = "cv")` followed by `mcfda::covfunc(..., method = "FOURIER", tuning = "lle")`.
 - `mcfda-SP`: `mcfda::covfunc(..., method = "SP", weig = NULL)`.
 :::
+
+## Peer Comparison {#peer-comparison-mse}
+
+- For replication $b$, estimator $m$, DGP $d$, and sample-size regime $r$,
+  on the grid $\mathcal G=\{u_1,\ldots,u_G\}$, $G=25$,
+  $u_g\in[0.05,0.95]$,
+  $$
+  \operatorname{MSE}_{bmdr}
+  =
+  G^{-2}
+  \sum_{a=1}^G\sum_{c=1}^G
+  \left\{
+  \widehat C_{bmdr}(u_a,u_c)-C_d(u_a,u_c)
+  \right\}^2 .
+  $$
+
+- The table entries average this quantity over Monte Carlo replications and
+  report $1000\times\overline{\operatorname{MSE}}_{mdr}$.
+
+- Relative entries divide by the corresponding `spcovar` value.
+
+- The `Overall` index is the geometric mean of those ratios over the included
+  DGP-regime cells:
+  $$
+  \operatorname{Index}_m
+  =
+  \exp\left[
+  \frac{1}{|\mathcal I|}
+  \sum_{(d,r)\in\mathcal I}
+  \log\left\{
+  \frac{
+  \overline{\operatorname{MSE}}_{mdr}
+  }{
+  \overline{\operatorname{MSE}}_{\mathrm{spcovar},dr}
+  }
+  \right\}
+  \right].
+  $$
 
 ## Peer Comparison Ratios {.table-slide}
 
@@ -1549,7 +1587,7 @@ clinical origin for the longitudinal trajectories.
 :::
 
 ::: {.content-hidden when-profile="short"}
-## Example (CD4 - What The Estimator Must Separate)
+## Example (CD4 - What the Estimator Must Separate)
 
 ::: {.callout-note appearance="simple"}
 
@@ -1569,7 +1607,7 @@ clinical origin for the longitudinal trajectories.
 :::
 
 ::: {.content-hidden when-profile="short"}
-## Example (CD4 - Parametric Benchmark In The Application)
+## Example (CD4 - Parametric Benchmark in the Application)
 
 ::: {.callout-note appearance="simple"}
 
@@ -1723,7 +1761,7 @@ plot(fit_cd4_np, view = "persp")
 ## Example (R Code)
 
 ::: {.callout-note appearance="simple"}
-##  CD4 - Live rgl Demo Code using the R package `spcovar`
+##  CD4 - Live rgl Demo Code Using the R Package `spcovar`
 
 ```{r}
 #| echo: true
@@ -1804,7 +1842,7 @@ plot(fit_cd4_sp, view = "rgl")
 ## Example (R Code)
 
 ::: {.callout-note appearance="simple"}
-##  CD4 - Live rgl Demo Code using the R package `spcovar`
+##  CD4 - Live rgl Demo Code Using the R Package `spcovar`
 
 ::: nonincremental
 
@@ -1925,7 +1963,7 @@ plot(fit_cd4_np, view = "rgl")
 :::
 
 ::: {.content-hidden when-profile="short"}
-## Example (CD4 - Sensitivity Is A Feature)
+## Example (CD4 - Sensitivity Is a Feature)
 
 ::: {.callout-note appearance="simple"}
 
