@@ -102,13 +102,13 @@ Proofs will be added to the manuscript separately.
 
 ## Classical Versus Functional Data
 
-- Classical data: one observes a finite-dimensional draw $Y_i$ from a random
-  vector $Y$:
+- Classical sample element: one observes a finite-dimensional draw $Y_i$ from a
+  random vector $Y$:
   $$
   Y_i \in \mathbb R^d .
   $$
 
-- Functional data: the latent sample element is a trajectory, an element of an
+- Latent functional sample element: $X_i$ is a trajectory, an element of an
   infinite-dimensional function space, drawn from a random function $X(\cdot)$,
   indexed by a continuum $t \in \mathcal T$:
   $$
