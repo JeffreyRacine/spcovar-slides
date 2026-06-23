@@ -101,13 +101,15 @@ Proofs will be added to the manuscript separately.
 
 ## Classical Versus Functional Data
 
-- Classical data: $Y_i$ is a finite-dimensional draw from a random vector $Y$:
+- Classical data: one observes a finite-dimensional draw $Y_i$ from a random
+  vector $Y$:
   $$
   Y_i \in \mathbb R^d .
   $$
 
-- Functional data: the latent sample element is a trajectory drawn from a random
-  function $X(\cdot)$, indexed by a continuum $t \in \mathcal T$:
+- Functional data: the latent sample element is a trajectory, an element of an
+  infinite-dimensional function space, drawn from a random function $X(\cdot)$,
+  indexed by a continuum $t \in \mathcal T$:
   $$
   X_i = \{X_i(t): t \in \mathcal T\}.
   $$
@@ -119,7 +121,11 @@ Proofs will be added to the manuscript separately.
   $$
 
 ::: {.notes}
-Begin with the sample element before proceeding.
+Begin with the sample element before proceeding. Here "infinite-dimensional"
+means that the latent curve is an element of a function space such as
+$L^2[0,1]$ or $C[0,1]$, not a vector in $\mathbb R^d$. In principle it can be
+represented by infinitely many basis coefficients, while sparse FDA observes
+only finitely many noisy point evaluations $Y_{ij}$.
 :::
 
 ## Why Covariance?
@@ -189,9 +195,12 @@ measurement error $\varepsilon_{ij}$ has the same units.
 
 ## Sparse Curves
 
-- In dense FDA, each curve carries substantial within-subject information.
+- In dense FDA, the classical workflow is to smooth each subject's observations
+  into a curve, then estimate population features such as the mean and
+  covariance from the recovered curves.
 
-- In sparse FDA, covariance information is distributed across many subjects.
+- In sparse FDA, individual curve reconstruction is unstable or impossible, as
+  the available covariance information is distributed across many subjects.
 
 - The object of interest is the latent covariance function:
   $$

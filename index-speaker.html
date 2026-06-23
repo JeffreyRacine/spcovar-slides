@@ -12,7 +12,7 @@
   <meta name="author" content="Valentin Patilea^\dagger">
   <meta name="author" content="Jeffrey S. Racine^\ddagger">
   <meta name="dcterms.date" content="2026-06-24">
-  <title>quarto-input122383373ee6127a</title>
+  <title>quarto-input58b9dede291a4ec</title>
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, minimal-ui">
@@ -266,10 +266,10 @@ Jeffrey S. Racine<span class="math inline">\(^\ddagger\)</span>
 <section id="classical-versus-functional-data" class="slide level2 center">
 <h2>Classical Versus Functional Data</h2>
 <ul>
-<li class="fragment"><p>Classical data: <span class="math inline">\(Y_i\)</span> is a finite-dimensional draw from a random vector <span class="math inline">\(Y\)</span>: <span class="math display">\[
+<li class="fragment"><p>Classical data: one observes a finite-dimensional draw <span class="math inline">\(Y_i\)</span> from a random vector <span class="math inline">\(Y\)</span>: <span class="math display">\[
 Y_i \in \mathbb R^d .
 \]</span></p></li>
-<li class="fragment"><p>Functional data: the latent sample element is a trajectory drawn from a random function <span class="math inline">\(X(\cdot)\)</span>, indexed by a continuum <span class="math inline">\(t \in \mathcal T\)</span>: <span class="math display">\[
+<li class="fragment"><p>Functional data: the latent sample element is a trajectory, an element of an infinite-dimensional function space, drawn from a random function <span class="math inline">\(X(\cdot)\)</span>, indexed by a continuum <span class="math inline">\(t \in \mathcal T\)</span>: <span class="math display">\[
 X_i = \{X_i(t): t \in \mathcal T\}.
 \]</span></p></li>
 <li class="fragment"><p>Sparse FDA observes only a small, noisy subset: <span class="math display">\[
@@ -278,7 +278,7 @@ Y_{ij} = X_i(T_{ij}) + \varepsilon_{ij},
 \]</span></p></li>
 </ul>
 <aside class="notes">
-<p>Begin with the sample element before proceeding.</p>
+<p>Begin with the sample element before proceeding. Here “infinite-dimensional” means that the latent curve is an element of a function space such as <span class="math inline">\(L^2[0,1]\)</span> or <span class="math inline">\(C[0,1]\)</span>, not a vector in <span class="math inline">\(\mathbb R^d\)</span>. In principle it can be represented by infinitely many basis coefficients, while sparse FDA observes only finitely many noisy point evaluations <span class="math inline">\(Y_{ij}\)</span>.</p>
 <style type="text/css">
         span.MJX_Assistive_MathML {
           position:absolute!important;
@@ -369,8 +369,8 @@ C(s,t)=\operatorname{Cov}\{X(s),X(t)\}.
 <section id="sparse-curves" class="slide level2 center">
 <h2>Sparse Curves</h2>
 <ul>
-<li class="fragment"><p>In dense FDA, each curve carries substantial within-subject information.</p></li>
-<li class="fragment"><p>In sparse FDA, covariance information is distributed across many subjects.</p></li>
+<li class="fragment"><p>In dense FDA, the classical workflow is to smooth each subject’s observations into a curve, then estimate population features such as the mean and covariance from the recovered curves.</p></li>
+<li class="fragment"><p>In sparse FDA, individual curve reconstruction is unstable or impossible, as the available covariance information is distributed across many subjects.</p></li>
 <li class="fragment"><p>The object of interest is the latent covariance function: <span class="math display">\[
 \operatorname{Cov}\{X(s),X(t)\}.
 \]</span></p></li>
