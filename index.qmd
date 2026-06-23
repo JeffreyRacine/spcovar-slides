@@ -27,7 +27,7 @@ format:
     chalkboard: true
     css: custom.css
     embed-resources: false
-    footer: "Sparse covariance FDA | V. Patilea and J. S. Racine | jeffreyracine.github.io/spcovar-slides"
+    footer: "Sparse covariance functional data analysis | V. Patilea and J. S. Racine | jeffreyracine.github.io/spcovar-slides"
     html-math-method: mathjax
     include-in-header:
       - text: |
@@ -65,7 +65,8 @@ editor: source
 
 - The resulting estimator is computationally attractive, retains flexibility
   where the data are most informative, and bridges fully parametric and fully
-  nonparametric sparse FDA covariance estimation.
+  nonparametric covariance estimation for sparse functional data analysis
+  (FDA).
 
 - All tuning parameters are selected from the data.
 
@@ -137,7 +138,8 @@ only finitely many noisy point evaluations $Y_{ij}$.
 
     - dependence along the continuum;
     - separation of latent signal from measurement noise;
-    - dimension reduction through FPCA/eigenfunctions.
+    - dimension reduction through functional principal component analysis
+      (FPCA)/eigenfunctions.
 
 - For sparse noisy observations,
   $$
@@ -308,14 +310,16 @@ observed covariance = latent covariance + measurement-error contribution
 
 - Sparse FDA and FPCA foundations:
 
-    - PACE estimates mean/covariance surfaces and recovers scores by conditional
-      expectation [@Yao2005Sparse].
+    - Principal Analysis by Conditional Expectation (PACE) estimates
+      mean/covariance surfaces and recovers scores by conditional expectation
+      [@Yao2005Sparse].
     - Functional snippets and `mcfda` use Fourier and semiparametric routes for
       mean/covariance estimation under severe sparse designs [@linwang2022].
 
 - Direct covariance-surface estimation:
 
-    - FACE uses fast penalized-spline covariance smoothing [@Xiao2018SparseFACE].
+    - Fast Covariance Estimation (FACE) uses fast penalized-spline covariance
+      smoothing [@Xiao2018SparseFACE].
     - RKHS methods regularize the covariance operator while enforcing positive
       semidefiniteness [@WongZhang2019].
     - Our `NP` benchmark uses a flexible tensor cosine covariance estimator.

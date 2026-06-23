@@ -12,7 +12,7 @@
   <meta name="author" content="Valentin Patilea^\dagger">
   <meta name="author" content="Jeffrey S. Racine^\ddagger">
   <meta name="dcterms.date" content="2026-06-24">
-  <title>quarto-input58b9dede291a4ec</title>
+  <title>quarto-input331f8d76ab3d8830</title>
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, minimal-ui">
@@ -259,7 +259,7 @@ Jeffrey S. Racine<span class="math inline">\(^\ddagger\)</span>
 </ul></li>
 <li class="fragment"><p>The correlation component is fit from a menu of positive-definite parametric candidate families.</p></li>
 <li class="fragment"><p>Model averaging uses data-driven weights to mitigate parametric model uncertainty.</p></li>
-<li class="fragment"><p>The resulting estimator is computationally attractive, retains flexibility where the data are most informative, and bridges fully parametric and fully nonparametric sparse FDA covariance estimation.</p></li>
+<li class="fragment"><p>The resulting estimator is computationally attractive, retains flexibility where the data are most informative, and bridges fully parametric and fully nonparametric covariance estimation for sparse functional data analysis (FDA).</p></li>
 <li class="fragment"><p>All tuning parameters are selected from the data.</p></li>
 </ul>
 </section>
@@ -299,7 +299,7 @@ Y_{ij} = X_i(T_{ij}) + \varepsilon_{ij},
 <ul>
 <li class="fragment">dependence along the continuum;</li>
 <li class="fragment">separation of latent signal from measurement noise;</li>
-<li class="fragment">dimension reduction through FPCA/eigenfunctions.</li>
+<li class="fragment">dimension reduction through functional principal component analysis (FPCA)/eigenfunctions.</li>
 </ul></li>
 <li class="fragment"><p>For sparse noisy observations, <span class="math display">\[
 \operatorname{Cov}(Y_{ij},Y_{ik})
@@ -468,12 +468,12 @@ C(s,t)=\sigma(s)\sigma(t)\rho(s,t).
 <ul>
 <li class="fragment"><p>Sparse FDA and FPCA foundations:</p>
 <ul>
-<li class="fragment">PACE estimates mean/covariance surfaces and recovers scores by conditional expectation <span class="citation" data-cites="Yao2005Sparse">(<a href="#/references" role="doc-biblioref" onclick="">Yao et al. 2005</a>)</span>.</li>
+<li class="fragment">Principal Analysis by Conditional Expectation (PACE) estimates mean/covariance surfaces and recovers scores by conditional expectation <span class="citation" data-cites="Yao2005Sparse">(<a href="#/references" role="doc-biblioref" onclick="">Yao et al. 2005</a>)</span>.</li>
 <li class="fragment">Functional snippets and <code>mcfda</code> use Fourier and semiparametric routes for mean/covariance estimation under severe sparse designs <span class="citation" data-cites="linwang2022">(<a href="#/references" role="doc-biblioref" onclick="">Lin and Wang 2022</a>)</span>.</li>
 </ul></li>
 <li class="fragment"><p>Direct covariance-surface estimation:</p>
 <ul>
-<li class="fragment">FACE uses fast penalized-spline covariance smoothing <span class="citation" data-cites="Xiao2018SparseFACE">(<a href="#/references" role="doc-biblioref" onclick="">Xiao et al. 2018</a>)</span>.</li>
+<li class="fragment">Fast Covariance Estimation (FACE) uses fast penalized-spline covariance smoothing <span class="citation" data-cites="Xiao2018SparseFACE">(<a href="#/references" role="doc-biblioref" onclick="">Xiao et al. 2018</a>)</span>.</li>
 <li class="fragment">RKHS methods regularize the covariance operator while enforcing positive semidefiniteness <span class="citation" data-cites="WongZhang2019">(<a href="#/references" role="doc-biblioref" onclick="">Wong and Zhang 2019</a>)</span>.</li>
 <li class="fragment">Our <code>NP</code> benchmark uses a flexible tensor cosine covariance estimator.</li>
 </ul></li>
@@ -2351,7 +2351,7 @@ Zhou, Yidong, Han Chen, Su I. Iao, et al. 2024. <em>Fdapace: Functional Data Ana
     </div>
   <div class="quarto-auto-generated-content" style="display: none;">
 <div class="footer footer-default">
-<p>Sparse covariance FDA | V. Patilea and J. S. Racine | jeffreyracine.github.io/spcovar-slides</p>
+<p>Sparse covariance functional data analysis | V. Patilea and J. S. Racine | jeffreyracine.github.io/spcovar-slides</p>
 </div>
 </div></div>
 
