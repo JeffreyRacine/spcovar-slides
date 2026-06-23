@@ -1357,7 +1357,7 @@ render_peer_ratio_table(bc_peer_tables$`4N`)
 :::
 
 ::: {.content-hidden when-profile="short"}
-## Peer Comparison Ratios: Not Bias Corrected {.table-slide}
+## Peer Comparison Ratios: Not Bias-Corrected {.table-slide}
 
 ::: nonincremental
 
