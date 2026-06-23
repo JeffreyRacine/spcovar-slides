@@ -12,7 +12,7 @@
   <meta name="author" content="Valentin Patilea^\dagger">
   <meta name="author" content="Jeffrey S. Racine^\ddagger">
   <meta name="dcterms.date" content="2026-06-24">
-  <title>quarto-input829a31d4dd6d2ea3</title>
+  <title>quarto-inputff0565b63f42a8f</title>
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, minimal-ui">
@@ -252,11 +252,15 @@ Jeffrey S. Racine<span class="math inline">\(^\ddagger\)</span>
 <h1>Overview</h1>
 <ul>
 <li class="fragment"><p>We propose a semiparametric covariance estimator for sparsely observed functional data.</p></li>
-<li class="fragment"><p>The estimator decomposes the covariance surface into nonparametric marginal scale functions and a structured correlation surface.</p></li>
-<li class="fragment"><p>The correlation component is fit over a menu of interpretable positive-definite families and then averaged using data-driven weights.</p></li>
-<li class="fragment"><p>The resulting estimator is computationally attractive, retains flexibility where the data are most informative, and provides a direct bridge between fully parametric and fully nonparametric sparse FDA covariance estimation.</p></li>
-<li class="fragment"><p>Data-driven tuning parameter selection is used throughout.</p></li>
-<li class="fragment"><p>An empirical CD4 count application is presented.</p></li>
+<li class="fragment"><p>The estimator decomposes the covariance surface into:</p>
+<ul>
+<li class="fragment">nonparametric marginal scale functions;</li>
+<li class="fragment">a structured correlation surface.</li>
+</ul></li>
+<li class="fragment"><p>The correlation component is fit from a menu of positive-definite parametric candidate families.</p></li>
+<li class="fragment"><p>Model averaging uses data-driven weights to mitigate parametric model uncertainty.</p></li>
+<li class="fragment"><p>The resulting estimator is computationally attractive, retains flexibility where the data are most informative, and bridges fully parametric and fully nonparametric sparse FDA covariance estimation.</p></li>
+<li class="fragment"><p>All tuning parameters are selected from the data.</p></li>
 </ul>
 </section>
 <section id="classical-versus-functional-data" class="slide level2 center">
@@ -589,7 +593,7 @@ Z_\ell\phi_k(U_\ell)
 </section>
 <section id="parametric-correlation-families-for-rhost" class="slide level2 smaller center">
 <h2>Parametric Correlation Families for <span class="math inline">\(\rho(s,t)\)</span></h2>
-<p>The library is deliberately heterogeneous; model-averaging is over shapes, not just over parameter values.</p>
+<p>The set of candidate families is deliberately heterogeneous; model-averaging is over shapes, not just over parameter values.</p>
 <table class="caption-top">
 <colgroup>
 <col style="width: 33%">

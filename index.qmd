@@ -52,18 +52,22 @@ editor: source
 - We propose a semiparametric covariance estimator for sparsely observed
   functional data.
 
-- The estimator decomposes the covariance surface into nonparametric marginal scale functions and a structured correlation surface.
+- The estimator decomposes the covariance surface into:
 
-- The correlation component is fit over a menu of interpretable positive-definite
-  families and then averaged using data-driven weights.
+  - nonparametric marginal scale functions;
+  - a structured correlation surface.
+
+- The correlation component is fit from a menu of positive-definite parametric
+  candidate families.
+
+- Model averaging uses data-driven weights to mitigate parametric model
+  uncertainty.
 
 - The resulting estimator is computationally attractive, retains flexibility
-  where the data are most informative, and provides a direct bridge between
-  fully parametric and fully nonparametric sparse FDA covariance estimation.
+  where the data are most informative, and bridges fully parametric and fully
+  nonparametric sparse FDA covariance estimation.
 
-- Data-driven tuning parameter selection is used throughout.
-
-- An empirical CD4 count application is presented.
+- All tuning parameters are selected from the data.
 
 ::: {.content-hidden when-profile="short"}
 # Outline of Talk
@@ -690,7 +694,7 @@ is a defensible choice because it does not build in the zero-derivative prior.
 
 ::: nonincremental
 
-The library is deliberately heterogeneous; model-averaging is over shapes, not just
+The set of candidate families is deliberately heterogeneous; model-averaging is over shapes, not just
 over parameter values.
 
 | Family | Source | Main feature |
