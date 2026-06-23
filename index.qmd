@@ -106,8 +106,8 @@ Proofs will be added to the manuscript separately.
   Y_i \in \mathbb R^d .
   $$
 
-- Functional data: $X_i$ is an infinite-dimensional draw from a random function
-  $X(\cdot)$, indexed by a continuum $t \in \mathcal T$:
+- Functional data: the latent sample element is a trajectory drawn from a random
+  function $X(\cdot)$, indexed by a continuum $t \in \mathcal T$:
   $$
   X_i = \{X_i(t): t \in \mathcal T\}.
   $$
