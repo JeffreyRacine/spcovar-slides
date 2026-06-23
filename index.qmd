@@ -282,18 +282,12 @@ observed covariance = latent covariance + measurement-error contribution
 
 ## The Main Idea
 
-- Estimate the location and marginal scale nonparametrically.
+- Estimate marginal scale nonparametrically.
 
-- Estimate correlation semiparametrically:
-  $$
-  \widehat C(s,t)
-  = \widehat\sigma(s)\widehat\sigma(t)\widehat\rho(s,t).
-  $$
+- Fit the correlation component using low-dimensional positive-definite
+  parametric families.
 
-- The scale functions absorb one-dimensional nonstationarity.
-
-- The correlation surface is constrained only through interpretable,
-  positive-definite correlation families.
+- Average the resulting covariance candidates with data-driven weights.
 
 ## Why This Is Useful
 
