@@ -115,7 +115,7 @@ Proofs will be added to the manuscript separately.
   X_i = \{X_i(t): t \in \mathcal T\}.
   $$
 
-- Sparse FDA observes only a small, noisy subset:
+- Sparse functional observation: one observes only a small, noisy subset:
   $$
   Y_{ij} = X_i(T_{ij}) + \varepsilon_{ij},
         \qquad j=1,\ldots,M_i .
