@@ -288,6 +288,15 @@ observed covariance = latent covariance + measurement-error contribution
   parametric families.
 
 - Average the resulting covariance candidates with data-driven weights.
+  $$
+  \widehat C(s,t)
+  = \widehat\sigma(s)\widehat\sigma(t)\widehat\rho(s,t).
+  $$
+
+- The scale functions absorb one-dimensional nonstationarity.
+
+- The correlation surface is constrained only through interpretable,
+  positive-definite correlation families.
 
 ## Why This Is Useful
 

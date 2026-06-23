@@ -12,7 +12,7 @@
   <meta name="author" content="Valentin Patilea^\dagger">
   <meta name="author" content="Jeffrey S. Racine^\ddagger">
   <meta name="dcterms.date" content="2026-06-24">
-  <title>quarto-input6815e5e2e98de154</title>
+  <title>quarto-input7860aff1377803af</title>
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, minimal-ui">
@@ -444,7 +444,12 @@ C(s,t)=\sigma(s)\sigma(t)\rho(s,t).
 <ul>
 <li class="fragment"><p>Estimate marginal scale nonparametrically.</p></li>
 <li class="fragment"><p>Fit the correlation component using low-dimensional positive-definite parametric families.</p></li>
-<li class="fragment"><p>Average the resulting covariance candidates with data-driven weights.</p></li>
+<li class="fragment"><p>Average the resulting covariance candidates with data-driven weights. <span class="math display">\[
+\widehat C(s,t)
+= \widehat\sigma(s)\widehat\sigma(t)\widehat\rho(s,t).
+\]</span></p></li>
+<li class="fragment"><p>The scale functions absorb one-dimensional nonstationarity.</p></li>
+<li class="fragment"><p>The correlation surface is constrained only through interpretable, positive-definite correlation families.</p></li>
 </ul>
 </section>
 <section id="why-this-is-useful" class="slide level2 center">
