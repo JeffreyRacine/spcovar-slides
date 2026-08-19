@@ -8,7 +8,7 @@ author:
 institute:
   - Univ Rennes, Ensai, CREST--UMR 9194$^\dagger$
   - McMaster University$^\ddagger$
-date: 06/24/2026
+date: 08/21/2026
 bibliography: ../references.bib
 link-citations: true
 knitr:
@@ -220,24 +220,55 @@ only finitely many noisy point evaluations $Y_{ij}$.
 ```{r}
 #| label: fig-sampleelements
 #| fig-cap: "Classical Versus Functional Sample Elements ($N=25$)"
-#| fig-width: 12
-#| fig-height: 6
+#| fig-width: 10
+#| fig-height: 5
 
 local({
   set.seed(42)
   n_curves <- 25L
-  grid <- seq(0, 1, length.out = 200)
+  observations_per_curve <- 1L
+  grid <- seq(0, 1, length.out = 100)
+  sigma <- 0.5
+  tau <- 1
+  process_scale <- 1
   mean_function <- function(t) t + exp(-200 * (t - 0.5)^2)
-  curves <- fda_draw_mfbm(
-    n = n_curves,
-    grid = grid,
-    hurst = function(t) rep(0.5, length(t)),
-    scale = 1
+
+  observation_times <- lapply(
+    rep(observations_per_curve, n_curves),
+    function(m) sort(stats::runif(m, min = 0, max = 1))
   )
+
+  covariance_matrices <- lapply(observation_times, function(times) {
+    evaluation_grid <- sort(c(times, grid))
+    process_scale * fda_mfbm_covariance(
+      evaluation_grid,
+      hurst = function(t) rep(0.5, length(t))
+    )
+  })
+
+  curve_draws <- lapply(covariance_matrices, function(covariance) {
+    MASS::mvrnorm(
+      1,
+      mu = rep(tau * stats::rnorm(1), ncol(covariance)),
+      Sigma = covariance
+    )
+  })
+
+  curves_on_grid <- vector("list", n_curves)
+  observed_values <- vector("list", n_curves)
+  for (i in seq_len(n_curves)) {
+    evaluation_grid <- sort(c(observation_times[[i]], grid))
+    grid_index <- which(evaluation_grid %in% grid)
+    curves_on_grid[[i]] <- curve_draws[[i]][grid_index]
+    observed_values[[i]] <- curve_draws[[i]][-grid_index] +
+      stats::rnorm(length(curve_draws[[i]][-grid_index]), sd = sigma)
+  }
+
+  curves <- do.call(rbind, curves_on_grid)
   curves <- sweep(curves, 2, mean_function(grid), "+")
 
   x <- stats::runif(n_curves)
-  y <- mean_function(x) + stats::rnorm(n_curves, sd = 0.5)
+  y <- mean_function(x) + stats::rnorm(n_curves, sd = sigma)
 
   old_par <- graphics::par(mfrow = c(1, 2))
   on.exit(graphics::par(old_par), add = TRUE)
@@ -246,19 +277,26 @@ local({
     pch = 19,
     xlab = "X",
     ylab = "Y",
+    xlim = c(0, 1),
+    ylim = range(y),
     main = "Classical Sample Elements",
     panel.first = graphics::grid(lty = 1)
   )
-  graphics::matplot(
-    grid, t(curves),
+  graphics::plot(
+    grid, curves[1, ],
     type = "l",
-    lty = 1,
-    col = grDevices::hcl.colors(n_curves, "Dynamic"),
+    xlim = c(0, 1),
+    ylim = range(curves),
     xlab = "t",
     ylab = "Curve",
     main = "FDA Sample Elements",
     panel.first = graphics::grid(lty = 1)
   )
+  if (n_curves > 1L) {
+    for (j in 2:n_curves) {
+      graphics::lines(grid, curves[j, ], col = j, lty = j)
+    }
+  }
 })
 ```
 
@@ -266,7 +304,10 @@ local({
 The left panel contains finite-dimensional observations. Each colored line in
 the right panel is one random sample element: an entire latent trajectory.
 This is a different sampling object, not simply a regression curve fitted to
-the left-hand points.
+the left-hand points. This faithfully uses the historical example's
+$N=25$, $M=1$, 100-point grid, $\sigma=0.5$, $\tau=1$, and $L=1$
+parameterization; each trajectory includes an independent $N(0,1)$
+curve-specific random intercept.
 :::
 
 ## Functional Data
