@@ -12,7 +12,7 @@
   <meta name="author" content="Valentin Patilea^\dagger">
   <meta name="author" content="Jeffrey S. Racine^\ddagger">
   <meta name="dcterms.date" content="2026-08-21">
-  <title>quarto-inputad9c3550b399e108</title>
+  <title>quarto-input362f62ec7502745b</title>
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, minimal-ui">
@@ -476,11 +476,12 @@ Y_{ij}=X_i(T_{ij})+\varepsilon_{ij},
 <ul>
 <li class="fragment"><p>A key distinguishing feature of FDA is <em>replication</em>: the sample paths share a common stochastic structure.</p></li>
 <li class="fragment"><p>Information in the other <span class="math inline">\(N-1\)</span> curves can help us learn about the <span class="math inline">\(N\)</span>th curve and about population-level objects such as <span class="math inline">\(\mu(t)\)</span>, <span class="math inline">\(\sigma^2(t)\)</span>, and <span class="math inline">\(C(s,t)\)</span>.</p></li>
+<li class="fragment"><p>Unlike classical samples, FDA replication lets us estimate locally varying curve regularity from the data, avoiding the known-smoothness assumption built into many classical and FDA smoothers <span class="citation" data-cites="patileaRacine2026">(<a href="#/references" role="doc-biblioref" onclick="">Patilea and Racine 2026</a>)</span>.</p></li>
 <li class="fragment"><p>For covariance estimation, each subject contributes within-curve products at scattered pairs <span class="math inline">\((T_{ij},T_{ik})\)</span>; pooling across subjects provides the replication needed to learn the latent surface.</p></li>
 <li class="fragment"><p>In the sparse regime each curve contributes only a handful of such pairs. That is precisely why covariance estimation remains difficult despite replication.</p></li>
 </ul>
 <aside class="notes">
-<p>Use replication as the bridge to the next slide. It makes population covariance estimable, but sparse, irregular within-curve pairs make the bivariate surface hard to recover. This motivates asking why covariance is the central target.</p>
+<p>Patilea and Racine (2026) exploit replication to estimate the local Hölder exponent and constant, separating measurement noise from intrinsic path irregularity without presuming that regularity is constant over the domain. Use replication as the bridge to the next slide. It makes population covariance estimable, but sparse, irregular within-curve pairs make the bivariate surface hard to recover. This motivates asking why covariance is the central target.</p>
 <style type="text/css">
         span.MJX_Assistive_MathML {
           position:absolute!important;
@@ -2565,6 +2566,9 @@ Lin, Zhenhua, and Jane-Ling Wang. 2022. <span>“Mean and Covariance Estimation 
 </div>
 <div id="ref-Matern1986" class="csl-entry" role="listitem">
 Matérn, Bertil. 1986. <em>Spatial Variation</em>. Vol. 36. Lecture Notes in Statistics. Springer. <a href="https://doi.org/10.1007/978-1-4615-7892-5">https://doi.org/10.1007/978-1-4615-7892-5</a>.
+</div>
+<div id="ref-patileaRacine2026" class="csl-entry" role="listitem">
+Patilea, Valentin, and Jeffrey S. Racine. 2026. <span>“Locally Adaptive Online Functional Data Analysis.”</span> <em>Journal of Nonparametric Statistics</em> 0 (0): 1–26. <a href="https://doi.org/10.1080/10485252.2026.2630359">https://doi.org/10.1080/10485252.2026.2630359</a>.
 </div>
 <div id="ref-PeltierLevyVehel1995" class="csl-entry" role="listitem">
 Peltier, Romain-François, and Jacques Lévy Véhel. 1995. <em>Multifractional <span>B</span>rownian Motion: Definition and Preliminary Results</em>. No. 2645. INRIA.

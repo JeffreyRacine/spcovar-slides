@@ -617,6 +617,10 @@ common design; the paper's sparse setting is independent design.
   and about population-level objects such as $\mu(t)$, $\sigma^2(t)$, and
   $C(s,t)$.
 
+- Unlike classical samples, FDA replication lets us estimate locally varying
+  curve regularity from the data, avoiding the known-smoothness assumption
+  built into many classical and FDA smoothers [@patileaRacine2026].
+
 - For covariance estimation, each subject contributes within-curve products at
   scattered pairs $(T_{ij},T_{ik})$; pooling across subjects provides the
   replication needed to learn the latent surface.
@@ -626,6 +630,9 @@ common design; the paper's sparse setting is independent design.
   replication.
 
 ::: {.notes}
+Patilea and Racine (2026) exploit replication to estimate the local Hölder
+exponent and constant, separating measurement noise from intrinsic path
+irregularity without presuming that regularity is constant over the domain.
 Use replication as the bridge to the next slide. It makes population covariance
 estimable, but sparse, irregular within-curve pairs make the bivariate surface
 hard to recover. This motivates asking why covariance is the central target.
