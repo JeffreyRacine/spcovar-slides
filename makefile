@@ -1,14 +1,17 @@
-.DEFAULT_GOAL := short
+.DEFAULT_GOAL := medium
 
-.PHONY: short talk long open speaker clean
+.PHONY: short medium talk long open speaker clean
 
 short:
 	quarto render index.qmd --profile short
 
-talk: short
+medium:
+	quarto render index.qmd
+
+talk: medium
 
 long:
-	quarto render index.qmd
+	quarto render index.qmd --profile long
 
 open:
 	open index.html

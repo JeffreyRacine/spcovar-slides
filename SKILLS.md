@@ -44,6 +44,30 @@ The key lesson from the 2024 talk is structural, not literal:
 
 The ISNPS 2026 deck should follow the same spirit.
 
+## Talk Format Hierarchy
+
+The same `index.qmd` produces three talk lengths while always writing the
+canonical `index.html` and `index-speaker.html` files:
+
+- `make short`: compact conference talk;
+- `make` or `make medium`: the compact spine plus the expanded FDA background
+  sequence, targeted to the upcoming approximately 60-minute talk;
+- `make long`: the full extended deck, including long-only sections and backup
+  slides.
+
+The unprofiled source is the medium talk. Use complete-slide conditional blocks
+to distinguish the formats:
+
+- `.content-visible when-profile="long"` for long-only slides;
+- `.content-hidden when-profile="long"` for compact short/medium replacements;
+- `.content-hidden when-profile="short"` for material shared by medium and long;
+- `.content-visible when-profile="short"` when short needs its own replacement.
+
+Unless Jeffrey specifies otherwise, treat additions during the current
+development session as medium-talk material. After profile changes, render in
+the order `make long`, `make short`, `make medium` so the canonical files are
+left as the medium deck. `BUILD.md` contains the operational build details.
+
 ## Current Talk Intention
 
 The new talk is based on the current `spcovar.qmd` manuscript, whose proof

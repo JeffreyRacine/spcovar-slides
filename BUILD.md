@@ -1,25 +1,30 @@
 # Building The Slide Deck
 
-This directory contains one Quarto/revealjs source deck, `index.qmd`, with two
+This directory contains one Quarto/revealjs source deck, `index.qmd`, with three
 intended render modes:
 
-- full-length talk: about 1h20;
-- short conference talk: about 25 minutes, plus the same backup slides.
+- short conference talk: the compact core;
+- medium talk: the short core plus the FDA background sequence, intended for
+  about 60 minutes of presentation time;
+- long talk: the full extended deck.
 
 The canonical published files are always:
 
 - `index.html`
 - `index-speaker.html`
 
-Do not publish a differently named file such as `index-short.html`. GitHub Pages
-and the revealjs multiplex/speaker setup expect the canonical names above.
+Do not publish differently named files such as `index-short.html` or
+`index-medium.html`. GitHub Pages and the revealjs multiplex/speaker setup
+expect the canonical names above.
 
-## Full Talk
+## Medium Talk (Default)
 
-Render the full talk with:
+Render the medium talk with either:
 
 ```bash
-make long
+make
+# or
+make medium
 ```
 
 This is equivalent to the ordinary Quarto command:
@@ -28,14 +33,16 @@ This is equivalent to the ordinary Quarto command:
 quarto render index.qmd
 ```
 
-This includes all main slides, backup slides, and references.
+The medium talk uses the compact short-talk spine and adds the FDA background
+sequence from the expanded `Classical Versus Functional Data` slide through
+`Replication`.
 
 ## Short Talk
 
-Render the short conference talk with the default make target:
+Render the short conference talk with:
 
 ```bash
-make
+make short
 ```
 
 This is equivalent to rendering the `short` profile explicitly:
@@ -44,60 +51,85 @@ This is equivalent to rendering the `short` profile explicitly:
 quarto render index.qmd --profile short
 ```
 
-This still writes `index.html` and `index-speaker.html`, but hides selected
-main-talk slides. Backup slides and references remain available.
+## Long Talk
+
+Render the full extended talk with:
+
+```bash
+make long
+```
+
+This is equivalent to rendering the `long` profile explicitly:
+
+```bash
+quarto render index.qmd --profile long
+```
+
+Every command writes `index.html` and `index-speaker.html`. The command run last
+therefore determines the canonical local and published deck.
 
 ## How Slides Are Included Or Removed
 
-The full talk is the default. A slide appears in the full talk unless it is
-deleted from `index.qmd`.
+The unprofiled source is the medium talk. The `short` and `long` profiles alter
+that baseline.
 
-The short talk is controlled with Quarto conditional content blocks. To hide a
-slide from the short talk while keeping it in the full talk, wrap that slide in:
+To include a complete slide only in the long talk, use:
+
+```markdown
+::: {.content-visible when-profile="long"}
+## Long-Talk Slide
+
+Slide content.
+:::
+```
+
+To use a compact slide in both short and medium while hiding it from long, use:
+
+```markdown
+::: {.content-hidden when-profile="long"}
+## Compact Slide
+
+Slide content.
+:::
+```
+
+To include a complete slide in medium and long while hiding it from short, use:
 
 ```markdown
 ::: {.content-hidden when-profile="short"}
-## Slide Title
+## Medium-and-Long Slide
 
 Slide content.
 :::
 ```
 
-To keep a slide in both versions, leave it unwrapped.
-
-To add a slide only to the short talk, use:
-
-```markdown
-::: {.content-visible when-profile="short"}
-## Short-Talk Only Slide
-
-Slide content.
-:::
-```
+When short needs a replacement for a medium/long slide, pair the preceding
+block with a complete-slide `.content-visible when-profile="short"` block.
 
 ## Practical Editing Rules
 
-- Keep backup slides outside the short-profile hiding blocks unless we
-  intentionally want to remove them from the short version.
+- Treat additions as medium by default during development for the upcoming
+  60-minute talk unless Jeffrey assigns them explicitly to short or long.
 - Hide complete slides, not partial fragments, unless there is a strong reason
   to change only part of a slide.
 - If a slide has tab panels or nested `###` headings, wrap the full `##` slide
   block so the tabset remains intact.
-- After changing profile wrappers, render both versions once:
+- After changing profile wrappers, render all three versions once:
 
 ```bash
 make long
-make
+make short
+make medium
 ```
 
-The second command determines what is currently in the canonical published
-`index.html`.
+The final command leaves the medium deck in the canonical HTML files, as
+required during the current medium-talk development session.
 
-## Current Short-Talk Intent
+## Current Format Intent
 
 The short profile is intended to keep roughly one slide per minute for the
-non-application material and about three minutes for the CD4 application. The
-current short spine keeps:
+non-application material and about three minutes for the CD4 application. Its
+compact spine keeps:
 
 - problem setup;
 - covariance decomposition;
@@ -108,4 +140,9 @@ current short spine keeps:
 - one main simulation table and one averaging-weight table;
 - compact CD4 application slides;
 - summary;
-- all backup slides and references.
+- references.
+
+The medium talk keeps that same compact spine and adds the expanded FDA
+background sequence. The long talk replaces compact variants with the existing
+full-detail slides and includes every long-only section, including the backup
+slides.

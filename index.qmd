@@ -47,6 +47,56 @@ format:
 editor: source
 ---
 
+```{r}
+#| label: setup-fda-background
+#| include: false
+
+if (!requireNamespace("MASS", quietly = TRUE)) {
+  stop("The MASS package is required to render the FDA background figures.")
+}
+if (!requireNamespace("fda", quietly = TRUE)) {
+  stop("The fda package is required to render the FDA background examples.")
+}
+
+fda_hurst_logistic <- function(t, h_left = 0.2, h_right = 0.8,
+                               slope = 30, change_point = 0.5) {
+  u <- (t - change_point) / diff(range(t))
+  (h_right - h_left) / (1 + exp(-slope * u)) + h_left
+}
+
+fda_mfbm_constant <- function(x, y) {
+  numerator <- gamma(2 * x + 1) * gamma(2 * y + 1) *
+    sin(pi * x) * sin(pi * y)
+  denominator <- 2 * gamma(x + y + 1) * sin(pi * (x + y) / 2)
+  sqrt(numerator) / denominator
+}
+
+fda_mfbm_covariance <- function(grid, hurst) {
+  locations <- expand.grid(s = grid, t = grid)
+  h_s <- pmin(pmax(hurst(locations$s), 1e-6), 1 - 1e-6)
+  h_t <- pmin(pmax(hurst(locations$t), 1e-6), 1 - 1e-6)
+  h_sum <- h_s + h_t
+  values <- fda_mfbm_constant(h_s, h_t) *
+    (locations$t^h_sum + locations$s^h_sum -
+       abs(locations$t - locations$s)^h_sum)
+  covariance <- matrix(values, ncol = length(grid))
+  (covariance + t(covariance)) / 2
+}
+
+fda_draw_mfbm <- function(n, grid, hurst, scale = 1) {
+  covariance <- scale * fda_mfbm_covariance(grid, hurst)
+  draws <- MASS::mvrnorm(n, mu = rep(0, length(grid)), Sigma = covariance)
+  if (n == 1L) matrix(draws, nrow = 1L) else draws
+}
+
+fda_observe_curve <- function(grid, curve, m, noise_sd = 0) {
+  times <- sort(stats::runif(m, min(grid), max(grid)))
+  values <- stats::approx(grid, curve, xout = times, rule = 2)$y +
+    stats::rnorm(m, sd = noise_sd)
+  list(t = times, y = values)
+}
+```
+
 # Overview
 
 - We propose a semiparametric covariance estimator for sparsely observed
@@ -70,7 +120,7 @@ editor: source
 
 - All tuning parameters are selected from the data.
 
-::: {.content-hidden when-profile="short"}
+::: {.content-visible when-profile="long"}
 # Outline of Talk
 
 - Sparse FDA covariance: what makes the problem hard
@@ -95,11 +145,12 @@ Proofs will be added to the manuscript separately.
 
 :::
 
-::: {.content-hidden when-profile="short"}
+::: {.content-visible when-profile="long"}
 # Why Sparse FDA Covariance Is Hard
 
 :::
 
+::: {.content-visible when-profile="short"}
 ## Classical Versus Functional Data
 
 - Classical sample element: one observes a finite-dimensional draw $Y_i$ from a
@@ -127,6 +178,418 @@ means that the latent curve is an element of a function space such as
 $L^2[0,1]$ or $C[0,1]$, not a vector in $\mathbb R^d$. In principle it can be
 represented by infinitely many basis coefficients, while sparse FDA observes
 only finitely many noisy point evaluations $Y_{ij}$.
+:::
+
+:::
+
+::: {.content-hidden when-profile="short"}
+## Classical Versus Functional Data
+
+- Classical sample element: one observes a finite-dimensional draw $Y_i$ from a
+  random vector $Y$:
+  $$
+  Y_i \in \mathbb R^d .
+  $$
+
+- Latent functional sample element: $X_i$ is a trajectory, an element of an
+  infinite-dimensional function space, drawn from a random function $X(\cdot)$,
+  indexed by a continuum $t \in \mathcal T$:
+  $$
+  X_i = \{X_i(t): t \in \mathcal T\}.
+  $$
+
+- Sparse functional observation: one observes only a small, noisy subset:
+  $$
+  Y_{ij} = X_i(T_{ij}) + \varepsilon_{ij},
+        \qquad j=1,\ldots,M_i .
+  $$
+
+- The following figure (@fig-sampleelements) presents $N=25$ sample elements
+  (classical left plot, functional right plot).
+
+::: {.notes}
+Begin with the sample element before proceeding. Here "infinite-dimensional"
+means that the latent curve is an element of a function space such as
+$L^2[0,1]$ or $C[0,1]$, not a vector in $\mathbb R^d$. In principle it can be
+represented by infinitely many basis coefficients, while sparse FDA observes
+only finitely many noisy point evaluations $Y_{ij}$.
+:::
+
+## Classical Versus Functional Data
+
+```{r}
+#| label: fig-sampleelements
+#| fig-cap: "Classical Versus Functional Sample Elements ($N=25$)"
+#| fig-width: 12
+#| fig-height: 6
+
+local({
+  set.seed(42)
+  n_curves <- 25L
+  grid <- seq(0, 1, length.out = 200)
+  mean_function <- function(t) t + exp(-200 * (t - 0.5)^2)
+  curves <- fda_draw_mfbm(
+    n = n_curves,
+    grid = grid,
+    hurst = function(t) rep(0.5, length(t)),
+    scale = 1
+  )
+  curves <- sweep(curves, 2, mean_function(grid), "+")
+
+  x <- stats::runif(n_curves)
+  y <- mean_function(x) + stats::rnorm(n_curves, sd = 0.5)
+
+  old_par <- graphics::par(mfrow = c(1, 2))
+  on.exit(graphics::par(old_par), add = TRUE)
+  graphics::plot(
+    x, y,
+    pch = 19,
+    xlab = "X",
+    ylab = "Y",
+    main = "Classical Sample Elements",
+    panel.first = graphics::grid(lty = 1)
+  )
+  graphics::matplot(
+    grid, t(curves),
+    type = "l",
+    lty = 1,
+    col = grDevices::hcl.colors(n_curves, "Dynamic"),
+    xlab = "t",
+    ylab = "Curve",
+    main = "FDA Sample Elements",
+    panel.first = graphics::grid(lty = 1)
+  )
+})
+```
+
+::: {.notes}
+The left panel contains finite-dimensional observations. Each colored line in
+the right panel is one random sample element: an entire latent trajectory.
+This is a different sampling object, not simply a regression curve fitted to
+the left-hand points.
+:::
+
+## Functional Data
+
+- Functional data analysis (FDA) is the statistical analysis of samples of
+  curves---random variables taking values in spaces of functions.
+
+- FDA has heterogeneous, longitudinal aspects: the sample contains individual
+  trajectories $X_i(\cdot)$.
+
+- Curves are continua, so their values are never observed at every point:
+
+    - only discrete pairs $(Y_{ij},T_{ij})$ are available;
+    - the observation times may differ across curves;
+    - measurements may be contaminated by error.
+
+- The next three figures distinguish:
+
+    - an irregular curve measured without error (@fig-nonnoisyfuncall);
+    - a smooth curve measured with error (@fig-noisyfuncall);
+    - varying regularity together with measurement noise (@fig-mfbm).
+
+::: {.notes}
+The essential distinction is between the latent function and the discrete data
+recorded from it. Irregularity and measurement error are different phenomena,
+even though both can make the observed points look rough.
+:::
+
+## FDA Sample Element (1 Random Function)
+
+```{r}
+#| label: fig-nonnoisyfuncall
+#| fig-cap: "Irregular Function, Data Measured Without Error"
+#| fig-width: 12
+#| fig-height: 6
+
+local({
+  set.seed(42)
+  grid <- seq(0, 1, length.out = 800)
+  mean_function <- function(t) 1 + t
+  latent <- as.numeric(fda_draw_mfbm(
+    n = 1,
+    grid = grid,
+    hurst = function(t) rep(0.05, length(t)),
+    scale = 0.25
+  )) + mean_function(grid)
+  observed <- fda_observe_curve(grid, latent, m = 100, noise_sd = 0)
+  limits <- range(latent, observed$y)
+
+  old_par <- graphics::par(mfrow = c(1, 2))
+  on.exit(graphics::par(old_par), add = TRUE)
+  graphics::plot(
+    observed$t, observed$y,
+    pch = 19,
+    ylim = limits,
+    xlab = expression(t),
+    ylab = expression(Y),
+    main = "Discrete Measurements for 1 Curve",
+    panel.first = graphics::grid(lty = 1)
+  )
+  graphics::plot(
+    grid, latent,
+    type = "l",
+    col = "grey45",
+    ylim = limits,
+    xlab = expression(t),
+    ylab = expression(X[i](t)),
+    main = "Irregular Function, Data Measured Without Error",
+    panel.first = graphics::grid(lty = 1)
+  )
+  graphics::points(observed$t, observed$y, pch = 19)
+})
+```
+
+## FDA Sample Element (1 Random Function)
+
+```{r}
+#| label: fig-noisyfuncall
+#| fig-cap: "Smooth Function, Noisy Data"
+#| fig-width: 12
+#| fig-height: 6
+
+local({
+  set.seed(42)
+  grid <- seq(0, 1, length.out = 800)
+  latent <- 1 + grid
+  observed <- fda_observe_curve(grid, latent, m = 100, noise_sd = 0.25)
+  limits <- range(latent, observed$y)
+
+  old_par <- graphics::par(mfrow = c(1, 2))
+  on.exit(graphics::par(old_par), add = TRUE)
+  graphics::plot(
+    observed$t, observed$y,
+    pch = 19,
+    ylim = limits,
+    xlab = expression(t),
+    ylab = expression(Y),
+    main = "Discrete Measurements for 1 Curve",
+    panel.first = graphics::grid(lty = 1)
+  )
+  graphics::plot(
+    grid, latent,
+    type = "l",
+    ylim = limits,
+    xlab = expression(t),
+    ylab = expression(X[i](t)),
+    main = "Smooth Function, Data Measured With Error",
+    panel.first = graphics::grid(lty = 1)
+  )
+  graphics::points(observed$t, observed$y, pch = 19)
+})
+```
+
+## FDA Sample Element (1 Random Function)
+
+```{r}
+#| label: fig-mfbm
+#| fig-cap: "Irregular Function, Varying Regularity, Noisy Data"
+#| fig-width: 12
+#| fig-height: 6
+
+local({
+  set.seed(42)
+  grid <- seq(0, 1, length.out = 800)
+  mean_function <- function(t) 1 + t
+  latent <- as.numeric(fda_draw_mfbm(
+    n = 1,
+    grid = grid,
+    hurst = function(t) fda_hurst_logistic(
+      t, h_left = 0, h_right = 1, slope = 10, change_point = 0.5
+    ),
+    scale = 1
+  )) + mean_function(grid)
+  observed <- fda_observe_curve(grid, latent, m = 50, noise_sd = 0.25)
+
+  old_par <- graphics::par(mfrow = c(1, 1))
+  on.exit(graphics::par(old_par), add = TRUE)
+  graphics::plot(
+    grid, latent,
+    type = "l",
+    col = "grey45",
+    ylim = range(latent, observed$y),
+    xlab = expression(t),
+    ylab = expression(X[i](t) * ", " * Y[ij]),
+    sub = expression(
+      "One draw from " * X[i](t) * " sampled with error: " *
+        Y[ij] == X[i](T[ij]) + epsilon[ij]
+    ),
+    panel.first = graphics::grid(lty = 1)
+  )
+  graphics::points(observed$t, observed$y, pch = 19)
+  graphics::rug(observed$t, lwd = 2)
+  graphics::legend(
+    "topright",
+    c("Latent sample curve", "Discrete noisy observations"),
+    lty = c(1, NA),
+    pch = c(NA, 19),
+    col = c("grey45", "black"),
+    bty = "n"
+  )
+})
+```
+
+::: {.notes}
+The roughness of the latent curve changes over its domain, while the sampled
+points also contain measurement error. This is a visual illustration of the
+observation problem, not an assumption needed by the covariance estimator.
+The synthetic path is based on a multifractional Brownian-motion construction
+[@PeltierLevyVehel1995]. The next two slides show real functional datasets.
+:::
+
+## FDA Sample Elements (Random Functions)
+
+```{r}
+#| label: fig-growth
+#| fig-cap: "Berkeley Growth Study Data"
+#| fig-width: 12
+#| fig-height: 6
+
+local({
+  data("growth", package = "fda")
+  graphics::matplot(
+    growth$age, growth$hgtf,
+    type = "l",
+    lty = 1,
+    xlab = "Age (years)",
+    ylab = "Height (cm)",
+    sub = "Heights of 54 girls from age 1 to 18 (ages not equally spaced)",
+    panel.first = graphics::grid(lty = 1)
+  )
+  graphics::rug(growth$age)
+})
+```
+
+::: {.notes}
+The ages are unevenly spaced: four measurements between years 1 and 2, one per
+year through age 8, and two per year thereafter. These curves are comparatively
+smooth and densely sampled relative to the sparse setting studied in this talk.
+Data source: `fda::growth`; see @ramsay2005.
+:::
+
+## FDA Sample Elements (Random Functions)
+
+```{r}
+#| label: fig-canWeather
+#| fig-cap: "Canadian Weather Study Data"
+#| fig-width: 12
+#| fig-height: 6
+
+local({
+  data("CanadianWeather", package = "fda")
+  temperatures <- CanadianWeather$dailyAv[, , "Temperature.C"]
+  regions <- CanadianWeather$region
+  region_names <- unique(regions)
+  region_colors <- stats::setNames(
+    grDevices::hcl.colors(length(region_names), "Dark 3"),
+    region_names
+  )
+  graphics::matplot(
+    seq_len(nrow(temperatures)), temperatures,
+    type = "l",
+    lty = 1,
+    col = region_colors[regions],
+    xlab = "Day of the year",
+    ylab = "Temperature (C)",
+    sub = paste(
+      "Daily mean temperature throughout the year at",
+      ncol(temperatures), "Canadian locations"
+    ),
+    panel.first = graphics::grid(lty = 1)
+  )
+  graphics::legend(
+    "topright",
+    legend = region_names,
+    col = region_colors[region_names],
+    lty = 1,
+    bty = "n",
+    cex = 0.8
+  )
+})
+```
+
+::: {.notes}
+These curves share a common daily grid and are less smooth than the growth
+curves. The example contrasts a common design with the subject-specific,
+irregular observation times emphasized in the current paper. Data source:
+`fda::CanadianWeather`; see @ramsay2005.
+:::
+
+# Functional Data Setting
+
+## Functional Data
+
+- Functional data carry information both *along* the curves and *among* the
+  curves.
+
+- Let $X=\{X(t):t\in[0,1]\}$ be a second-order stochastic process with
+  continuous trajectories. Its mean and covariance functions are
+  $$
+  \mu(t)=\mathbb E\{X(t)\},
+  \qquad
+  C(s,t)=\mathbb E\bigl([X(s)-\mu(s)][X(t)-\mu(t)]\bigr).
+  $$
+
+- We observe $N$ independent sample paths $X_i(\cdot)$ only at discrete times:
+  $$
+  Y_{ij}=X_i(T_{ij})+\varepsilon_{ij},
+  \qquad i=1,\ldots,N,\quad j=1,\ldots,M_i.
+  $$
+
+::: {.notes}
+A stochastic process may equivalently be viewed as a random element in a
+function space. Here the random functions $X_i(\cdot)$ are latent; the data are
+the discrete pairs $(Y_{ij},T_{ij})$.
+:::
+
+## Measurement Errors and Design
+
+- The measurement errors $\varepsilon_{ij}$ are centered independent copies
+  with constant variance $\sigma_\varepsilon^2$.
+
+- The latent paths, observation times, and measurement errors are mutually
+  independent.
+
+- Two important observation-time designs are:
+
+    - *common design*: curves share the same observation times;
+    - *independent design*: curves have subject-specific observation times.
+
+- The current paper focuses on independent-design times $T_{ij}$ and bounded
+  $M_i$, the sparse functional-data regime; when $M_i$ is large, the curves are
+  densely sampled.
+
+::: {.notes}
+The 2022 background slide allowed heteroscedastic measurement error. The current
+paper assumes centered i.i.d. error with constant variance, so this slide uses
+the current manuscript's model. The Canadian weather example illustrates a
+common design; the paper's sparse setting is independent design.
+:::
+
+## Replication
+
+- A key distinguishing feature of FDA is *replication*: the sample paths share
+  a common stochastic structure.
+
+- Information in the other $N-1$ curves can help us learn about the $N$th curve
+  and about population-level objects such as $\mu(t)$, $\sigma^2(t)$, and
+  $C(s,t)$.
+
+- For covariance estimation, each subject contributes within-curve products at
+  scattered pairs $(T_{ij},T_{ik})$; pooling across subjects provides the
+  replication needed to learn the latent surface.
+
+- In the sparse regime each curve contributes only a handful of such pairs.
+  That is precisely why covariance estimation remains difficult despite
+  replication.
+
+::: {.notes}
+Use replication as the bridge to the next slide. It makes population covariance
+estimable, but sparse, irregular within-curve pairs make the bivariate surface
+hard to recover. This motivates asking why covariance is the central target.
+:::
+
 :::
 
 ## Why Covariance?
@@ -256,7 +719,7 @@ observed covariance = latent covariance + measurement-error contribution
     - edge effects,
     - computation.
 
-::: {.content-hidden when-profile="short"}
+::: {.content-visible when-profile="long"}
 # Proposed Semiparametric Decomposition
 
 :::
@@ -379,7 +842,7 @@ Functional Data.
 - The $M_i$ are bounded and treated as fixed; if random and independent, the
   analysis is conditional on the $M_i$.
 
-::: {.content-visible when-profile="short"}
+::: {.content-hidden when-profile="long"}
 ## Implementation Details
 
 - The default fit is data-driven rather than hand-tuned.
@@ -399,7 +862,7 @@ Functional Data.
 
 :::
 
-::: {.content-hidden when-profile="short"}
+::: {.content-visible when-profile="long"}
 ## Implementation Details
 
 - The default fit is data-driven rather than hand-tuned.
@@ -423,7 +886,7 @@ Functional Data.
 
 :::
 
-::: {.content-hidden when-profile="short"}
+::: {.content-visible when-profile="long"}
 ## A Statistical Compromise
 
 - Fully parametric covariance:
@@ -442,7 +905,7 @@ Functional Data.
 
 :::
 
-::: {.content-hidden when-profile="short"}
+::: {.content-visible when-profile="long"}
 ## Relation to Sparse FDA
 
 - The sparse FDA setting follows the measurement-error and random-design
@@ -459,12 +922,12 @@ Functional Data.
 
 :::
 
-::: {.content-hidden when-profile="short"}
+::: {.content-visible when-profile="long"}
 # Nonparametric Mean and Variance
 
 :::
 
-::: {.content-hidden when-profile="short"}
+::: {.content-visible when-profile="long"}
 ## Mean Estimation
 
 - The mean is estimated from pooled observations:
@@ -483,7 +946,7 @@ Functional Data.
 
 :::
 
-::: {.content-hidden when-profile="short"}
+::: {.content-visible when-profile="long"}
 ## Variance Estimation
 
 - After estimating the mean and noise variance, the latent marginal variance is
@@ -583,7 +1046,7 @@ $$
   \frac{U_{\ell+s}-U_{\ell-s}}{2s}.
   $$
 
-::: {.content-hidden when-profile="short"}
+::: {.content-visible when-profile="long"}
 ## The Boundary Issue
 
 - The cosine basis imposes
@@ -599,7 +1062,7 @@ $$
 
 :::
 
-::: {.content-hidden when-profile="short"}
+::: {.content-visible when-profile="long"}
 ## Efromovich's Remedy
 
 - Efromovich discusses polynomial correction as a way to handle boundary
@@ -615,7 +1078,7 @@ $$
 
 :::
 
-::: {.content-hidden when-profile="short"}
+::: {.content-visible when-profile="long"}
 ## Orthonormality Matters
 
 - Adding polynomial columns directly breaks the simple orthonormal structure
@@ -629,7 +1092,7 @@ $$
 
 :::
 
-::: {.content-hidden when-profile="short"}
+::: {.content-visible when-profile="long"}
 ## Boundary-Corrected Basis
 
 - For a quadratic correction, start from
@@ -646,7 +1109,7 @@ $$
 
 :::
 
-::: {.content-hidden when-profile="short"}
+::: {.content-visible when-profile="long"}
 ## Why This Is Honest
 
 - The uncorrected cosine estimator is not naive.
@@ -661,7 +1124,7 @@ $$
 
 :::
 
-::: {.content-hidden when-profile="short"}
+::: {.content-visible when-profile="long"}
 ## Bias-Variance Tradeoff
 
 - In finite samples, boundary correction can increase integrated MSE even while
@@ -682,12 +1145,12 @@ is a defensible choice because it does not build in the zero-derivative prior.
 
 :::
 
-::: {.content-hidden when-profile="short"}
+::: {.content-visible when-profile="long"}
 # Correlation Families
 
 :::
 
-::: {.content-hidden when-profile="short"}
+::: {.content-visible when-profile="long"}
 ## Why Correlation Families?
 
 - Once $\sigma(t)$ is estimated, the remaining object is a correlation surface.
@@ -704,7 +1167,7 @@ is a defensible choice because it does not build in the zero-derivative prior.
 
 :::
 
-::: {.content-hidden when-profile="short"}
+::: {.content-visible when-profile="long"}
 ## Correlation Family Provenance
 
 - Examples include:
@@ -800,7 +1263,7 @@ where $\ell=1,\ldots,L$ indexes the candidate family.
 - This follows the spirit of focused/model-averaging ideas
   [@CLAESKENS_HJORT:2011].
 
-::: {.content-hidden when-profile="short"}
+::: {.content-visible when-profile="long"}
 ## Why Average?
 
 - Hard selection is brittle when families are close.
@@ -815,12 +1278,12 @@ where $\ell=1,\ldots,L$ indexes the candidate family.
 
 :::
 
-::: {.content-hidden when-profile="short"}
+::: {.content-visible when-profile="long"}
 # Parametric and Nonparametric Benchmarks
 
 :::
 
-::: {.content-hidden when-profile="short"}
+::: {.content-visible when-profile="long"}
 ## Fully Parametric Benchmark
 
 - The fully parametric benchmark estimates:
@@ -836,7 +1299,7 @@ where $\ell=1,\ldots,L$ indexes the candidate family.
 
 :::
 
-::: {.content-hidden when-profile="short"}
+::: {.content-visible when-profile="long"}
 ## Fully Nonparametric Benchmark
 
 - The nonparametric covariance benchmark estimates the surface directly:
@@ -850,7 +1313,7 @@ where $\ell=1,\ldots,L$ indexes the candidate family.
 
 :::
 
-::: {.content-hidden when-profile="short"}
+::: {.content-visible when-profile="long"}
 ## Combined-Test Diagnostic
 
 - The manuscript also compares convex combinations such as
@@ -865,7 +1328,7 @@ where $\ell=1,\ldots,L$ indexes the candidate family.
 
 :::
 
-::: {.content-hidden when-profile="short"}
+::: {.content-visible when-profile="long"}
 # Finite-Sample Evidence
 
 ```{r peer-ratio-table-setup}
@@ -1226,7 +1689,7 @@ bc_alpha_tables <- build_peer_alpha_tables("../Work_bcgs2_peer_beta_mc")
 - This is intentionally harder than a uniform-design, zero-endpoint-slope
   setting.
 
-::: {.content-hidden when-profile="short"}
+::: {.content-visible when-profile="long"}
 ## Peer Comparison
 
 - The peer comparison places the proposed estimator against available R
@@ -1356,7 +1819,7 @@ render_peer_ratio_table(bc_peer_tables$`4N`)
 
 :::
 
-::: {.content-hidden when-profile="short"}
+::: {.content-visible when-profile="long"}
 ## Peer Comparison Ratios: Not Bias-Corrected {.table-slide}
 
 ::: nonincremental
@@ -1405,7 +1868,7 @@ render_peer_ratio_table(nbc_peer_tables$`4N`)
 
 :::
 
-::: {.content-hidden when-profile="short"}
+::: {.content-visible when-profile="long"}
 ## Averaging Weights
 
 - The $\widehat{\boldsymbol{\alpha}}$ weights are diagnostic, not just
@@ -1515,7 +1978,7 @@ with the manuscript evidence.
 
 :::
 
-::: {.content-hidden when-profile="short"}
+::: {.content-visible when-profile="long"}
 # CD4 Application
 
 :::
@@ -1586,7 +2049,7 @@ clinical origin for the longitudinal trajectories.
 
 :::
 
-::: {.content-hidden when-profile="short"}
+::: {.content-visible when-profile="long"}
 ## Example (CD4 - What the Estimator Must Separate)
 
 ::: {.callout-note appearance="simple"}
@@ -1606,7 +2069,7 @@ clinical origin for the longitudinal trajectories.
 
 :::
 
-::: {.content-hidden when-profile="short"}
+::: {.content-visible when-profile="long"}
 ## Example (CD4 - Parametric Benchmark in the Application)
 
 ::: {.callout-note appearance="simple"}
@@ -1676,7 +2139,7 @@ plot(fit_cd4_sp)
 
 :::
 
-::: {.content-hidden when-profile="short"}
+::: {.content-visible when-profile="long"}
 ## Example (CD4 - Default Nonparametric Fit)
 
 ::: nonincremental
@@ -1693,7 +2156,7 @@ plot(fit_cd4_np)
 
 :::
 
-::: {.content-hidden when-profile="short"}
+::: {.content-visible when-profile="long"}
 ## Example (CD4 - Semiparametric Covariance Contour View) {#covariance-contour-views}
 
 ::: nonincremental
@@ -1712,7 +2175,7 @@ plot(fit_cd4_sp, view = "heatmap")
 
 :::
 
-::: {.content-hidden when-profile="short"}
+::: {.content-visible when-profile="long"}
 ## Example (CD4 - Nonparametric Covariance Contour View)
 
 ::: nonincremental
@@ -1739,7 +2202,7 @@ plot(fit_cd4_np, view = "heatmap")
 plot(fit_cd4_sp, view = "persp")
 ```
 
-::: {.content-hidden when-profile="short"}
+::: {.content-visible when-profile="long"}
 ## Example (CD4 - Nonparametric Covariance Surface)
 
 ::: nonincremental
@@ -1756,7 +2219,7 @@ plot(fit_cd4_np, view = "persp")
 
 :::
 
-::: {.content-visible when-profile="short"}
+::: {.content-hidden when-profile="long"}
 
 ## Example (R Code)
 
@@ -1837,7 +2300,7 @@ plot(fit_cd4_sp, view = "rgl")
 
 :::
 
-::: {.content-hidden when-profile="short"}
+::: {.content-visible when-profile="long"}
 
 ## Example (R Code)
 
@@ -1945,7 +2408,7 @@ plot(fit_cd4_np, view = "rgl")
 
 :::
 
-::: {.content-hidden when-profile="short"}
+::: {.content-visible when-profile="long"}
 ## Example (CD4 - Interpretation)
 
 ::: {.callout-note appearance="simple"}
@@ -1962,7 +2425,7 @@ plot(fit_cd4_np, view = "rgl")
 
 :::
 
-::: {.content-hidden when-profile="short"}
+::: {.content-visible when-profile="long"}
 ## Example (CD4 - Sensitivity Is a Feature)
 
 ::: {.callout-note appearance="simple"}
@@ -1982,7 +2445,7 @@ plot(fit_cd4_np, view = "rgl")
 
 :::
 
-::: {.content-hidden when-profile="short"}
+::: {.content-visible when-profile="long"}
 # Summary
 
 :::
@@ -1999,7 +2462,7 @@ plot(fit_cd4_np, view = "rgl")
     - remains computationally attractive for sparse FDA;
     - avoids imposing zero endpoint derivatives by default.
 
-::: {.content-hidden when-profile="short"}
+::: {.content-visible when-profile="long"}
 ## What Is Coming Next
 
 - The current manuscript is intentionally ahead of the completed proof section.
@@ -2023,11 +2486,11 @@ plot(fit_cd4_np, view = "rgl")
 - The goal is to put structure where it is useful, keep flexibility where it is
   needed, and make the resulting estimator practical.
 
-::: {.content-hidden when-profile="short"}
+::: {.content-visible when-profile="long"}
 # Backup Slides
 :::
 
-::: {.content-hidden when-profile="short"}
+::: {.content-visible when-profile="long"}
 ## Backup: Observation Model
 
 - For independent subjects $i=1,\ldots,N$,
@@ -2045,7 +2508,7 @@ plot(fit_cd4_np, view = "rgl")
 - Measurement error is independent of the latent process and design.
 :::
 
-::: {.content-hidden when-profile="short"}
+::: {.content-visible when-profile="long"}
 ## Backup: Standardized Products
 
 - Define
@@ -2064,7 +2527,7 @@ plot(fit_cd4_np, view = "rgl")
 - Then fit candidate correlations to $\widehat R_{ijk}$.
 :::
 
-::: {.content-hidden when-profile="short"}
+::: {.content-visible when-profile="long"}
 ## Backup: Correlation Fit
 
 - For family $\ell$ with parameter $\theta_\ell$:
@@ -2083,7 +2546,7 @@ plot(fit_cd4_np, view = "rgl")
 - Weights can encode design, trimming, or numerical safeguards.
 :::
 
-::: {.content-hidden when-profile="short"}
+::: {.content-visible when-profile="long"}
 ## Backup: Simplex Averaging
 
 - Let $\widehat R_\ell$ denote the fitted correlation matrix or grid surface for
@@ -2098,7 +2561,7 @@ plot(fit_cd4_np, view = "rgl")
   $$
 :::
 
-::: {.content-hidden when-profile="short"}
+::: {.content-visible when-profile="long"}
 ## Backup: Boundary-Corrected Linear Span
 
 - Linear correction starts from
@@ -2109,7 +2572,7 @@ plot(fit_cd4_np, view = "rgl")
 - Because $t'(0)=t'(1)=1$, this permits a common endpoint derivative.
 :::
 
-::: {.content-hidden when-profile="short"}
+::: {.content-visible when-profile="long"}
 ## Backup: Boundary-Corrected Quadratic Span
 
 - Quadratic correction starts from
@@ -2121,7 +2584,7 @@ plot(fit_cd4_np, view = "rgl")
   the two endpoint derivatives can differ.
 :::
 
-::: {.content-hidden when-profile="short"}
+::: {.content-visible when-profile="long"}
 ## Backup: QR Construction
 
 - Let $B$ be the evaluated design matrix for the finite span.
@@ -2136,7 +2599,7 @@ plot(fit_cd4_np, view = "rgl")
 - The fitted values are obtained by projecting onto selected columns of $Q$.
 :::
 
-::: {.content-hidden when-profile="short"}
+::: {.content-visible when-profile="long"}
 ## Backup: Why Smooth Thresholding Still Fits
 
 - The fixed orthonormal finite-span construction preserves the series-estimation
@@ -2149,7 +2612,7 @@ plot(fit_cd4_np, view = "rgl")
   is sample-design dependent.
 :::
 
-::: {.content-hidden when-profile="short"}
+::: {.content-visible when-profile="long"}
 ## Backup: No One Boundary Rule Wins Everywhere
 
 - Endpoint correction is a bias-correction problem.

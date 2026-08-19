@@ -6,13 +6,13 @@
 <script src="index_files/libs/quarto-html/tippy.umd.min.js"></script>
 <link href="index_files/libs/quarto-html/tippy.css" rel="stylesheet">
 <link href="index_files/libs/quarto-html/light-border.css" rel="stylesheet">
-<link href="index_files/libs/quarto-html/quarto-syntax-highlighting-7f8f88aac4f3542376d5c11b86a4c14d.css" rel="stylesheet" id="quarto-text-highlighting-styles"><meta charset="utf-8">
-  <meta name="generator" content="quarto-1.9.37">
+<link href="index_files/libs/quarto-html/quarto-syntax-highlighting-15634bcf2e68342d4ad2dfa704d543f6.css" rel="stylesheet" id="quarto-text-highlighting-styles"><meta charset="utf-8">
+  <meta name="generator" content="quarto-1.9.38">
 
   <meta name="author" content="Valentin Patilea^\dagger">
   <meta name="author" content="Jeffrey S. Racine^\ddagger">
   <meta name="dcterms.date" content="2026-06-24">
-  <title>quarto-input55cb078a19055abd</title>
+  <title>quarto-input95a54211c46f6bfe</title>
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, minimal-ui">
@@ -263,7 +263,7 @@ Jeffrey S. Racine<span class="math inline">\(^\ddagger\)</span>
 <li class="fragment"><p>All tuning parameters are selected from the data.</p></li>
 </ul>
 </section>
-<section id="classical-versus-functional-data" class="slide level2 center">
+<section id="classical-versus-functional-data-1" class="slide level2 center">
 <h2>Classical Versus Functional Data</h2>
 <ul>
 <li class="fragment"><p>Classical sample element: one observes a finite-dimensional draw <span class="math inline">\(Y_i\)</span> from a random vector <span class="math inline">\(Y\)</span>: <span class="math display">\[
@@ -276,9 +276,211 @@ X_i = \{X_i(t): t \in \mathcal T\}.
 Y_{ij} = X_i(T_{ij}) + \varepsilon_{ij},
       \qquad j=1,\ldots,M_i .
 \]</span></p></li>
+<li class="fragment"><p>The following figure (<a href="#/fig-sampleelements" class="quarto-xref">Figure&nbsp;1</a>) presents <span class="math inline">\(N=25\)</span> sample elements (classical left plot, functional right plot).</p></li>
 </ul>
 <aside class="notes">
 <p>Begin with the sample element before proceeding. Here “infinite-dimensional” means that the latent curve is an element of a function space such as <span class="math inline">\(L^2[0,1]\)</span> or <span class="math inline">\(C[0,1]\)</span>, not a vector in <span class="math inline">\(\mathbb R^d\)</span>. In principle it can be represented by infinitely many basis coefficients, while sparse FDA observes only finitely many noisy point evaluations <span class="math inline">\(Y_{ij}\)</span>.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="classical-versus-functional-data-2" class="slide level2 center">
+<h2>Classical Versus Functional Data</h2>
+
+<img data-src="index_files/figure-revealjs/fig-sampleelements-1.png" class="quarto-figure quarto-figure-center r-stretch" width="1152" id="fig-sampleelements"><p class="caption">
+Figure&nbsp;1: Classical Versus Functional Sample Elements (<span class="math inline">\(N=25\)</span>)
+</p><aside class="notes">
+<p>The left panel contains finite-dimensional observations. Each colored line in the right panel is one random sample element: an entire latent trajectory. This is a different sampling object, not simply a regression curve fitted to the left-hand points.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="functional-data" class="slide level2 center">
+<h2>Functional Data</h2>
+<ul>
+<li class="fragment"><p>Functional data analysis (FDA) is the statistical analysis of samples of curves—random variables taking values in spaces of functions.</p></li>
+<li class="fragment"><p>FDA has heterogeneous, longitudinal aspects: the sample contains individual trajectories <span class="math inline">\(X_i(\cdot)\)</span>.</p></li>
+<li class="fragment"><p>Curves are continua, so their values are never observed at every point:</p>
+<ul>
+<li class="fragment">only discrete pairs <span class="math inline">\((Y_{ij},T_{ij})\)</span> are available;</li>
+<li class="fragment">the observation times may differ across curves;</li>
+<li class="fragment">measurements may be contaminated by error.</li>
+</ul></li>
+<li class="fragment"><p>The next three figures distinguish:</p>
+<ul>
+<li class="fragment">an irregular curve measured without error (<a href="#/fig-nonnoisyfuncall" class="quarto-xref">Figure&nbsp;2</a>);</li>
+<li class="fragment">a smooth curve measured with error (<a href="#/fig-noisyfuncall" class="quarto-xref">Figure&nbsp;3</a>);</li>
+<li class="fragment">varying regularity together with measurement noise (<a href="#/fig-mfbm" class="quarto-xref">Figure&nbsp;4</a>).</li>
+</ul></li>
+</ul>
+<aside class="notes">
+<p>The essential distinction is between the latent function and the discrete data recorded from it. Irregularity and measurement error are different phenomena, even though both can make the observed points look rough.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="fda-sample-element-1-random-function" class="slide level2 center">
+<h2>FDA Sample Element (1 Random Function)</h2>
+
+<img data-src="index_files/figure-revealjs/fig-nonnoisyfuncall-1.png" class="quarto-figure quarto-figure-center r-stretch" width="1152" id="fig-nonnoisyfuncall"><p class="caption">
+Figure&nbsp;2: Irregular Function, Data Measured Without Error
+</p></section>
+<section id="fda-sample-element-1-random-function-1" class="slide level2 center">
+<h2>FDA Sample Element (1 Random Function)</h2>
+
+<img data-src="index_files/figure-revealjs/fig-noisyfuncall-1.png" class="quarto-figure quarto-figure-center r-stretch" width="1152" id="fig-noisyfuncall"><p class="caption">
+Figure&nbsp;3: Smooth Function, Noisy Data
+</p></section>
+<section id="fda-sample-element-1-random-function-2" class="slide level2 center">
+<h2>FDA Sample Element (1 Random Function)</h2>
+
+<img data-src="index_files/figure-revealjs/fig-mfbm-1.png" class="quarto-figure quarto-figure-center r-stretch" width="1152" id="fig-mfbm"><p class="caption">
+Figure&nbsp;4: Irregular Function, Varying Regularity, Noisy Data
+</p><aside class="notes">
+<p>The roughness of the latent curve changes over its domain, while the sampled points also contain measurement error. This is a visual illustration of the observation problem, not an assumption needed by the covariance estimator. The synthetic path is based on a multifractional Brownian-motion construction <span class="citation" data-cites="PeltierLevyVehel1995">(<a href="#/references" role="doc-biblioref" onclick="">Peltier and Lévy Véhel 1995</a>)</span>. The next two slides show real functional datasets.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="fda-sample-elements-random-functions" class="slide level2 center">
+<h2>FDA Sample Elements (Random Functions)</h2>
+
+<img data-src="index_files/figure-revealjs/fig-growth-1.png" class="quarto-figure quarto-figure-center r-stretch" width="1152" id="fig-growth"><p class="caption">
+Figure&nbsp;5: Berkeley Growth Study Data
+</p><aside class="notes">
+<p>The ages are unevenly spaced: four measurements between years 1 and 2, one per year through age 8, and two per year thereafter. These curves are comparatively smooth and densely sampled relative to the sparse setting studied in this talk. Data source: <code>fda::growth</code>; see <span class="citation" data-cites="ramsay2005">Ramsay and Silverman (<a href="#/references" role="doc-biblioref" onclick="">2005</a>)</span>.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="fda-sample-elements-random-functions-1" class="slide level2 center">
+<h2>FDA Sample Elements (Random Functions)</h2>
+
+<img data-src="index_files/figure-revealjs/fig-canWeather-1.png" class="quarto-figure quarto-figure-center r-stretch" width="1152" id="fig-canWeather"><p class="caption">
+Figure&nbsp;6: Canadian Weather Study Data
+</p><aside class="notes">
+<p>These curves share a common daily grid and are less smooth than the growth curves. The example contrasts a common design with the subject-specific, irregular observation times emphasized in the current paper. Data source: <code>fda::CanadianWeather</code>; see <span class="citation" data-cites="ramsay2005">Ramsay and Silverman (<a href="#/references" role="doc-biblioref" onclick="">2005</a>)</span>.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section></section>
+<section>
+<section id="functional-data-setting" class="title-slide slide level1 center">
+<h1>Functional Data Setting</h1>
+
+</section>
+<section id="functional-data-1" class="slide level2 center">
+<h2>Functional Data</h2>
+<ul>
+<li class="fragment"><p>Functional data carry information both <em>along</em> the curves and <em>among</em> the curves.</p></li>
+<li class="fragment"><p>Let <span class="math inline">\(X=\{X(t):t\in[0,1]\}\)</span> be a second-order stochastic process with continuous trajectories. Its mean and covariance functions are <span class="math display">\[
+\mu(t)=\mathbb E\{X(t)\},
+\qquad
+C(s,t)=\mathbb E\bigl([X(s)-\mu(s)][X(t)-\mu(t)]\bigr).
+\]</span></p></li>
+<li class="fragment"><p>We observe <span class="math inline">\(N\)</span> independent sample paths <span class="math inline">\(X_i(\cdot)\)</span> only at discrete times: <span class="math display">\[
+Y_{ij}=X_i(T_{ij})+\varepsilon_{ij},
+\qquad i=1,\ldots,N,\quad j=1,\ldots,M_i.
+\]</span></p></li>
+</ul>
+<aside class="notes">
+<p>A stochastic process may equivalently be viewed as a random element in a function space. Here the random functions <span class="math inline">\(X_i(\cdot)\)</span> are latent; the data are the discrete pairs <span class="math inline">\((Y_{ij},T_{ij})\)</span>.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="measurement-errors-and-design" class="slide level2 center">
+<h2>Measurement Errors and Design</h2>
+<ul>
+<li class="fragment"><p>The measurement errors <span class="math inline">\(\varepsilon_{ij}\)</span> are centered independent copies with constant variance <span class="math inline">\(\sigma_\varepsilon^2\)</span>.</p></li>
+<li class="fragment"><p>The latent paths, observation times, and measurement errors are mutually independent.</p></li>
+<li class="fragment"><p>Two important observation-time designs are:</p>
+<ul>
+<li class="fragment"><em>common design</em>: curves share the same observation times;</li>
+<li class="fragment"><em>independent design</em>: curves have subject-specific observation times.</li>
+</ul></li>
+<li class="fragment"><p>The current paper focuses on independent-design times <span class="math inline">\(T_{ij}\)</span> and bounded <span class="math inline">\(M_i\)</span>, the sparse functional-data regime; when <span class="math inline">\(M_i\)</span> is large, the curves are densely sampled.</p></li>
+</ul>
+<aside class="notes">
+<p>The 2022 background slide allowed heteroscedastic measurement error. The current paper assumes centered i.i.d. error with constant variance, so this slide uses the current manuscript’s model. The Canadian weather example illustrates a common design; the paper’s sparse setting is independent design.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="replication" class="slide level2 center">
+<h2>Replication</h2>
+<ul>
+<li class="fragment"><p>A key distinguishing feature of FDA is <em>replication</em>: the sample paths share a common stochastic structure.</p></li>
+<li class="fragment"><p>Information in the other <span class="math inline">\(N-1\)</span> curves can help us learn about the <span class="math inline">\(N\)</span>th curve and about population-level objects such as <span class="math inline">\(\mu(t)\)</span>, <span class="math inline">\(\sigma^2(t)\)</span>, and <span class="math inline">\(C(s,t)\)</span>.</p></li>
+<li class="fragment"><p>For covariance estimation, each subject contributes within-curve products at scattered pairs <span class="math inline">\((T_{ij},T_{ik})\)</span>; pooling across subjects provides the replication needed to learn the latent surface.</p></li>
+<li class="fragment"><p>In the sparse regime each curve contributes only a handful of such pairs. That is precisely why covariance estimation remains difficult despite replication.</p></li>
+</ul>
+<aside class="notes">
+<p>Use replication as the bridge to the next slide. It makes population covariance estimable, but sparse, irregular within-curve pairs make the bivariate surface hard to recover. This motivates asking why covariance is the central target.</p>
 <style type="text/css">
         span.MJX_Assistive_MathML {
           position:absolute!important;
@@ -2211,13 +2413,13 @@ G^{-2}
 <h2>Example (CD4 - Default Semiparametric Fit)</h2>
 
 <img data-src="index_files/figure-revealjs/fig-cd4-spcovar-default-1.png" id="fig-cd4-spcovar-default" class="quarto-figure quarto-figure-center r-stretch" width="816"><p class="caption">
-Figure&nbsp;1
+Figure&nbsp;7
 </p></section>
 <section id="example-cd4---semiparametric-covariance-surface" class="slide level2 center">
 <h2>Example (CD4 - Semiparametric Covariance Surface)</h2>
 
 <img data-src="index_files/figure-revealjs/fig-cd4-spcovar-surface-default-1.png" id="fig-cd4-spcovar-surface-default" class="quarto-figure quarto-figure-center r-stretch" width="748"><p class="caption">
-Figure&nbsp;2
+Figure&nbsp;8
 </p></section>
 <section id="example-r-code" class="slide level2 center">
 <h2>Example (R Code)</h2>
@@ -2366,6 +2568,9 @@ Matérn, Bertil. 1986. <em>Spatial Variation</em>. Vol. 36. Lecture Notes in Sta
 </div>
 <div id="ref-PeltierLevyVehel1995" class="csl-entry" role="listitem">
 Peltier, Romain-François, and Jacques Lévy Véhel. 1995. <em>Multifractional <span>B</span>rownian Motion: Definition and Preliminary Results</em>. No. 2645. INRIA.
+</div>
+<div id="ref-ramsay2005" class="csl-entry" role="listitem">
+Ramsay, J. O., and B. W. Silverman. 2005. <em>Functional Data Analysis</em>. 2nd ed. Springer. <a href="https://doi.org/10.1007/b98888">https://doi.org/10.1007/b98888</a>.
 </div>
 <div id="ref-RasmussenWilliams2006" class="csl-entry" role="listitem">
 Rasmussen, Carl Edward, and Christopher K. I. Williams. 2006. <em>Gaussian Processes for Machine Learning</em>. Adaptive Computation and Machine Learning. MIT Press. <a href="https://doi.org/10.7551/mitpress/3206.001.0001">https://doi.org/10.7551/mitpress/3206.001.0001</a>.

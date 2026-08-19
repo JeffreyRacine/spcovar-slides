@@ -14,3 +14,11 @@ talk:
 The bibliography is not copied. The slide source points directly to
 `../references.bib`.
 
+The same source provides three talk lengths:
+
+- `make short`: compact conference talk;
+- `make` or `make medium`: approximately 60-minute talk, adding the FDA
+  background sequence to the short talk;
+- `make long`: full extended talk.
+
+Every render writes the canonical `index.html` and `index-speaker.html` files.
