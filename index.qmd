@@ -215,11 +215,11 @@ represented by infinitely many basis coefficients, while sparse FDA observes
 only finitely many noisy point evaluations $Y_{ij}$.
 :::
 
-## Classical Versus Functional Data
+## Sample Elements: Vectors Versus Functions
 
 ```{r}
 #| label: fig-sampleelements
-#| fig-cap: "Classical Versus Functional Sample Elements ($N=25$)"
+#| fig-cap: 'Two samples with $N=25$: observed classical elements $(Z_{i1},Z_{i2})$, $i=1,\ldots,25$ (left), and latent functional elements $X_i(t)$ (right).'
 #| fig-width: 10
 #| fig-height: 5
 
@@ -279,7 +279,7 @@ local({
     ylab = expression(Z[2]),
     xlim = c(0, 1),
     ylim = range(z2),
-    main = "Classical Sample Elements",
+    main = "Classical sample: N = 25 vectors",
     panel.first = graphics::grid(lty = 1)
   )
   graphics::plot(
@@ -288,8 +288,8 @@ local({
     xlim = c(0, 1),
     ylim = range(curves),
     xlab = "t",
-    ylab = "Curve",
-    main = "FDA Sample Elements",
+    ylab = expression(X[i](t)),
+    main = "Functional sample: N = 25 latent curves",
     panel.first = graphics::grid(lty = 1)
   )
   if (n_curves > 1L) {
@@ -301,9 +301,9 @@ local({
 ```
 
 ::: {.notes}
-Each point in the left panel is a bivariate classical sample element
-$Z_i=(Z_{i1},Z_{i2})^\top$. Each colored line in the right panel is one random
-sample element: an entire latent trajectory.
+Each point in the left panel is one observed bivariate classical sample element
+$Z_i=(Z_{i1},Z_{i2})^\top$. Each colored line in the right panel is one latent
+functional sample element: the entire trajectory $X_i(\cdot)$.
 This is a different sampling object, not simply a regression curve fitted to
 the left-hand points. This faithfully uses the historical example's 25 curves,
 one observation time per curve, 100-point grid, measurement-noise standard
@@ -325,11 +325,15 @@ $N(0,1)$ curve-specific random intercept.
     - the observation times may differ across curves;
     - measurements may be contaminated by error.
 
-- The next three figures distinguish:
+- The next three figures separate one latent functional sample element
+  $X_i(\cdot)$ from the discrete functional observations sampled from it:
 
-    - an irregular curve measured without error (@fig-nonnoisyfuncall);
-    - a smooth curve measured with error (@fig-noisyfuncall);
-    - varying regularity together with measurement noise (@fig-mfbm).
+    - an irregular function with $M_1=100$ exact observations
+      (@fig-nonnoisyfuncall);
+    - a smooth function with $M_1=100$ noisy observations
+      (@fig-noisyfuncall);
+    - a function of varying regularity with $M_1=50$ noisy observations
+      (@fig-mfbm).
 
 ::: {.notes}
 The essential distinction is between the latent function and the discrete data
@@ -337,11 +341,11 @@ recorded from it. Irregularity and measurement error are different phenomena,
 even though both can make the observed points look rough.
 :::
 
-## FDA Sample Element (1 Random Function)
+## One Latent Function, Measured Without Error
 
 ```{r}
 #| label: fig-nonnoisyfuncall
-#| fig-cap: "Irregular Function, Data Measured Without Error"
+#| fig-cap: 'One latent functional sample element $X_1(t)$ and its exact observations $\{(T_{1j},Y_{1j}):j=1,\ldots,M_1\}$, with $M_1=100$.'
 #| fig-width: 12
 #| fig-height: 6
 
@@ -364,9 +368,9 @@ local({
     observed$t, observed$y,
     pch = 19,
     ylim = limits,
-    xlab = expression(T[ij]),
-    ylab = expression(Y[ij]),
-    main = "Discrete Measurements for 1 Curve",
+    xlab = expression(T[1*j]),
+    ylab = expression(Y[1*j]),
+    main = expression("Discrete observations: " * M[1] == 100),
     panel.first = graphics::grid(lty = 1)
   )
   graphics::plot(
@@ -375,19 +379,19 @@ local({
     col = "grey45",
     ylim = limits,
     xlab = expression(t),
-    ylab = expression(X[i](t)),
-    main = "Irregular Function, Data Measured Without Error",
+    ylab = expression(X[1](t) * ", " * Y[1*j]),
+    main = "Latent function + exact observations",
     panel.first = graphics::grid(lty = 1)
   )
   graphics::points(observed$t, observed$y, pch = 19)
 })
 ```
 
-## FDA Sample Element (1 Random Function)
+## One Latent Function, Measured With Error
 
 ```{r}
 #| label: fig-noisyfuncall
-#| fig-cap: "Smooth Function, Noisy Data"
+#| fig-cap: "One latent functional sample element $X_1(t)$ and its $M_1=100$ noisy observations $(T_{1j},Y_{1j})$."
 #| fig-width: 12
 #| fig-height: 6
 
@@ -404,9 +408,9 @@ local({
     observed$t, observed$y,
     pch = 19,
     ylim = limits,
-    xlab = expression(T[ij]),
-    ylab = expression(Y[ij]),
-    main = "Discrete Measurements for 1 Curve",
+    xlab = expression(T[1*j]),
+    ylab = expression(Y[1*j]),
+    main = expression("Discrete observations: " * M[1] == 100),
     panel.first = graphics::grid(lty = 1)
   )
   graphics::plot(
@@ -414,19 +418,19 @@ local({
     type = "l",
     ylim = limits,
     xlab = expression(t),
-    ylab = expression(X[i](t)),
-    main = "Smooth Function, Data Measured With Error",
+    ylab = expression(X[1](t) * ", " * Y[1*j]),
+    main = "Latent function + noisy observations",
     panel.first = graphics::grid(lty = 1)
   )
   graphics::points(observed$t, observed$y, pch = 19)
 })
 ```
 
-## FDA Sample Element (1 Random Function)
+## One Latent Function with Varying Regularity
 
 ```{r}
 #| label: fig-mfbm
-#| fig-cap: "Irregular Function, Varying Regularity, Noisy Data"
+#| fig-cap: 'One latent functional sample element $X_1(t)$ with varying regularity and its $M_1=50$ noisy observations, $Y_{1j}=X_1(T_{1j})+\varepsilon_{1j}$.'
 #| fig-width: 12
 #| fig-height: 6
 
@@ -444,31 +448,30 @@ local({
   )) + mean_function(grid)
   observed <- fda_observe_curve(grid, latent, m = 50, noise_sd = 0.25)
 
-  old_par <- graphics::par(mfrow = c(1, 1))
+  limits <- range(latent, observed$y)
+
+  old_par <- graphics::par(mfrow = c(1, 2))
   on.exit(graphics::par(old_par), add = TRUE)
+  graphics::plot(
+    observed$t, observed$y,
+    pch = 19,
+    ylim = limits,
+    xlab = expression(T[1*j]),
+    ylab = expression(Y[1*j]),
+    main = expression("Discrete observations: " * M[1] == 50),
+    panel.first = graphics::grid(lty = 1)
+  )
   graphics::plot(
     grid, latent,
     type = "l",
     col = "grey45",
-    ylim = range(latent, observed$y),
+    ylim = limits,
     xlab = expression(t),
-    ylab = expression(X[i](t) * ", " * Y[ij]),
-    sub = expression(
-      "One draw from " * X[i](t) * " sampled with error: " *
-        Y[ij] == X[i](T[ij]) + epsilon[ij]
-    ),
+    ylab = expression(X[1](t) * ", " * Y[1*j]),
+    main = "Latent function + noisy observations",
     panel.first = graphics::grid(lty = 1)
   )
   graphics::points(observed$t, observed$y, pch = 19)
-  graphics::rug(observed$t, lwd = 2)
-  graphics::legend(
-    "topright",
-    c("Latent sample curve", "Discrete noisy observations"),
-    lty = c(1, NA),
-    pch = c(NA, 19),
-    col = c("grey45", "black"),
-    bty = "n"
-  )
 })
 ```
 
@@ -477,27 +480,37 @@ The roughness of the latent curve changes over its domain, while the sampled
 points also contain measurement error. This is a visual illustration of the
 observation problem, not an assumption needed by the covariance estimator.
 The synthetic path is based on a multifractional Brownian-motion construction
-[@PeltierLevyVehel1995]. The next two slides show real functional datasets.
+[@PeltierLevyVehel1995]. The next two slides show real functional datasets. In
+those examples the latent trajectories are unknown: only the observed pairs are
+plotted, and connecting segments are visual guides rather than latent curves.
 :::
 
-## FDA Sample Elements (Random Functions)
+## Observed Functional Data: Growth Measurements
 
 ```{r}
 #| label: fig-growth
-#| fig-cap: "Berkeley Growth Study Data"
+#| fig-cap: 'Observed heights $(T_{ij},Y_{ij})$ for $N=54$ girls on a common grid of 31 ages ($M_1=\cdots=M_{54}=31$). Points are data; connecting lines are visual guides, not latent functions $X_i(t)$.'
 #| fig-width: 12
 #| fig-height: 6
 
 local({
   data("growth", package = "fda")
+  curve_colors <- grDevices::hcl.colors(ncol(growth$hgtf), "Dark 3")
   graphics::matplot(
     growth$age, growth$hgtf,
     type = "l",
     lty = 1,
+    lwd = 0.55,
+    col = grDevices::adjustcolor(curve_colors, alpha.f = 0.5),
     xlab = "Age (years)",
     ylab = "Height (cm)",
-    sub = "Heights of 54 girls from age 1 to 18 (ages not equally spaced)",
     panel.first = graphics::grid(lty = 1)
+  )
+  graphics::matpoints(
+    growth$age, growth$hgtf,
+    pch = 20,
+    cex = 0.45,
+    col = grDevices::adjustcolor(curve_colors, alpha.f = 0.95)
   )
   graphics::rug(growth$age)
 })
@@ -507,14 +520,18 @@ local({
 The ages are unevenly spaced: four measurements between years 1 and 2, one per
 year through age 8, and two per year thereafter. These curves are comparatively
 smooth and densely sampled relative to the sparse setting studied in this talk.
+R's plotting routine connects each girl's successive observed pairs with line
+segments to make her longitudinal record easier to follow. Those segments are
+not observations of the latent trajectory $X_i(\cdot)$ and are not a fitted
+smooth.
 Data source: `fda::growth`; see @ramsay2005.
 :::
 
-## FDA Sample Elements (Random Functions)
+## Observed Functional Data: Daily Temperatures
 
 ```{r}
 #| label: fig-canWeather
-#| fig-cap: "Canadian Weather Study Data"
+#| fig-cap: 'Observed daily mean temperatures $(T_{ij},Y_{ij})$ for $N=35$ Canadian locations on a common grid of 365 days ($M_1=\cdots=M_{35}=365$). Points are data; connecting lines are visual guides, not latent functions $X_i(t)$.'
 #| fig-width: 12
 #| fig-height: 6
 
@@ -531,14 +548,17 @@ local({
     seq_len(nrow(temperatures)), temperatures,
     type = "l",
     lty = 1,
-    col = region_colors[regions],
+    lwd = 0.45,
+    col = grDevices::adjustcolor(region_colors[regions], alpha.f = 0.65),
     xlab = "Day of the year",
     ylab = "Temperature (C)",
-    sub = paste(
-      "Daily mean temperature throughout the year at",
-      ncol(temperatures), "Canadian locations"
-    ),
     panel.first = graphics::grid(lty = 1)
+  )
+  graphics::matpoints(
+    seq_len(nrow(temperatures)), temperatures,
+    pch = 20,
+    cex = 0.25,
+    col = grDevices::adjustcolor(region_colors[regions], alpha.f = 0.9)
   )
   graphics::legend(
     "topright",
@@ -555,7 +575,9 @@ local({
 These curves share a common daily grid and are less smooth than the growth
 curves. The example contrasts a common design with the subject-specific,
 irregular observation times emphasized in the current paper. Data source:
-`fda::CanadianWeather`; see @ramsay2005.
+`fda::CanadianWeather`; see @ramsay2005. R connects successive daily
+observations within each location only to help the eye follow the seasonal
+record; the connecting segments are not the latent trajectory $X_i(\cdot)$.
 :::
 
 ## Functional Data

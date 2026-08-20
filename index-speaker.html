@@ -12,7 +12,7 @@
   <meta name="author" content="Valentin Patilea^\dagger">
   <meta name="author" content="Jeffrey S. Racine^\ddagger">
   <meta name="dcterms.date" content="2026-08-21">
-  <title>quarto-input95c562ada544ff16</title>
+  <title>quarto-input84c23153d932a79e</title>
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, minimal-ui">
@@ -291,13 +291,13 @@ Y_{ij} = X_i(T_{ij}) + \varepsilon_{ij},
           display:block!important;
       }</style></aside>
 </section>
-<section id="classical-versus-functional-data-2" class="slide level2 center">
-<h2>Classical Versus Functional Data</h2>
+<section id="sample-elements-vectors-versus-functions" class="slide level2 center">
+<h2>Sample Elements: Vectors Versus Functions</h2>
 
 <img data-src="index_files/figure-revealjs/fig-sampleelements-1.png" class="quarto-figure quarto-figure-center r-stretch" width="960" id="fig-sampleelements"><p class="caption">
-Figure&nbsp;1: Classical Versus Functional Sample Elements (<span class="math inline">\(N=25\)</span>)
+Figure&nbsp;1: Two samples with <span class="math inline">\(N=25\)</span>: observed classical elements <span class="math inline">\((Z_{i1},Z_{i2})\)</span>, <span class="math inline">\(i=1,\ldots,25\)</span> (left), and latent functional elements <span class="math inline">\(X_i(t)\)</span> (right).
 </p><aside class="notes">
-<p>Each point in the left panel is a bivariate classical sample element <span class="math inline">\(Z_i=(Z_{i1},Z_{i2})^\top\)</span>. Each colored line in the right panel is one random sample element: an entire latent trajectory. This is a different sampling object, not simply a regression curve fitted to the left-hand points. This faithfully uses the historical example’s 25 curves, one observation time per curve, 100-point grid, measurement-noise standard deviation 0.5, and process scale 1; each trajectory includes an independent <span class="math inline">\(N(0,1)\)</span> curve-specific random intercept.</p>
+<p>Each point in the left panel is one observed bivariate classical sample element <span class="math inline">\(Z_i=(Z_{i1},Z_{i2})^\top\)</span>. Each colored line in the right panel is one latent functional sample element: the entire trajectory <span class="math inline">\(X_i(\cdot)\)</span>. This is a different sampling object, not simply a regression curve fitted to the left-hand points. This faithfully uses the historical example’s 25 curves, one observation time per curve, 100-point grid, measurement-noise standard deviation 0.5, and process scale 1; each trajectory includes an independent <span class="math inline">\(N(0,1)\)</span> curve-specific random intercept.</p>
 <style type="text/css">
         span.MJX_Assistive_MathML {
           position:absolute!important;
@@ -321,11 +321,11 @@ Figure&nbsp;1: Classical Versus Functional Sample Elements (<span class="math in
 <li class="fragment">the observation times may differ across curves;</li>
 <li class="fragment">measurements may be contaminated by error.</li>
 </ul></li>
-<li class="fragment"><p>The next three figures distinguish:</p>
+<li class="fragment"><p>The next three figures separate one latent functional sample element <span class="math inline">\(X_i(\cdot)\)</span> from the discrete functional observations sampled from it:</p>
 <ul>
-<li class="fragment">an irregular curve measured without error (<a href="#/fig-nonnoisyfuncall" class="quarto-xref">Figure&nbsp;2</a>);</li>
-<li class="fragment">a smooth curve measured with error (<a href="#/fig-noisyfuncall" class="quarto-xref">Figure&nbsp;3</a>);</li>
-<li class="fragment">varying regularity together with measurement noise (<a href="#/fig-mfbm" class="quarto-xref">Figure&nbsp;4</a>).</li>
+<li class="fragment">an irregular function with <span class="math inline">\(M_1=100\)</span> exact observations (<a href="#/fig-nonnoisyfuncall" class="quarto-xref">Figure&nbsp;2</a>);</li>
+<li class="fragment">a smooth function with <span class="math inline">\(M_1=100\)</span> noisy observations (<a href="#/fig-noisyfuncall" class="quarto-xref">Figure&nbsp;3</a>);</li>
+<li class="fragment">a function of varying regularity with <span class="math inline">\(M_1=50\)</span> noisy observations (<a href="#/fig-mfbm" class="quarto-xref">Figure&nbsp;4</a>).</li>
 </ul></li>
 </ul>
 <aside class="notes">
@@ -342,25 +342,25 @@ Figure&nbsp;1: Classical Versus Functional Sample Elements (<span class="math in
           display:block!important;
       }</style></aside>
 </section>
-<section id="fda-sample-element-1-random-function" class="slide level2 center">
-<h2>FDA Sample Element (1 Random Function)</h2>
+<section id="one-latent-function-measured-without-error" class="slide level2 center">
+<h2>One Latent Function, Measured Without Error</h2>
 
 <img data-src="index_files/figure-revealjs/fig-nonnoisyfuncall-1.png" class="quarto-figure quarto-figure-center r-stretch" width="1152" id="fig-nonnoisyfuncall"><p class="caption">
-Figure&nbsp;2: Irregular Function, Data Measured Without Error
+Figure&nbsp;2: One latent functional sample element <span class="math inline">\(X_1(t)\)</span> and its exact observations <span class="math inline">\(\{(T_{1j},Y_{1j}):j=1,\ldots,M_1\}\)</span>, with <span class="math inline">\(M_1=100\)</span>.
 </p></section>
-<section id="fda-sample-element-1-random-function-1" class="slide level2 center">
-<h2>FDA Sample Element (1 Random Function)</h2>
+<section id="one-latent-function-measured-with-error" class="slide level2 center">
+<h2>One Latent Function, Measured With Error</h2>
 
 <img data-src="index_files/figure-revealjs/fig-noisyfuncall-1.png" class="quarto-figure quarto-figure-center r-stretch" width="1152" id="fig-noisyfuncall"><p class="caption">
-Figure&nbsp;3: Smooth Function, Noisy Data
+Figure&nbsp;3: One latent functional sample element <span class="math inline">\(X_1(t)\)</span> and its <span class="math inline">\(M_1=100\)</span> noisy observations <span class="math inline">\((T_{1j},Y_{1j})\)</span>.
 </p></section>
-<section id="fda-sample-element-1-random-function-2" class="slide level2 center">
-<h2>FDA Sample Element (1 Random Function)</h2>
+<section id="one-latent-function-with-varying-regularity" class="slide level2 center">
+<h2>One Latent Function with Varying Regularity</h2>
 
 <img data-src="index_files/figure-revealjs/fig-mfbm-1.png" class="quarto-figure quarto-figure-center r-stretch" width="1152" id="fig-mfbm"><p class="caption">
-Figure&nbsp;4: Irregular Function, Varying Regularity, Noisy Data
+Figure&nbsp;4: One latent functional sample element <span class="math inline">\(X_1(t)\)</span> with varying regularity and its <span class="math inline">\(M_1=50\)</span> noisy observations, <span class="math inline">\(Y_{1j}=X_1(T_{1j})+\varepsilon_{1j}\)</span>.
 </p><aside class="notes">
-<p>The roughness of the latent curve changes over its domain, while the sampled points also contain measurement error. This is a visual illustration of the observation problem, not an assumption needed by the covariance estimator. The synthetic path is based on a multifractional Brownian-motion construction <span class="citation" data-cites="PeltierLevyVehel1995">(<a href="#/references" role="doc-biblioref" onclick="">Peltier and Lévy Véhel 1995</a>)</span>. The next two slides show real functional datasets.</p>
+<p>The roughness of the latent curve changes over its domain, while the sampled points also contain measurement error. This is a visual illustration of the observation problem, not an assumption needed by the covariance estimator. The synthetic path is based on a multifractional Brownian-motion construction <span class="citation" data-cites="PeltierLevyVehel1995">(<a href="#/references" role="doc-biblioref" onclick="">Peltier and Lévy Véhel 1995</a>)</span>. The next two slides show real functional datasets. In those examples the latent trajectories are unknown: only the observed pairs are plotted, and connecting segments are visual guides rather than latent curves.</p>
 <style type="text/css">
         span.MJX_Assistive_MathML {
           position:absolute!important;
@@ -373,13 +373,13 @@ Figure&nbsp;4: Irregular Function, Varying Regularity, Noisy Data
           display:block!important;
       }</style></aside>
 </section>
-<section id="fda-sample-elements-random-functions" class="slide level2 center">
-<h2>FDA Sample Elements (Random Functions)</h2>
+<section id="observed-functional-data-growth-measurements" class="slide level2 center">
+<h2>Observed Functional Data: Growth Measurements</h2>
 
 <img data-src="index_files/figure-revealjs/fig-growth-1.png" class="quarto-figure quarto-figure-center r-stretch" width="1152" id="fig-growth"><p class="caption">
-Figure&nbsp;5: Berkeley Growth Study Data
+Figure&nbsp;5: Observed heights <span class="math inline">\((T_{ij},Y_{ij})\)</span> for <span class="math inline">\(N=54\)</span> girls on a common grid of 31 ages (<span class="math inline">\(M_1=\cdots=M_{54}=31\)</span>). Points are data; connecting lines are visual guides, not latent functions <span class="math inline">\(X_i(t)\)</span>.
 </p><aside class="notes">
-<p>The ages are unevenly spaced: four measurements between years 1 and 2, one per year through age 8, and two per year thereafter. These curves are comparatively smooth and densely sampled relative to the sparse setting studied in this talk. Data source: <code>fda::growth</code>; see <span class="citation" data-cites="ramsay2005">Ramsay and Silverman (<a href="#/references" role="doc-biblioref" onclick="">2005</a>)</span>.</p>
+<p>The ages are unevenly spaced: four measurements between years 1 and 2, one per year through age 8, and two per year thereafter. These curves are comparatively smooth and densely sampled relative to the sparse setting studied in this talk. R’s plotting routine connects each girl’s successive observed pairs with line segments to make her longitudinal record easier to follow. Those segments are not observations of the latent trajectory <span class="math inline">\(X_i(\cdot)\)</span> and are not a fitted smooth. Data source: <code>fda::growth</code>; see <span class="citation" data-cites="ramsay2005">Ramsay and Silverman (<a href="#/references" role="doc-biblioref" onclick="">2005</a>)</span>.</p>
 <style type="text/css">
         span.MJX_Assistive_MathML {
           position:absolute!important;
@@ -392,13 +392,13 @@ Figure&nbsp;5: Berkeley Growth Study Data
           display:block!important;
       }</style></aside>
 </section>
-<section id="fda-sample-elements-random-functions-1" class="slide level2 center">
-<h2>FDA Sample Elements (Random Functions)</h2>
+<section id="observed-functional-data-daily-temperatures" class="slide level2 center">
+<h2>Observed Functional Data: Daily Temperatures</h2>
 
 <img data-src="index_files/figure-revealjs/fig-canWeather-1.png" class="quarto-figure quarto-figure-center r-stretch" width="1152" id="fig-canWeather"><p class="caption">
-Figure&nbsp;6: Canadian Weather Study Data
+Figure&nbsp;6: Observed daily mean temperatures <span class="math inline">\((T_{ij},Y_{ij})\)</span> for <span class="math inline">\(N=35\)</span> Canadian locations on a common grid of 365 days (<span class="math inline">\(M_1=\cdots=M_{35}=365\)</span>). Points are data; connecting lines are visual guides, not latent functions <span class="math inline">\(X_i(t)\)</span>.
 </p><aside class="notes">
-<p>These curves share a common daily grid and are less smooth than the growth curves. The example contrasts a common design with the subject-specific, irregular observation times emphasized in the current paper. Data source: <code>fda::CanadianWeather</code>; see <span class="citation" data-cites="ramsay2005">Ramsay and Silverman (<a href="#/references" role="doc-biblioref" onclick="">2005</a>)</span>.</p>
+<p>These curves share a common daily grid and are less smooth than the growth curves. The example contrasts a common design with the subject-specific, irregular observation times emphasized in the current paper. Data source: <code>fda::CanadianWeather</code>; see <span class="citation" data-cites="ramsay2005">Ramsay and Silverman (<a href="#/references" role="doc-biblioref" onclick="">2005</a>)</span>. R connects successive daily observations within each location only to help the eye follow the seasonal record; the connecting segments are not the latent trajectory <span class="math inline">\(X_i(\cdot)\)</span>.</p>
 <style type="text/css">
         span.MJX_Assistive_MathML {
           position:absolute!important;
