@@ -2328,7 +2328,11 @@ if (!requireNamespace("spcovar", quietly = TRUE)) {
 
 required_packages <- c("refund", "rgl")
 missing_packages <- required_packages[
-  !vapply(required_packages, requireNamespace, logical(1), quietly = TRUE)
+  !vapply(
+    required_packages,
+    function(package) isTRUE(nzchar(find.package(package, quiet = TRUE))),
+    logical(1)
+  )
 ]
 
 if (length(missing_packages)) {
@@ -2413,7 +2417,11 @@ if (!requireNamespace("spcovar", quietly = TRUE)) {
 
 required_packages <- c("refund", "rgl", "crs")
 missing_packages <- required_packages[
-  !vapply(required_packages, requireNamespace, logical(1), quietly = TRUE)
+  !vapply(
+    required_packages,
+    function(package) isTRUE(nzchar(find.package(package, quiet = TRUE))),
+    logical(1)
+  )
 ]
 
 if (length(missing_packages)) {
