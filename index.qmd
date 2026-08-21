@@ -1006,7 +1006,7 @@ Functional Data.
 - The mean is estimated from pooled observations:
   $$
   \widehat\mu(t)
-  =\sum_{k=0}^{K}\widehat\theta_k \phi_k(t),
+  =\sum_{k=0}^{K}\widehat a_k \phi_k(t),
   $$
 
 - Let $n=\sum_{i=1}^N M_i$ and let
@@ -1085,9 +1085,9 @@ $$
 
 - For a one-dimensional target $m(t)=\mathbb E(Z\mid T=t)$,
   $$
-  m_J(t)=\sum_{k=0}^J\theta_k\phi_k(t),
+  m_J(t)=\sum_{k=0}^J a_k\phi_k(t),
   \qquad
-  \theta_k=\int_0^1m(t)\phi_k(t)\,dt .
+  a_k=\int_0^1m(t)\phi_k(t)\,dt .
   $$
 
 - The retained lag $J$ can be selected by a threshold/truncation
@@ -1097,26 +1097,26 @@ $$
 
 - The coefficients are moments:
   $$
-  \theta_k=
+  a_k=
   \mathbb E\!\left\{\frac{Z\phi_k(T)}{f_T(T)}\right\}.
   $$
 
-- With ordered pooled times $U_\ell$, local spacings estimate density:
+- With ordered pooled times $U_r$, local spacings estimate density:
   $$
-  \frac{1}{n f_T(U_\ell)}
+  \frac{1}{n f_T(U_r)}
   \approx
-  \frac{U_{\ell+s}-U_{\ell-s}}{2s},
+  \frac{U_{r+s}-U_{r-s}}{2s},
   \qquad
   s=\left\lceil\frac{1+\log\log(n+20)}{2}\right\rceil .
   $$
 
 - Hence
   $$
-  \widehat\theta_k
+  \widehat a_k
   \approx
-  \sum_{\ell=1}^n
-  Z_\ell\phi_k(U_\ell)
-  \frac{U_{\ell+s}-U_{\ell-s}}{2s}.
+  \sum_{r=1}^n
+  Z_r\phi_k(U_r)
+  \frac{U_{r+s}-U_{r-s}}{2s}.
   $$
 
 ::: {.content-visible when-profile="long"}
@@ -1815,17 +1815,17 @@ Exact campaign calls:
   on the grid $\mathcal G=\{u_1,\ldots,u_G\}$, $G=25$,
   $u_g\in[0.05,0.95]$,
   $$
-  \operatorname{MSE}_{bmdr}
+  \operatorname{MSE}_{b,m,d,r}
   =
   G^{-2}
   \sum_{a=1}^G\sum_{c=1}^G
   \left\{
-  \widehat C_{bmdr}(u_a,u_c)-C_d(u_a,u_c)
+  \widehat C_{b,m,d,r}(u_a,u_c)-C_d(u_a,u_c)
   \right\}^2 .
   $$
 
 - The table entries average this quantity over Monte Carlo replications and
-  report $1000\times\overline{\operatorname{MSE}}_{mdr}$.
+  report $1000\times\overline{\operatorname{MSE}}_{m,d,r}$.
 
 - Relative entries divide by the corresponding `spcovar` value.
 
@@ -1839,13 +1839,25 @@ Exact campaign calls:
   \sum_{(d,r)\in\mathcal I}
   \log\left\{
   \frac{
-  \overline{\operatorname{MSE}}_{mdr}
+  \overline{\operatorname{MSE}}_{m,d,r}
   }{
-  \overline{\operatorname{MSE}}_{\mathrm{spcovar},dr}
+  \overline{\operatorname{MSE}}_{\mathrm{spcovar},d,r}
   }
   \right\}
   \right].
   $$
+
+::: {.notes}
+The comma-separated subscripts are four distinct indices: $b$ indexes the Monte
+Carlo replication, $m$ the estimation method, $d$ the data-generating process,
+and $r$ the sample-size regime. Thus
+$\operatorname{MSE}_{b,m,d,r}$ is replication-specific. The overbar averages over
+$b$, so
+$$
+\overline{\operatorname{MSE}}_{m,d,r}
+=\frac{1}{B}\sum_{b=1}^B\operatorname{MSE}_{b,m,d,r}.
+$$
+:::
 
 ## Peer Comparison Ratios {.table-slide}
 

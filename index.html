@@ -12,7 +12,7 @@
   <meta name="author" content="Valentin Patilea^\dagger">
   <meta name="author" content="Jeffrey S. Racine^\ddagger">
   <meta name="dcterms.date" content="2026-08-21">
-  <title>quarto-input84c23153d932a79e</title>
+  <title>quarto-inputbda64e6bf6f286f3</title>
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, minimal-ui">
@@ -772,9 +772,9 @@ k_{nn} \asymp \log n,
 \]</span></p></li>
 <li class="fragment"><p>This basis is stable, fast, and surprisingly competitive in finite samples.</p></li>
 <li class="fragment"><p>For a one-dimensional target <span class="math inline">\(m(t)=\mathbb E(Z\mid T=t)\)</span>, <span class="math display">\[
-m_J(t)=\sum_{k=0}^J\theta_k\phi_k(t),
+m_J(t)=\sum_{k=0}^J a_k\phi_k(t),
 \qquad
-\theta_k=\int_0^1m(t)\phi_k(t)\,dt .
+a_k=\int_0^1m(t)\phi_k(t)\,dt .
 \]</span></p></li>
 <li class="fragment"><p>The retained lag <span class="math inline">\(J\)</span> can be selected by a threshold/truncation rule or by cross-validation.</p></li>
 </ul>
@@ -783,22 +783,22 @@ m_J(t)=\sum_{k=0}^J\theta_k\phi_k(t),
 <h2>Cosine Series Coefficients</h2>
 <ul>
 <li class="fragment"><p>The coefficients are moments: <span class="math display">\[
-\theta_k=
+a_k=
 \mathbb E\!\left\{\frac{Z\phi_k(T)}{f_T(T)}\right\}.
 \]</span></p></li>
-<li class="fragment"><p>With ordered pooled times <span class="math inline">\(U_\ell\)</span>, local spacings estimate density: <span class="math display">\[
-\frac{1}{n f_T(U_\ell)}
+<li class="fragment"><p>With ordered pooled times <span class="math inline">\(U_r\)</span>, local spacings estimate density: <span class="math display">\[
+\frac{1}{n f_T(U_r)}
 \approx
-\frac{U_{\ell+s}-U_{\ell-s}}{2s},
+\frac{U_{r+s}-U_{r-s}}{2s},
 \qquad
 s=\left\lceil\frac{1+\log\log(n+20)}{2}\right\rceil .
 \]</span></p></li>
 <li class="fragment"><p>Hence <span class="math display">\[
-\widehat\theta_k
+\widehat a_k
 \approx
-\sum_{\ell=1}^n
-Z_\ell\phi_k(U_\ell)
-\frac{U_{\ell+s}-U_{\ell-s}}{2s}.
+\sum_{r=1}^n
+Z_r\phi_k(U_r)
+\frac{U_{r+s}-U_{r-s}}{2s}.
 \]</span></p></li>
 </ul>
 </section>
@@ -1019,15 +1019,15 @@ C_{ijk}
 <h2>Peer Comparison</h2>
 <ul>
 <li class="fragment"><p>For replication <span class="math inline">\(b\)</span>, estimator <span class="math inline">\(m\)</span>, DGP <span class="math inline">\(d\)</span>, and sample-size regime <span class="math inline">\(r\)</span>, on the grid <span class="math inline">\(\mathcal G=\{u_1,\ldots,u_G\}\)</span>, <span class="math inline">\(G=25\)</span>, <span class="math inline">\(u_g\in[0.05,0.95]\)</span>, <span class="math display">\[
-\operatorname{MSE}_{bmdr}
+\operatorname{MSE}_{b,m,d,r}
 =
 G^{-2}
 \sum_{a=1}^G\sum_{c=1}^G
 \left\{
-\widehat C_{bmdr}(u_a,u_c)-C_d(u_a,u_c)
+\widehat C_{b,m,d,r}(u_a,u_c)-C_d(u_a,u_c)
 \right\}^2 .
 \]</span></p></li>
-<li class="fragment"><p>The table entries average this quantity over Monte Carlo replications and report <span class="math inline">\(1000\times\overline{\operatorname{MSE}}_{mdr}\)</span>.</p></li>
+<li class="fragment"><p>The table entries average this quantity over Monte Carlo replications and report <span class="math inline">\(1000\times\overline{\operatorname{MSE}}_{m,d,r}\)</span>.</p></li>
 <li class="fragment"><p>Relative entries divide by the corresponding <code>spcovar</code> value.</p></li>
 <li class="fragment"><p>The <code>Overall</code> index is the geometric mean of those ratios over the included DGP-regime cells: <span class="math display">\[
 \operatorname{Index}_m
@@ -1037,14 +1037,30 @@ G^{-2}
 \sum_{(d,r)\in\mathcal I}
 \log\left\{
 \frac{
-\overline{\operatorname{MSE}}_{mdr}
+\overline{\operatorname{MSE}}_{m,d,r}
 }{
-\overline{\operatorname{MSE}}_{\mathrm{spcovar},dr}
+\overline{\operatorname{MSE}}_{\mathrm{spcovar},d,r}
 }
 \right\}
 \right].
 \]</span></p></li>
 </ul>
+<aside class="notes">
+<p>The comma-separated subscripts are four distinct indices: <span class="math inline">\(b\)</span> indexes the Monte Carlo replication, <span class="math inline">\(m\)</span> the estimation method, <span class="math inline">\(d\)</span> the data-generating process, and <span class="math inline">\(r\)</span> the sample-size regime. Thus <span class="math inline">\(\operatorname{MSE}_{b,m,d,r}\)</span> is replication-specific. The overbar averages over <span class="math inline">\(b\)</span>, so <span class="math display">\[
+\overline{\operatorname{MSE}}_{m,d,r}
+=\frac{1}{B}\sum_{b=1}^B\operatorname{MSE}_{b,m,d,r}.
+\]</span></p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
 </section>
 <section id="peer-comparison-ratios" class="slide level2 table-slide center">
 <h2>Peer Comparison Ratios</h2>
