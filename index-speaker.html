@@ -12,7 +12,7 @@
   <meta name="author" content="Valentin Patilea^\dagger">
   <meta name="author" content="Jeffrey S. Racine^\ddagger">
   <meta name="dcterms.date" content="2026-08-21">
-  <title>quarto-inputa24c9ba5c4839468</title>
+  <title>quarto-inputacbd79376b9a371</title>
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, minimal-ui">
@@ -477,6 +477,7 @@ Y_{ij}=X_i(T_{ij})+\varepsilon_{ij},
 <li class="fragment"><p>In the sparse regime each curve contributes only a handful of such pairs. That is precisely why covariance estimation remains difficult despite replication.</p></li>
 </ul>
 <aside class="notes">
+<p>Hölder continuity (or the Hölder condition) is a condition in mathematics that describes how smooth or “regular” a function is. It is stronger than ordinary continuity and uniform continuity, but weaker than differentiability or Lipschitz continuity.</p>
 <p>Patilea and Racine (2026) exploit replication to estimate the local Hölder exponent and constant, separating measurement noise from intrinsic path irregularity without presuming that regularity is constant over the domain. Use replication as the bridge to the next slide. It makes population covariance estimable, but sparse, irregular within-curve pairs make the bivariate surface hard to recover. This motivates asking why covariance is the central target.</p>
 <style type="text/css">
         span.MJX_Assistive_MathML {
@@ -737,6 +738,19 @@ Y_{ij}=X_i(T_{ij})+\varepsilon_{ij},
 <li class="fragment">model averaging weights <span class="math inline">\(\widehat{\boldsymbol{\alpha}}\)</span>: simplex weights are chosen by the same off-diagonal fitting criterion.</li>
 </ul></li>
 </ul>
+<aside class="notes">
+<p>In standard ordinary least squares (OLS) linear regression, we are projecting <span class="math inline">\(y\)</span> onto <span class="math inline">\(x\)</span> (or more precisely, projecting the dependent variable vector <span class="math inline">\(y\)</span> onto the column space of the independent variable matrix <span class="math inline">\(X\)</span>).</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
 </section>
 <section id="noise-variance" class="slide level2 center">
 <h2>Noise Variance</h2>
@@ -911,7 +925,7 @@ C_{ijk}
 <section id="simulation-design" class="slide level2 center">
 <h2>Simulation Design</h2>
 <ul>
-<li class="fragment"><p>The revised simulation design emphasizes:</p>
+<li class="fragment"><p>The simulation design emphasizes:</p>
 <ul>
 <li class="fragment">beta-mixture observation times;</li>
 <li class="fragment">sparse within-subject sampling;</li>

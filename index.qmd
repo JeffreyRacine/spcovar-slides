@@ -655,6 +655,11 @@ common design; the paper's sparse setting is independent design.
   replication.
 
 ::: {.notes}
+Hölder continuity (or the Hölder condition) is a condition in mathematics
+that describes how smooth or "regular" a function is. It is stronger than
+ordinary continuity and uniform continuity, but weaker than differentiability
+or Lipschitz continuity.
+
 Patilea and Racine (2026) exploit replication to estimate the local Hölder
 exponent and constant, separating measurement noise from intrinsic path
 irregularity without presuming that regularity is constant over the domain.
@@ -933,6 +938,12 @@ Functional Data.
     - model averaging weights $\widehat{\boldsymbol{\alpha}}$: simplex weights are chosen by the
       same off-diagonal fitting criterion.
 
+::: {.notes}
+In standard ordinary least squares (OLS) linear regression, we are projecting
+$y$ onto $x$ (or more precisely, projecting the dependent variable vector $y$
+onto the column space of the independent variable matrix $X$).
+:::
+
 :::
 
 ::: {.content-visible when-profile="long"}
@@ -956,6 +967,12 @@ Functional Data.
       measurement-error contamination;
     - model averaging ($\widehat{\boldsymbol{\alpha}})$: simplex weights are chosen by the
       same off-diagonal fitting criterion.
+
+::: {.notes}
+In standard ordinary least squares (OLS) linear regression, we are projecting
+$y$ onto $x$ (or more precisely, projecting the dependent variable vector $y$
+onto the column space of the independent variable matrix $X$).
+:::
 
 :::
 
@@ -1751,7 +1768,7 @@ bc_alpha_tables <- build_peer_alpha_tables("../Work_bcgs2_peer_beta_mc")
 
 ## Simulation Design
 
-- The revised simulation design emphasizes:
+- The simulation design emphasizes:
 
     - beta-mixture observation times;
     - sparse within-subject sampling;
